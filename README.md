@@ -144,6 +144,8 @@ stateDiagram-v2
 │   │   │       ├── workloads.py        # /v1/workloads & manifest validation
 │   │   │       ├── planning.py         # /v1/workloads/{id}/plans (dry-run)
 │   │   │       ├── runs.py             # /v1/plans/{id}/launch, runs, logs
+│   │   │       ├── checkpoints.py      # /v1/runs/{id}/checkpoints & resumption
+│   │   │       ├── arbitrage.py        # /v1/runs/{id}/arbitrage (scan, approve, execute)
 │   │   │       ├── ledger.py           # /v1/runs/{id}/cost & reconciliation
 │   │   │       └── audit.py            # /v1/audit-events
 │   │   ├── core/

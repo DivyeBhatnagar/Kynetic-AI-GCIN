@@ -483,3 +483,35 @@ class CheckpointVerificationLogModel(Base):
     checkpoint = relationship("CheckpointModel", back_populates="verification_logs")
 
 
+class ArbitrageOpportunityModel(Base):
+    __tablename__ = "arbitrage_opportunities"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    organization_id: Mapped[str] = mapped_column(String(36), ForeignKey("organizations.id", ondelete="CASCADE"), nullable=False, index=True)
+    project_id: Mapped[str] = mapped_column(String(36), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
+    run_id: Mapped[str] = mapped_column(String(36), ForeignKey("runs.id", ondelete="CASCADE"), nullable=False, index=True)
+    current_compute_offer_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    target_compute_offer_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    checkpoint_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("checkpoints.id", ondelete="SET NULL"), nullable=True)
+    current_hourly_cost: Mapped[Decimal] = mapped_column(Numeric(14, 4), nullable=False)
+    target_hourly_cost: Mapped[Decimal] = mapped_column(Numeric(14, 4), nullable=False)
+    remaining_runtime_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
+    projected_gross_savings: Mapped[Decimal] = mapped_column(Numeric(14, 4), nullable=False)
+    migration_egress_cost: Mapped[Decimal] = mapped_column(Numeric(14, 4), nullable=False)
+    migration_downtime_cost: Mapped[Decimal] = mapped_column(Numeric(14, 4), nullable=False)
+    net_savings: Mapped[Decimal] = mapped_column(Numeric(14, 4), nullable=False)
+    net_savings_percentage: Mapped[Decimal] = mapped_column(Numeric(6, 2), nullable=False)
+    preemption_risk_score: Mapped[Decimal] = mapped_column(Numeric(4, 3), default=Decimal("0.000"), nullable=False)
+    is_eligible: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    rejection_reasons_json: Mapped[list[str]] = mapped_column(JSON, default=list, nullable=False)
+    status: Mapped[str] = mapped_column(String(30), default="EVALUATED", nullable=False)  # EVALUATED, PENDING_APPROVAL, APPROVED, EXECUTED, REJECTED, EXPIRED
+    execution_run_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+    __table_args__ = (
+        Index("ix_arbitrage_run_status", "run_id", "status"),
+        Index("ix_arbitrage_org_created", "organization_id", "created_at"),
+    )
+
+

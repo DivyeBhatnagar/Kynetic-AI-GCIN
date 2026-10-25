@@ -367,7 +367,7 @@ async def resume_from_checkpoint(
         gpu_model = offer.gpu_model
         gpu_count = offer.gpu_count
         total_target_vram = offer.gpu_memory_gb * offer.gpu_count
-        if not offer.is_available:
+        if offer.availability_status != "AVAILABLE":
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Target compute offer is not currently available")
     else:
         sim_offers = await fake_adapter.list_offers()
