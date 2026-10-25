@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { SEO } from '../components/SEO';
 
 interface ArchitecturePageProps {
   onOpenEarlyAccess: () => void;
@@ -8,6 +9,11 @@ interface ArchitecturePageProps {
 export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onOpenEarlyAccess }) => {
   return (
     <main className="flex-1 w-full max-w-[1240px] mx-auto px-space-lg md:px-margin-desktop py-space-xl">
+      <SEO
+        title="Distributed Control Plane &amp; eBPF Telemetry"
+        description="Technical specification of Kynetic AI's multi-cloud arbitration broker, eBPF telemetry daemons, and preemption immunity protocol."
+        canonicalPath="/architecture"
+      />
       {/* HERO SECTION */}
       <section className="mb-space-xl pt-space-md">
         {/* Eyebrow & Telemetry Badge */}

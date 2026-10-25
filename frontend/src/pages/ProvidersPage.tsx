@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { SEO } from '../components/SEO';
 
 interface Provider {
   id: string;
@@ -209,6 +210,11 @@ export const ProvidersPage: React.FC = () => {
 
   return (
     <div className="bg-canvas-base text-ink-primary font-sans antialiased min-h-screen">
+      <SEO
+        title="Multi-Cloud GPU Provider Directory &amp; Pricing"
+        description="Explore live pricing, SXM5 NVLink interconnect availability, and spot capacities across CoreWeave, Lambda Labs, RunPod, and Crusoe."
+        canonicalPath="/providers"
+      />
       <main className="w-full px-space-lg md:px-margin-desktop py-space-xl max-w-[1240px] mx-auto">
         {/* 1. Header & Live Mesh Stats */}
         <div className="mb-space-xl">

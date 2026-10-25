@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { SEO } from '../components/SEO';
 
 interface RecommendationsPageProps {
   onOpenEarlyAccess?: () => void;
@@ -17,6 +18,11 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
 
   return (
     <div className="bg-canvas-base text-ink-primary font-body-md antialiased min-h-screen flex flex-col selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+      <SEO
+        title="Cost &amp; Latency Optimized GPU Allocations"
+        description="Ranked candidate plans, cost-performance frontier comparisons, and automated failover topologies for AI workloads."
+        canonicalPath="/recommendations"
+      />
       {/* MAIN CONTAINER */}
       <main className="flex-1 w-full max-w-[1240px] mx-auto px-space-lg md:px-margin-desktop py-space-xl space-y-space-lg">
         {/* SECTION 1: HEADER & WORKLOAD SUMMARY STRIP */}

@@ -15,6 +15,8 @@ import { ProvidersPage } from './pages/ProvidersPage';
 import { SignInPage } from './pages/SignInPage';
 import { SignUpPage } from './pages/SignUpPage';
 import { LegalPage } from './pages/LegalPage';
+import { ThankYouPage } from './pages/ThankYouPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 // Scroll to top on navigation helper
 const ScrollToTop: React.FC = () => {
@@ -250,14 +252,26 @@ export const App: React.FC = () => {
             }
           />
 
-          {/* Fallback to Home */}
+          {/* Conversion Thank You Confirmation Page */}
+          <Route
+            path="/thank-you"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <ThankYouPage />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+
+          {/* Genuine 404 Route Handler */}
           <Route
             path="*"
             element={
               <>
                 <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
-                <HomePage onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
-                <Footer variant="olive" />
+                <NotFoundPage />
+                <Footer variant="editorial" />
               </>
             }
           />

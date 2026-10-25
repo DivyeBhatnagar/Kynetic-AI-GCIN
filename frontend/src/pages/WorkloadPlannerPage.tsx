@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SEO } from '../components/SEO';
 
 interface WorkloadPlannerPageProps {
   onOpenEarlyAccess: () => void;
@@ -84,6 +85,11 @@ job.wait_for_completion()`;
 
   return (
     <main className="w-full flex-1 max-w-[1240px] mx-auto px-space-md md:px-margin-desktop py-space-lg">
+      <SEO
+        title="Roofline Workload Planner &amp; GPU Simulation"
+        description="Dry-run AI models against arithmetic intensity curves, memory bandwidth envelopes, and spot candidate rankings across GPU clouds."
+        canonicalPath="/workload-planner"
+      />
       {/* Hero / Eyebrow Header with Atmospheric Gradient */}
       <section className="relative pt-space-md pb-space-lg halo-atmosphere border-b border-hairline-subtle">
         {/* Eyebrow with Luminous Pulse */}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { SEO } from '../components/SEO';
 
 interface DocsPageProps {
   onOpenEarlyAccess: () => void;
@@ -93,6 +94,11 @@ kn run dispatch --plan-id plan_98a72f10 --auto-resume`;
 
   return (
     <div className="w-full max-w-[1240px] mx-auto flex-1 flex flex-col md:flex-row px-space-md md:px-space-lg lg:px-margin-desktop py-space-lg gap-space-lg">
+      <SEO
+        title="Python SDK, CLI &amp; Workload API Documentation"
+        description="Developer quickstart, Python SDK client reference, CLI deployment guide, and REST API specification for Kynetic AI compute orchestration."
+        canonicalPath="/docs"
+      />
       {/* LEFT SIDEBAR: Collapsible Architectural Nav */}
       <aside className="w-full md:w-64 lg:w-72 flex-shrink-0 md:border-r border-hairline-default md:pr-space-md self-start md:sticky md:top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
         <div className="flex items-center justify-between pb-space-sm mb-space-sm border-b border-hairline-subtle">

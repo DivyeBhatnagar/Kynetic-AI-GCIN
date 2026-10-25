@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { trackConversion } from '../utils/analytics';
 
 interface EarlyAccessModalProps {
   isOpen: boolean;
@@ -7,6 +9,8 @@ interface EarlyAccessModalProps {
 
 export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onClose }) => {
   const [submitted, setSubmitted] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
+  const [rateLimitError, setRateLimitError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     org: '',
@@ -21,6 +25,30 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 1. Honeypot check
+    if (honeypot.trim() !== '') {
+      console.warn('[Security Guard] Bot trap caught spam submission.');
+      setSubmitted(true);
+      return;
+    }
+
+    // 2. Client-side rate limiting
+    const now = Date.now();
+    const lastSub = localStorage.getItem('kynetic_modal_sub_ts');
+    if (lastSub && now - parseInt(lastSub, 10) < 15000) {
+      setRateLimitError('Please wait a moment before sending another request.');
+      return;
+    }
+    localStorage.setItem('kynetic_modal_sub_ts', now.toString());
+
+    // 3. Track conversion event in GA4 / Telemetry
+    trackConversion('early_access_modal_submitted', {
+      email: formData.email,
+      org: formData.org,
+      gpu_scale: formData.gpuScale,
+    });
+
     setSubmitted(true);
   };
 
@@ -57,15 +85,24 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
               We have queued your cohort request. An engineering lead will review your cluster spec
               and reply within 24 hours.
             </p>
-            <button
-              onClick={() => {
-                setSubmitted(false);
-                onClose();
-              }}
-              className="mt-4 px-6 py-2 bg-ink-primary text-canvas-base rounded-full font-label-mono text-label-mono font-medium hover:bg-accent-olive-deep"
-            >
-              Done
-            </button>
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                to="/thank-you"
+                onClick={onClose}
+                className="px-5 py-2 bg-accent-olive text-white rounded-full font-label-mono text-label-mono font-medium hover:bg-accent-olive-deep shadow-sm"
+              >
+                View Confirmation Receipt →
+              </Link>
+              <button
+                onClick={() => {
+                  setSubmitted(false);
+                  onClose();
+                }}
+                className="px-5 py-2 border border-hairline-default text-ink-primary rounded-full font-label-mono text-label-mono font-medium hover:bg-canvas-alternate"
+              >
+                Close
+              </button>
+            </div>
           </div>
         ) : (
           <div>
@@ -82,7 +119,27 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
               Tailored compute concierge and non-blocking GPU scheduling for machine learning teams.
             </p>
 
+            {rateLimitError && (
+              <div className="mb-4 p-3 rounded bg-red-50 border border-status-critical/30 text-status-critical text-body-sm font-medium">
+                {rateLimitError}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Anti-Spam Honeypot */}
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <label htmlFor="modal_website_confirm_hp">Do not fill this field</label>
+                <input
+                  type="text"
+                  id="modal_website_confirm_hp"
+                  name="modal_website_confirm_hp"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
+
               <div>
                 <label className="block text-label-mono font-label-mono text-ink-primary mb-1">
                   Work Email <span className="text-accent-olive">*</span>

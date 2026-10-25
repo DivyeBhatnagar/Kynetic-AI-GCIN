@@ -16,7 +16,7 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between pb-6 border-b border-hairline-subtle gap-4">
             <Link to="/" className="flex items-center group py-0.5" aria-label="Kynetic AI Home">
               <img
-                alt="Kynetic AI"
+                alt="Kynetic AI — Autonomous Compute Intelligence Logo"
                 className="h-7 w-auto object-contain transition-opacity group-hover:opacity-90"
                 src={logoSrc}
               />
@@ -97,7 +97,7 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
           <div className="sm:col-span-2 md:col-span-2">
             <Link to="/" className="inline-block mb-4 group" aria-label="Kynetic AI Home">
               <img
-                alt="Kynetic AI"
+                alt="Kynetic AI — Autonomous Compute Intelligence Logo"
                 className="h-8 md:h-9 w-auto object-contain transition-opacity group-hover:opacity-90"
                 src={logoSrc}
               />
@@ -171,6 +171,11 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
                 <Link to="/workload-planner" className="hover:text-ink-primary transition-colors">
                   GPU Benchmarks
                 </Link>
+              </li>
+              <li>
+                <a href="/#faq" className="hover:text-ink-primary transition-colors">
+                  Frequently Asked Questions (FAQ)
+                </a>
               </li>
             </ul>
           </div>

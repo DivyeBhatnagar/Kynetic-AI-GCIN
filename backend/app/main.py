@@ -1,5 +1,6 @@
 import uuid
 import time
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
@@ -7,11 +8,30 @@ from fastapi.responses import JSONResponse
 from app.core.config import settings
 from app.core.logging import setup_logging
 from app.core.errors import KyneticError, kynetic_error_handler
+from app.core.cache import cache_service
+from app.core.rate_limit import rate_limiting_middleware
+from app.adapters.persistence.database import engine
 from app.api.v1.router import api_v1_router
 from app.api.v1.health import router as root_health_router
 
 # Initialize structured logging
 setup_logging(log_level=settings.LOG_LEVEL)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Manages startup and shutdown lifecycle for horizontal scaling readiness.
+    Initializes shared caches and cleans up database/cache connections.
+    """
+    # 1. Startup phase
+    await cache_service.initialize()
+    yield
+
+    # 2. Shutdown phase
+    await cache_service.close()
+    await engine.dispose()
+
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -19,7 +39,8 @@ app = FastAPI(
     description="Intelligent Compute Scheduling, Workload Orchestration & Multi-Provider Engine",
     docs_url="/docs",
     redoc_url="/redoc",
-    openapi_url="/openapi.json"
+    openapi_url="/openapi.json",
+    lifespan=lifespan
 )
 
 # CORS configuration
@@ -44,7 +65,12 @@ async def correlation_id_and_timing_middleware(request: Request, call_next):
 
     response.headers["X-Request-ID"] = request_id
     response.headers["X-Response-Time-Ms"] = f"{duration_ms:.2f}"
+    response.headers["X-Instance-ID"] = settings.INSTANCE_ID
     return response
+
+
+# Rate limiting middleware
+app.middleware("http")(rate_limiting_middleware)
 
 
 # Register custom exception handlers for stable error envelope

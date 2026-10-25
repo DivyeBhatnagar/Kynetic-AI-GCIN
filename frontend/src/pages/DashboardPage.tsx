@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardComputeTopology } from '../components/DashboardComputeTopology';
+import { SEO } from '../components/SEO';
 
 interface DashboardPageProps {
   onOpenEarlyAccess?: () => void;
@@ -188,6 +189,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onOpenEarlyAccess 
 
   return (
     <div className="bg-canvas-base text-ink-primary font-body-md antialiased min-h-screen flex flex-col selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+      <SEO
+        title="Console Dashboard &amp; Global Compute Orchestration"
+        description="Monitor active GPU clusters, real-time eBPF hardware utilization, spot arbitrage savings, and automated preemption checkpointing."
+        canonicalPath="/dashboard"
+      />
       {/* MAIN CANVAS CONTAINER */}
       <main className="flex-1 w-full max-w-[1240px] mx-auto px-4 sm:px-6 md:px-margin-desktop py-6 sm:py-8 space-y-6 sm:space-y-8">
         

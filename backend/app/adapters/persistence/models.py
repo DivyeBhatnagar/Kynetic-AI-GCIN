@@ -155,6 +155,8 @@ class ComputeOfferModel(Base):
 
     __table_args__ = (
         UniqueConstraint("provider_id", "region_id", "external_offer_key", name="uq_offer_provider_region_key"),
+        Index("ix_compute_offers_provider_region", "provider_id", "region_id"),
+        Index("ix_compute_offers_gpu_vram", "gpu_model", "gpu_memory_gb"),
     )
 
 
@@ -170,6 +172,11 @@ class PriceObservationModel(Base):
     source_reference: Mapped[str] = mapped_column(String(255), default="fixture_seed", nullable=False)
     freshness_status: Mapped[str] = mapped_column(String(30), default="FRESH", nullable=False)  # FRESH, STALE, UNKNOWN
     observed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False, index=True)
+
+    __table_args__ = (
+        Index("ix_price_obs_offer_observed", "compute_offer_id", "observed_at"),
+        Index("ix_price_obs_offer_freshness", "compute_offer_id", "freshness_status"),
+    )
 
 
 class ProviderConnectionModel(Base):
@@ -203,6 +210,8 @@ class WorkloadModel(Base):
 
     __table_args__ = (
         Index("ix_workloads_org_created", "organization_id", "created_at"),
+        Index("ix_workloads_org_proj_created", "organization_id", "project_id", "created_at"),
+        Index("ix_workloads_org_status", "organization_id", "status"),
     )
 
 
@@ -248,6 +257,8 @@ class PlanModel(Base):
 
     __table_args__ = (
         Index("ix_plans_org_created", "organization_id", "created_at"),
+        Index("ix_plans_org_status_created", "organization_id", "status", "created_at"),
+        Index("ix_plans_proj_created", "project_id", "created_at"),
     )
 
 
@@ -267,6 +278,11 @@ class PlanCandidateModel(Base):
 
     plan = relationship("PlanModel", back_populates="candidates")
 
+    __table_args__ = (
+        Index("ix_plan_candidates_plan_rank", "plan_id", "rank"),
+        Index("ix_plan_candidates_plan_eligibility", "plan_id", "eligibility_status"),
+    )
+
 
 class BudgetReservationModel(Base):
     __tablename__ = "budget_reservations"
@@ -281,6 +297,10 @@ class BudgetReservationModel(Base):
     status: Mapped[str] = mapped_column(String(30), default="ACTIVE", nullable=False)  # ACTIVE, SETTLED, RELEASED
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+    __table_args__ = (
+        Index("ix_budget_res_org_status_expires", "organization_id", "status", "expires_at"),
+    )
 
 
 class RunModel(Base):
@@ -310,6 +330,8 @@ class RunModel(Base):
     __table_args__ = (
         UniqueConstraint("organization_id", "idempotency_key", name="uq_run_org_idempotency"),
         Index("ix_runs_org_created", "organization_id", "created_at"),
+        Index("ix_runs_org_status_created", "organization_id", "status", "created_at"),
+        Index("ix_runs_proj_created", "project_id", "created_at"),
     )
 
 
@@ -327,6 +349,10 @@ class RunStateEventModel(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False, index=True)
 
     run = relationship("RunModel", back_populates="state_events")
+
+    __table_args__ = (
+        Index("ix_run_events_run_created", "run_id", "created_at"),
+    )
 
 
 class UsageObservationModel(Base):
@@ -359,6 +385,7 @@ class CostLedgerEntryModel(Base):
 
     __table_args__ = (
         Index("ix_ledger_org_effective", "organization_id", "effective_at"),
+        Index("ix_ledger_org_run_effective", "organization_id", "run_id", "effective_at"),
     )
 
 
@@ -378,6 +405,7 @@ class AuditEventModel(Base):
 
     __table_args__ = (
         Index("ix_audit_org_created", "organization_id", "created_at"),
+        Index("ix_audit_org_action_created", "organization_id", "action", "created_at"),
     )
 
 
@@ -423,6 +451,7 @@ class PredictionModel(Base):
 
     __table_args__ = (
         Index("ix_predictions_org_created", "organization_id", "created_at"),
+        Index("ix_predictions_org_rev_created", "organization_id", "workload_revision_id", "created_at"),
     )
 
 
@@ -463,6 +492,7 @@ class CheckpointModel(Base):
 
     __table_args__ = (
         Index("ix_checkpoints_run_step", "run_id", "step_number"),
+        Index("ix_checkpoints_run_verified_step", "run_id", "is_verified", "step_number"),
     )
 
 
@@ -508,6 +538,7 @@ class ArbitrageOpportunityModel(Base):
     __table_args__ = (
         Index("ix_arbitrage_run_status", "run_id", "status"),
         Index("ix_arbitrage_org_created", "organization_id", "created_at"),
+        Index("ix_arbitrage_org_status_created", "organization_id", "status", "created_at"),
     )
 
 

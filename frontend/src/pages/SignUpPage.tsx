@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { SEO } from '../components/SEO';
+import { trackConversion } from '../utils/analytics';
 
 export const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
@@ -11,18 +13,29 @@ export const SignUpPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [consent, setConsent] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot.trim() !== '') {
+      navigate('/thank-you');
+      return;
+    }
+    trackConversion('sign_up_completed', { role: workloadRole });
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      navigate('/dashboard');
+      navigate('/thank-you');
     }, 600);
   };
 
   return (
     <div className="bg-canvas-base text-ink-primary font-body-md antialiased min-h-screen flex flex-col justify-between selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+      <SEO
+        title="Create Enterprise Account &amp; Free Compute Quota"
+        description="Provision your isolated multi-cloud GPU tenant, initialize eBPF kernel telemetry, and claim trial compute quota."
+        canonicalPath="/signup"
+      />
       {/* Main Container */}
       <main className="flex-1 w-full max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
@@ -97,6 +110,18 @@ export const SignUpPage: React.FC = () => {
 
             {/* Registration Form Inputs */}
             <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
+              {/* Invisible Honeypot Spam Guard */}
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <input
+                  type="text"
+                  name="signup_confirm_hp"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
+
               {/* Name & Work Email Split */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">

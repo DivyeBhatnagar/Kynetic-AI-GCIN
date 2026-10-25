@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { SEO } from '../components/SEO';
 
 export type LegalTab =
   | 'privacy'
@@ -33,6 +34,50 @@ export const LegalPage: React.FC<LegalPageProps> = ({ initialTab }) => {
   const [activeTab, setActiveTab] = useState<LegalTab>(getTabFromPath());
   const [searchFilter, setSearchFilter] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
+
+  // Dynamic SEO metadata per tab
+  const getTabSEO = () => {
+    switch (activeTab) {
+      case 'terms':
+        return {
+          title: 'Terms & Conditions of Compute Service',
+          description: 'Master Service Agreement governing compute arbitration, dual-use restrictions, and 99.98% preemption SLA credits.',
+        };
+      case 'cookies':
+        return {
+          title: 'Cookie Policy & Storage Governance',
+          description: 'Detailed inventory of essential mTLS session cookies, security tokens, and self-hosted telemetry storage.',
+        };
+      case 'refund':
+        return {
+          title: 'Refund & Preemption Credit Policy',
+          description: '100% compute credit restoration for interrupted spot cycles, hardware defect refunds, and wallet withdrawals.',
+        };
+      case 'consent':
+        return {
+          title: 'Cookie & Form Consent Management',
+          description: 'User permission preferences center under GDPR Art. 7 and Indian Digital Personal Data Protection Act 2023.',
+        };
+      case 'data-collection':
+        return {
+          title: 'What User Data We Collect & Retain',
+          description: 'Full transparency regarding developer identity, telemetry metrics, and zero-customer-model-weight training guarantees.',
+        };
+      case 'third-party':
+        return {
+          title: 'Third-Party Embeds & Cloud Sub-Processors',
+          description: 'Registry of vetted GPU cloud providers, payment gateways, and zero third-party ad network tracking policies.',
+        };
+      case 'privacy':
+      default:
+        return {
+          title: 'Privacy Policy & DPDP Data Stewardship',
+          description: 'Data protection standards certified under DPDP Act 2023 (India) and EU General Data Protection Regulation.',
+        };
+    }
+  };
+
+  const seoData = getTabSEO();
 
   // Consent interactive state
   const [consentPrefs, setConsentPrefs] = useState({
@@ -71,6 +116,10 @@ export const LegalPage: React.FC<LegalPageProps> = ({ initialTab }) => {
 
   return (
     <div className="min-h-screen bg-canvas-base text-ink-primary font-body-md pt-24 pb-20">
+      <SEO
+        title={seoData.title}
+        description={seoData.description}
+      />
       {/* Top Header Banner */}
       <div className="border-b border-hairline-default bg-canvas-alternate/60 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-10">

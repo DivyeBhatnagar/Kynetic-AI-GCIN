@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow private API and admin endpoints
+Disallow: /api/
+Disallow: /private/
+Disallow: /admin/
+
+# Google Discoverability XML Sitemap
+Sitemap: https://kynetic.ai/sitemap.xml

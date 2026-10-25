@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SEO } from '../components/SEO';
+import { trackConversion } from '../utils/analytics';
 
 export const EarlyAccessPage: React.FC = () => {
+  const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
   const [email, setEmail] = useState('');
   const [org, setOrg] = useState('');
@@ -13,6 +17,10 @@ export const EarlyAccessPage: React.FC = () => {
   const [bottleneck, setBottleneck] = useState('Spot preemption & lost checkpoints');
   const [spendTier, setSpendTier] = useState('tier2');
 
+  // Anti-Spam Honeypot & Rate Limiting
+  const [honeypot, setHoneypot] = useState('');
+  const [rateLimitError, setRateLimitError] = useState('');
+
   const toggleWorkload = (wl: string) => {
     setSelectedWorkloads((prev) =>
       prev.includes(wl) ? prev.filter((item) => item !== wl) : [...prev, wl]
@@ -21,11 +29,41 @@ export const EarlyAccessPage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+
+    // 1. Honeypot Trap Check: If filled by automated bots, silently drop submission
+    if (honeypot.trim() !== '') {
+      console.warn('[Security Guard] Automated bot submission rejected.');
+      setSubmitted(true);
+      return;
+    }
+
+    // 2. Client-side Rate Limiting (1 submission every 15 seconds)
+    const now = Date.now();
+    const lastSub = localStorage.getItem('kynetic_last_submission_ts');
+    if (lastSub && now - parseInt(lastSub, 10) < 15000) {
+      setRateLimitError('Too many submissions detected. Please wait 15 seconds before retrying.');
+      return;
+    }
+    localStorage.setItem('kynetic_last_submission_ts', now.toString());
+
+    // 3. Track conversion event in Google Analytics 4
+    trackConversion('early_access_submitted', {
+      org,
+      gpu_scale: gpuScale,
+      spend_tier: spendTier,
+    });
+
+    // 4. Navigate directly to the dedicated conversion Thank You page
+    navigate('/thank-you');
   };
 
   return (
     <main className="flex-1 relative">
+      <SEO
+        title="Request Enterprise Early Access"
+        description="Apply for dedicated GPU compute concierge, custom broker topologies, and guaranteed 99.98% preemption immunity."
+        canonicalPath="/early-access"
+      />
       {/* Ambient Sky Radial Gradient for Hero Depth */}
       <div
         aria-hidden="true"
@@ -54,7 +92,7 @@ export const EarlyAccessPage: React.FC = () => {
           <div className="flex flex-wrap items-center gap-x-space-md gap-y-space-xs text-body-sm font-body-sm text-ink-muted border-l-2 border-sky-vibrant pl-space-md py-0.5">
             <div className="flex items-center gap-1.5">
               <span className="text-label-mono font-label-mono text-ink-body">Current batch:</span>
-              <span className="text-ink-primary font-medium">Q2 2025</span>
+              <span className="text-ink-primary font-medium">Q2 2026</span>
             </div>
             <span className="text-hairline-strong">·</span>
             <div className="flex items-center gap-1.5">
@@ -89,6 +127,12 @@ export const EarlyAccessPage: React.FC = () => {
               </span>
             </div>
 
+            {rateLimitError && (
+              <div className="mb-4 p-3 rounded bg-red-50 border border-status-critical/30 text-status-critical text-body-sm font-medium">
+                {rateLimitError}
+              </div>
+            )}
+
             {submitted ? (
               <div className="text-center py-12 space-y-4">
                 <div className="w-12 h-12 rounded-full bg-sky-subtle border border-sky-soft text-blue-deep flex items-center justify-center mx-auto">
@@ -111,6 +155,20 @@ export const EarlyAccessPage: React.FC = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-space-lg">
+                {/* Honeypot Anti-Spam (Invisible to humans) */}
+                <div style={{ display: 'none' }} aria-hidden="true">
+                  <label htmlFor="website_confirm_hp">Do not fill this field</label>
+                  <input
+                    type="text"
+                    id="website_confirm_hp"
+                    name="website_confirm_hp"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </div>
+
                 {/* Work Email */}
                 <div>
                   <label

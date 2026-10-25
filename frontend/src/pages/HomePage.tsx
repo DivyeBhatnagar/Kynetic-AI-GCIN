@@ -7,6 +7,9 @@ import {
   ArbitrageDiagram,
   CheckpointDiagram,
 } from '../components/FeatureArchitectureDiagrams';
+import { SEO } from '../components/SEO';
+import { FAQSection } from '../components/FAQSection';
+import { trackConversion } from '../utils/analytics';
 
 interface HomePageProps {
   onOpenEarlyAccess: () => void;
@@ -256,6 +259,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
   const [selectedPlan, setSelectedPlan] = useState<number>(2);
   const [emailInput, setEmailInput] = useState('');
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [homeHoneypot, setHomeHoneypot] = useState('');
 
   const currentPreset = WORKLOAD_PRESETS[selectedPresetKey];
 
@@ -266,13 +270,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (homeHoneypot.trim() !== '') {
+      setEmailSubmitted(true);
+      return;
+    }
     if (emailInput.trim()) {
+      trackConversion('home_waitlist_signup', { email: emailInput });
       setEmailSubmitted(true);
     }
   };
 
   return (
     <main className="flex-1 w-full">
+      <SEO
+        title="Autonomous AI Compute Intelligence &amp; GPU Broker"
+        description="Your AI workloads. Always on the right compute. Multi-cloud GPU orchestration with 99.98% preemption immunity and continuous spot arbitrage."
+        canonicalPath="/"
+      />
       {/* ========================================== */}
       {/* 2. HERO SECTION                            */}
       {/* ========================================== */}
@@ -1137,6 +1151,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
       </section>
 
       {/* ========================================== */}
+      {/* 8B. FREQUENTLY ASKED QUESTIONS            */}
+      {/* ========================================== */}
+      <FAQSection />
+
+      {/* ========================================== */}
       {/* 9. FINAL SPACIOUS CTA                      */}
       {/* ========================================== */}
       <section className="py-24 border-t border-hairline-default bg-canvas-base text-center" id="access">
@@ -1159,6 +1178,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
             </div>
           ) : (
             <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+              {/* Invisible Honeypot */}
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <input
+                  type="text"
+                  name="home_confirm_hp"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={homeHoneypot}
+                  onChange={(e) => setHomeHoneypot(e.target.value)}
+                />
+              </div>
+
               <input
                 className="w-full sm:w-72 h-10 px-4 rounded bg-surface-elevated border border-hairline-default text-ink-primary placeholder:text-ink-subtle text-body-md focus:border-ink-primary focus:ring-0 focus:outline-none"
                 placeholder="name@company.com"

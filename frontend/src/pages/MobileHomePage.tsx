@@ -15,7 +15,7 @@ export const MobileHomePage: React.FC<MobileHomePageProps> = ({ onOpenEarlyAcces
         <div className="max-w-[420px] mx-auto px-4 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center group" aria-label="Kynetic AI Home">
             <img
-              alt="Kynetic AI"
+              alt="Kynetic AI — Autonomous Compute Intelligence Logo"
               className="h-7 w-auto object-contain transition-opacity group-hover:opacity-90"
               src="/assets/Kynetic%20AI%20Logo.png"
             />
@@ -554,7 +554,7 @@ export const MobileHomePage: React.FC<MobileHomePageProps> = ({ onOpenEarlyAcces
         <footer className="pt-6 border-t border-hairline-default text-center space-y-3 text-ink-muted font-body-sm text-[12px]">
           <div className="flex items-center justify-center">
             <img
-              alt="Kynetic AI"
+              alt="Kynetic AI — Autonomous Compute Intelligence Logo"
               className="h-6 w-auto object-contain"
               src="/assets/Kynetic%20AI%20Logo.png"
             />

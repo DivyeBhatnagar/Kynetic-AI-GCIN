@@ -15,6 +15,8 @@ from app.adapters.providers.registry import ProviderRegistry
 from app.core.security import AuthContext
 from app.api.deps import get_current_auth, verify_tenant_access
 from app.core.errors import EntityNotFoundError
+from app.core.config import settings
+from app.core.cache import cache_service, CacheKeys
 
 router = APIRouter(tags=["Providers & Offers"])
 
@@ -81,6 +83,11 @@ async def list_providers(
     auth: Annotated[AuthContext, Depends(get_current_auth)],
     db: AsyncSession = Depends(get_db)
 ):
+    cache_key = CacheKeys.provider_catalog()
+    cached = await cache_service.get(cache_key)
+    if cached is not None:
+        return [ProviderResponse.model_validate(p) for p in cached]
+
     stmt = select(ProviderModel)
     result = await db.execute(stmt)
     providers = result.scalars().all()
@@ -112,6 +119,12 @@ async def list_providers(
                 )
             )
 
+    # Populate cache
+    await cache_service.set(
+        cache_key,
+        [p.model_dump() for p in provider_list],
+        ttl_seconds=settings.CACHE_CATALOG_TTL_SECONDS
+    )
     return provider_list
 
 
@@ -122,12 +135,20 @@ async def list_compute_offers(
     region: str | None = Query(None, description="Filter by region key"),
     gpu_model: str | None = Query(None, description="Filter by GPU model (e.g. H100, A100, RTX4090)"),
     min_vram: int | None = Query(None, description="Minimum GPU memory in GB"),
+    limit: int = Query(50, ge=1, le=200, description="Max items to return"),
+    offset: int = Query(0, ge=0, description="Items to skip"),
     db: AsyncSession = Depends(get_db)
 ):
     """
     Returns aggregated compute offers across all registered live and simulated providers.
-    Clearly distinguishes simulated data from verified live provider data.
+    Uses cache-aside pattern with graceful fallback when cache is degraded.
     """
+    cache_key = CacheKeys.compute_offers(provider, region, gpu_model, min_vram)
+    cached = await cache_service.get(cache_key)
+    if cached is not None:
+        paginated = cached[offset: offset + limit]
+        return [ComputeOfferResponse.model_validate(o) for o in paginated]
+
     all_offers = await ProviderRegistry.list_all_active_offers()
 
     filtered = all_offers
@@ -140,7 +161,7 @@ async def list_compute_offers(
     if min_vram:
         filtered = [o for o in filtered if o.gpu_memory_gb >= min_vram]
 
-    return [
+    offer_responses = [
         ComputeOfferResponse(
             id=o.id,
             provider_key=o.provider_key,
@@ -159,6 +180,15 @@ async def list_compute_offers(
         )
         for o in filtered
     ]
+
+    # Store full filtered list in cache
+    await cache_service.set(
+        cache_key,
+        [o.model_dump() for o in offer_responses],
+        ttl_seconds=settings.CACHE_OFFERS_TTL_SECONDS
+    )
+
+    return offer_responses[offset: offset + limit]
 
 
 @router.post("/v1/provider-connections", response_model=ProviderConnectionResponse, status_code=status.HTTP_201_CREATED)
@@ -191,12 +221,16 @@ async def connect_provider(
 @router.get("/v1/provider-connections", response_model=list[ProviderConnectionResponse])
 async def list_provider_connections(
     auth: Annotated[AuthContext, Depends(get_current_auth)],
+    limit: int = Query(50, ge=1, le=200, description="Max items to return"),
+    offset: int = Query(0, ge=0, description="Items to skip"),
     db: AsyncSession = Depends(get_db)
 ):
     stmt = (
         select(ProviderConnectionModel)
         .where(ProviderConnectionModel.organization_id == auth.organization_id)
         .order_by(ProviderConnectionModel.created_at.desc())
+        .offset(offset)
+        .limit(limit)
     )
     result = await db.execute(stmt)
     conns = result.scalars().all()
@@ -297,6 +331,10 @@ async def sync_provider_offers(
         )
         for o in offers
     ]
+
+    # Invalidate cached offers and provider catalog
+    await cache_service.delete(CacheKeys.provider_catalog())
+    await cache_service.delete_pattern(CacheKeys.offers_pattern())
 
     return ProviderSyncOffersResponse(
         provider_key=key,

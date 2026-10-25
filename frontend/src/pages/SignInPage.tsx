@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { SEO } from '../components/SEO';
 
 export const SignInPage: React.FC = () => {
   const navigate = useNavigate();
@@ -8,9 +9,14 @@ export const SignInPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot.trim() !== '') {
+      navigate('/dashboard');
+      return;
+    }
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
@@ -20,6 +26,11 @@ export const SignInPage: React.FC = () => {
 
   return (
     <div className="bg-canvas-base text-ink-primary font-body-md antialiased min-h-screen flex flex-col justify-between selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+      <SEO
+        title="Console Sign In &amp; mTLS Session Auth"
+        description="Authenticate into the Kynetic AI orchestration console with single sign-on, SAML, or hardware mTLS keys."
+        canonicalPath="/signin"
+      />
       {/* ================= MAIN CONTENT VIEWPORT ================= */}
       <main className="flex-1 max-w-[1240px] w-full mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
@@ -113,6 +124,18 @@ export const SignInPage: React.FC = () => {
 
             {/* Form Elements */}
             <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
+              {/* Invisible Honeypot Spam Guard */}
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <input
+                  type="text"
+                  name="signin_confirm_hp"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
+
               {/* Work Email */}
               <div>
                 <label className="block font-label-mono text-xs text-ink-primary mb-1.5" htmlFor="work-email">

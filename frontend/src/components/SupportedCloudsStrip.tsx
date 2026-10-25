@@ -97,7 +97,7 @@ export const SupportedCloudsStrip: React.FC<{ className?: string }> = ({ classNa
             >
               <img
                 src={provider.logo}
-                alt={provider.name}
+                alt={`${provider.name} AI Compute Infrastructure`}
                 className={`${provider.heightClass || 'h-6 sm:h-7'} w-auto object-contain max-w-[120px]`}
                 loading="lazy"
               />

@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
           aria-label="Kynetic AI Home"
         >
           <img
-            alt="Kynetic AI"
+            alt="Kynetic AI — Autonomous Compute Intelligence Logo"
             className="h-8 md:h-9 w-auto object-contain transition-opacity group-hover:opacity-90"
             src="/assets/Kynetic%20AI%20Logo.png"
           />
@@ -76,6 +76,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
           >
             Docs
           </Link>
+          <a
+            href="/#faq"
+            className="text-ink-muted font-body-md hover:text-ink-primary transition-colors pb-1 text-body-sm font-body-sm"
+          >
+            FAQ
+          </a>
         </nav>
 
         {/* Right CTAs */}
@@ -184,6 +190,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
               <span>Docs</span>
               {currentPath === '/docs' && <span className="text-xs text-accent-olive">●</span>}
             </Link>
+            <a
+              href="/#faq"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-1 hover:text-ink-primary flex items-center justify-between"
+            >
+              <span>FAQ</span>
+              <span className="text-xs text-ink-muted">→</span>
+            </a>
             <div className="pt-2 mt-2 border-t border-hairline-subtle flex flex-col gap-2">
               <Link
                 to="/signin"
