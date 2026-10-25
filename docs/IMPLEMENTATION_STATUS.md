@@ -2,7 +2,7 @@
 
 **Document Type:** Engineering Milestone Record & Technical Verification  
 **Product:** Kynetic AI (Global Compute Intelligence Network)  
-**Status:** Phase 1 Backend Foundation & Vertical Slice Completed  
+**Status:** Phase 1 (MVP Foundations) & Phase 2 (Workload Performance Digital Twin) Completed  
 **Last Updated:** 25 October 2026  
 **Repository:** `https://github.com/DivyeBhatnagar/Kynetic-AI-GCIN.git`
 
@@ -197,6 +197,13 @@ Planning & Dry-Runs
   GET  /v1/plans/{id}                     -> Inspect plan, candidate ranks, and explanations
   POST /v1/plans/{id}/approve             -> Approve plan requiring administrative review
 
+Performance Digital Twin & Predictions (Phase 2)
+  POST /v1/benchmarks                     -> Ingest empirical benchmark run telemetry
+  GET  /v1/benchmarks                     -> Query benchmarks by workload fingerprint or GPU
+  POST /v1/workloads/{id}/predict         -> Predict runtime & cost with calibrated uncertainty intervals
+  GET  /v1/workloads/{id}/prediction-history -> Audit prediction log for a workload
+  POST /v1/predictions/{id}/outcome       -> Ingest actual run telemetry and track error % & interval coverage
+
 Execution & Lifecycle
   POST /v1/plans/{id}/launch              -> Launch run (requires Idempotency-Key & budget hold)
   GET  /v1/runs/{id}                      -> Retrieve run lifecycle status & state events
@@ -215,40 +222,47 @@ Usage, Ledger & Audit
 
 The test suite runs with `pytest` and `pytest-asyncio` using an in-memory database for hermetic test execution.
 
-### Test Results
+### Test Results (Phase 1 & Phase 2)
 
 ```text
 ============================= test session starts ==============================
 platform darwin -- Python 3.12.13, pytest-9.1.1, pluggy-1.7.0
-rootdir: /Users/divyebhatnagar/Desktop/KYNETICNEWINTELLIGENCE/backend
-collected 13 items
+rootdir: /Users/divyebhatnagar/Desktop/KYNETICNEWINTELLIGENCE
+plugins: cov-7.1.0, asyncio-1.4.0, anyio-4.15.1
+collected 19 items
 
-tests/e2e/test_vertical_slice.py::test_full_vertical_slice_end_to_end PASSED   [  7%]
-tests/integration/test_provider_contract.py::test_fake_provider_contract_and_idempotency PASSED [ 15%]
-tests/integration/test_tenant_isolation.py::test_cross_tenant_isolation PASSED [ 23%]
-tests/unit/test_candidate_evaluator.py::test_candidate_evaluator_rejects_incompatible_gpu_and_ranks PASSED [ 30%]
-tests/unit/test_cost_engine.py::test_cost_engine_compute_hourly_rounding PASSED [ 38%]
-tests/unit/test_cost_engine.py::test_cost_engine_includes_storage_and_egress PASSED [ 46%]
-tests/unit/test_cost_engine.py::test_cost_engine_flags_unknown_charges PASSED  [ 53%]
-tests/unit/test_manifest.py::test_valid_manifest_creation_and_digest PASSED    [ 61%]
-tests/unit/test_manifest.py::test_manifest_rejects_inline_secrets PASSED        [ 69%]
-tests/unit/test_manifest.py::test_manifest_gpu_requires_vram PASSED             [ 76%]
-tests/unit/test_state_machine.py::test_legal_state_transitions PASSED           [ 84%]
-tests/unit/test_state_machine.py::test_illegal_state_transition_raises PASSED   [ 92%]
-tests/unit/test_state_machine.py::test_terminal_state_detection PASSED          [100%]
+backend/tests/e2e/test_vertical_slice.py::test_full_vertical_slice_end_to_end PASSED [  5%]
+backend/tests/integration/test_digital_twin_endpoints.py::test_digital_twin_lifecycle_end_to_end PASSED [ 10%]
+backend/tests/integration/test_provider_contract.py::test_fake_provider_contract_and_idempotency PASSED [ 15%]
+backend/tests/integration/test_tenant_isolation.py::test_cross_tenant_isolation PASSED [ 21%]
+backend/tests/unit/test_calibration_tracker.py::test_calibration_tracker_within_interval PASSED [ 26%]
+backend/tests/unit/test_calibration_tracker.py::test_calibration_tracker_outside_interval PASSED [ 31%]
+backend/tests/unit/test_candidate_evaluator.py::test_candidate_evaluator_rejects_incompatible_gpu_and_ranks PASSED [ 36%]
+backend/tests/unit/test_cost_engine.py::test_cost_engine_compute_hourly_rounding PASSED [ 42%]
+backend/tests/unit/test_cost_engine.py::test_cost_engine_includes_storage_and_egress PASSED [ 47%]
+backend/tests/unit/test_cost_engine.py::test_cost_engine_flags_unknown_charges PASSED [ 52%]
+backend/tests/unit/test_digital_twin_predictor.py::test_predictor_exact_benchmark_match PASSED [ 57%]
+backend/tests/unit/test_digital_twin_predictor.py::test_predictor_cross_hardware_scaling PASSED [ 63%]
+backend/tests/unit/test_digital_twin_predictor.py::test_predictor_out_of_distribution_warning PASSED [ 68%]
+backend/tests/unit/test_manifest.py::test_valid_manifest_creation_and_digest PASSED [ 73%]
+backend/tests/unit/test_manifest.py::test_manifest_rejects_inline_secrets PASSED [ 78%]
+backend/tests/unit/test_manifest.py::test_manifest_gpu_requires_vram PASSED [ 84%]
+backend/tests/unit/test_state_machine.py::test_legal_state_transitions PASSED [ 89%]
+backend/tests/unit/test_state_machine.py::test_illegal_state_transition_raises PASSED [ 94%]
+backend/tests/unit/test_state_machine.py::test_terminal_state_detection PASSED [100%]
 
-============================== 13 passed in 0.25s ==============================
-Total Coverage: 76%
+============================== 19 passed in 0.34s ==============================
+Total Coverage: 78%
 ```
 
 ---
 
 ## 6. Future Phases & Roadmap
 
-| Phase | Milestone | Objective |
-|---|---|---|
-| **Phase 1 (Completed)** | **MVP Foundations** | Workload registry, candidate evaluation, transparent cost engine, dry-run plans, run state machine, budget reservations, fake provider adapter, cost ledger. |
-| **Phase 2 (Next)** | **Workload Performance Digital Twin** | Benchmark data ingestion, workload fingerprint matching, runtime/cost predictive models with calibrated confidence intervals. |
-| **Phase 3** | **Universal Checkpoint & Resume Layer** | Framework-specific checkpoint adapters (PyTorch, DeepSpeed), integrity verification, secure transfer, and resumption testing. |
-| **Phase 4** | **Predictive Compute Arbitrage** | In-flight replanning economics, migration overhead modeling, cooldown timers, anti-oscillation guards, and approval-gated provider switching. |
-| **Phase 5** | **Live Provider Integration** | Production adapters for specialist GPU clouds (RunPod, Lambda, Crusoe) and hyperscalers (AWS, GCP) once credentials and terms are finalized. |
+| Phase | Milestone | Objective | Status |
+|---|---|---|---|
+| **Phase 1** | **MVP Foundations** | Workload registry, candidate evaluation, transparent cost engine, dry-run plans, run state machine, budget reservations, fake provider adapter, cost ledger. | **COMPLETED & TESTED** |
+| **Phase 2** | **Workload Performance Digital Twin** | Benchmark Registry, multi-tiered prediction engine (empirical matching, cross-hardware scaling, out-of-distribution detection), calibrated confidence intervals, actual outcome tracking. | **COMPLETED & TESTED** |
+| **Phase 3 (Next)** | **Universal Checkpoint & Resume Layer** | Framework-specific checkpoint adapters (PyTorch, DeepSpeed), integrity verification, secure transfer, and resumption testing. | **PLANNED** |
+| **Phase 4** | **Predictive Compute Arbitrage** | In-flight replanning economics, migration overhead modeling, cooldown timers, anti-oscillation guards, and approval-gated provider switching. | **PLANNED** |
+| **Phase 5** | **Live Provider Integration** | Production adapters for specialist GPU clouds (RunPod, Lambda, Crusoe) and hyperscalers (AWS, GCP) once credentials and terms are finalized. | **PLANNED** |

@@ -380,3 +380,64 @@ class AuditEventModel(Base):
     __table_args__ = (
         Index("ix_audit_org_created", "organization_id", "created_at"),
     )
+
+
+class BenchmarkRunModel(Base):
+    __tablename__ = "benchmark_runs"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    benchmark_suite_version: Mapped[str] = mapped_column(String(50), nullable=False)
+    workload_type: Mapped[str] = mapped_column(String(50), nullable=False, index=True)
+    hardware_model: Mapped[str] = mapped_column(String(50), nullable=False, index=True)
+    hardware_gpu_count: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+    hardware_vram_gb: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    workload_fingerprint_json: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
+    measurements_json: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)
+    provenance_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict, nullable=False)
+    validity_status: Mapped[str] = mapped_column(String(30), default="VALID", nullable=False)
+    sample_count: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+    __table_args__ = (
+        Index("ix_benchmarks_type_hw", "workload_type", "hardware_model"),
+    )
+
+
+class PredictionModel(Base):
+    __tablename__ = "predictions"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    organization_id: Mapped[str] = mapped_column(String(36), ForeignKey("organizations.id", ondelete="CASCADE"), nullable=False, index=True)
+    workload_revision_id: Mapped[str] = mapped_column(String(36), ForeignKey("workload_revisions.id", ondelete="CASCADE"), nullable=False, index=True)
+    compute_offer_id: Mapped[str] = mapped_column(String(36), ForeignKey("compute_offers.id"), nullable=False, index=True)
+    model_name: Mapped[str] = mapped_column(String(50), default="kynetic-dt-v1", nullable=False)
+    model_version: Mapped[str] = mapped_column(String(20), default="1.0.0", nullable=False)
+    predicted_runtime_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
+    runtime_interval_json: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)  # {"low": int, "base": int, "high": int}
+    predicted_cost: Mapped[Decimal] = mapped_column(Numeric(14, 4), nullable=False)
+    cost_interval_json: Mapped[dict[str, Any]] = mapped_column(JSON, nullable=False)  # {"low": str, "base": str, "high": str}
+    confidence_score: Mapped[Decimal] = mapped_column(Numeric(4, 3), nullable=False)  # 0.000 to 1.000
+    sample_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    is_out_of_distribution: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    assumptions_json: Mapped[list[str]] = mapped_column(JSON, default=list, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+    __table_args__ = (
+        Index("ix_predictions_org_created", "organization_id", "created_at"),
+    )
+
+
+class PredictionOutcomeModel(Base):
+    __tablename__ = "prediction_outcomes"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    prediction_id: Mapped[str] = mapped_column(String(36), ForeignKey("predictions.id", ondelete="CASCADE"), nullable=False, index=True)
+    run_id: Mapped[str] = mapped_column(String(36), ForeignKey("runs.id", ondelete="CASCADE"), nullable=False, index=True)
+    actual_runtime_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
+    actual_cost: Mapped[Decimal] = mapped_column(Numeric(14, 4), nullable=False)
+    actual_throughput: Mapped[Decimal | None] = mapped_column(Numeric(14, 4), nullable=True)
+    runtime_error_percent: Mapped[Decimal] = mapped_column(Numeric(6, 2), nullable=False)
+    cost_error_percent: Mapped[Decimal] = mapped_column(Numeric(6, 2), nullable=False)
+    within_confidence_interval: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    measured_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+

@@ -8,6 +8,8 @@ from app.api.v1.planning import router as planning_router
 from app.api.v1.runs import router as runs_router
 from app.api.v1.ledger import router as ledger_router
 from app.api.v1.audit import router as audit_router
+from app.api.v1.benchmarks import router as benchmarks_router
+from app.api.v1.predictions import router as predictions_router
 
 api_v1_router = APIRouter()
 
@@ -21,3 +23,5 @@ api_v1_router.include_router(planning_router)
 api_v1_router.include_router(runs_router)
 api_v1_router.include_router(ledger_router)
 api_v1_router.include_router(audit_router)
+api_v1_router.include_router(benchmarks_router)
+api_v1_router.include_router(predictions_router)
