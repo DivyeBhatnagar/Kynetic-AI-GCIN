@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { SupportedCloudsStrip } from '../components/SupportedCloudsStrip';
 
 interface HomePageProps {
   onOpenEarlyAccess: () => void;
@@ -63,9 +64,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
         </div>
 
         {/* Trust Line */}
-        <p className="font-label-mono text-label-mono text-ink-subtle uppercase tracking-wider">
+        <p className="font-label-mono text-label-mono text-ink-subtle uppercase tracking-wider mb-8">
           Built for AI engineers, research teams, and compute-intensive businesses.
         </p>
+
+        {/* Cloud Supported Logos Strip (Original Colors, Light Webpage Background) */}
+        <SupportedCloudsStrip className="mt-2" />
       </section>
 
       {/* ========================================== */}
