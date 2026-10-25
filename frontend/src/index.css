@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Monastic Brutalist Baseline & Precision Grid */
+body {
+  background-color: #F8F7F3;
+  color: #191919;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+  -webkit-font-smoothing: antialiased;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.technical-code {
+  font-family: 'JetBrains Mono', 'Geist', monospace;
+}
+
+.hairline-y {
+  border-top: 1px solid #DEDDD5;
+  border-bottom: 1px solid #DEDDD5;
+}
+
+.hairline-r {
+  border-right: 1px solid #DEDDD5;
+}
+
+.halo-atmosphere {
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(217, 231, 200, 0.4), transparent 70%);
+}
+
+.halo-olive {
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(217, 231, 200, 0.35), transparent 70%);
+}

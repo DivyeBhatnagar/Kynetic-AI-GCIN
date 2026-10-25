@@ -190,6 +190,19 @@ stateDiagram-v2
 │   ├── .env.example                    # Safe environment template
 │   ├── Dockerfile                      # Production container image
 │   └── README.md                       # Backend guide
+├── frontend/                           # Client interface (React 19 + TypeScript + Vite)
+│   ├── public/
+│   │   └── assets/
+│   │       └── image.png               # Official Kynetic AI brand mark
+│   ├── src/
+│   │   ├── components/                 # Navbar, Footer, EarlyAccessModal
+│   │   ├── pages/                      # HomePage, WorkloadPlannerPage, ArchitecturePage, DocsPage, EarlyAccessPage, MobileHomePage
+│   │   ├── App.tsx                     # Client-side routing with unified Olive Green theme
+│   │   ├── index.css                   # Monastic brutalist styles & custom tokens
+│   │   └── main.tsx                    # React DOM entry point
+│   ├── package.json                    # Frontend dependencies
+│   ├── tailwind.config.js              # Olive Green design token configuration
+│   └── README.md                       # Frontend guide
 ├── docs/
 │   ├── IMPLEMENTATION_STATUS.md        # Technical verification & milestone record
 │   ├── Kynetic_AI_Architecture.md     # Comprehensive engineering blueprint
@@ -204,16 +217,14 @@ stateDiagram-v2
 
 ## 🛠️ Quickstart
 
-### 1. Prerequisites
+### 1. Backend Quickstart (FastAPI Control Plane)
+
+#### Prerequisites
 - Python 3.11 or 3.12
 - PostgreSQL 14+ (or SQLite for local zero-dependency testing)
 
-### 2. Local Environment Setup
-
 ```bash
-# Clone the repository
-git clone https://github.com/DivyeBhatnagar/Kynetic-AI-GCIN.git
-cd Kynetic-AI-GCIN/backend
+cd backend
 
 # Create and activate virtual environment
 python3.12 -m venv .venv
@@ -225,23 +236,40 @@ pip install -e ".[dev]"
 
 # Copy environment configuration
 cp .env.example .env
-```
 
-### 3. Run Database Migrations
-
-```bash
+# Run Database Migrations
 alembic upgrade head
-```
 
-### 4. Start the Application
-
-```bash
+# Start the Backend Server
 uvicorn app.main:app --reload --port 8000
 ```
 
 - **Interactive Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
 - **ReDoc:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
 - **OpenAPI Schema:** [http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
+
+---
+
+### 2. Frontend Quickstart (React 19 + TypeScript)
+
+#### Prerequisites
+- Node.js 18+ or 20+
+- npm or pnpm
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start local dev server
+npm run dev
+```
+
+- **Local Web App:** [http://localhost:5173](http://localhost:5173)
+- **Production Build:** `npm run build`
+- **Build Preview:** `npm run preview`
+
 
 ---
 
