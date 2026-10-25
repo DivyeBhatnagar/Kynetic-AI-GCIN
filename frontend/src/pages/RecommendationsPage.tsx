@@ -24,7 +24,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
         canonicalPath="/recommendations"
       />
       {/* MAIN CONTAINER */}
-      <main className="flex-1 w-full max-w-[1240px] mx-auto px-space-lg md:px-margin-desktop py-space-xl space-y-space-lg">
+      <main className="flex-1 w-full max-w-[1240px] mx-auto px-4 sm:px-6 md:px-margin-desktop py-6 sm:py-space-xl space-y-space-md sm:space-y-space-lg">
         {/* SECTION 1: HEADER & WORKLOAD SUMMARY STRIP */}
         <header className="border-b border-hairline-default pb-space-lg">
           {/* Breadcrumbs */}
@@ -38,7 +38,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
             <div>
-              <div className="flex items-center gap-space-xs mb-1">
+              <div className="flex flex-wrap items-center gap-space-xs mb-1">
                 <span className="font-label-tag text-label-tag text-accent-olive-deep bg-secondary-container px-2 py-0.5 rounded border border-secondary-fixed uppercase tracking-wider font-semibold">
                   SOLVER ENGINE V2.4 • OPTIMAL CANDIDATES
                 </span>
@@ -53,17 +53,17 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
             </div>
 
             {/* Quick Actions */}
-            <div className="flex items-center gap-space-xs self-start md:self-auto flex-wrap">
+            <div className="flex items-center gap-space-xs self-start md:self-auto flex-wrap w-full sm:w-auto">
               <Link
                 to="/workload-planner"
-                className="h-9 px-4 rounded-full border border-hairline-default bg-surface-elevated hover:bg-canvas-alternate text-ink-primary text-label-mono font-label-mono flex items-center gap-1.5 transition-colors"
+                className="h-10 sm:h-9 px-4 rounded-full border border-hairline-default bg-surface-elevated hover:bg-canvas-alternate text-ink-primary text-label-mono font-label-mono flex items-center justify-center gap-1.5 transition-colors flex-1 sm:flex-initial min-h-[44px] sm:min-h-0"
               >
                 <span className="material-symbols-outlined text-[16px]">tune</span>
                 <span>Adjust Constraints</span>
               </Link>
               <Link
                 to="/providers"
-                className="h-9 px-4 rounded-full border border-hairline-default bg-surface-elevated hover:bg-canvas-alternate text-ink-primary text-label-mono font-label-mono flex items-center gap-1.5 transition-colors"
+                className="h-10 sm:h-9 px-4 rounded-full border border-hairline-default bg-surface-elevated hover:bg-canvas-alternate text-ink-primary text-label-mono font-label-mono flex items-center justify-center gap-1.5 transition-colors flex-1 sm:flex-initial min-h-[44px] sm:min-h-0"
               >
                 <span className="material-symbols-outlined text-[16px]">view_list</span>
                 <span>All Providers</span>
@@ -108,10 +108,10 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
           <article className="relative bg-surface-elevated rounded-xl border-2 border-accent-olive shadow-sm overflow-hidden transition-all duration-200">
             {/* Atmospheric header gradient in olive */}
             <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-secondary-container/50 to-transparent pointer-events-none"></div>
-            <div className="p-6 relative">
+            <div className="p-4 sm:p-6 relative">
               {/* Top Row: Badge & Rank identifier */}
               <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                <div className="flex items-center gap-2.5">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container border border-secondary-fixed text-label-tag font-label-tag text-accent-olive-deep tracking-wider uppercase font-semibold">
                     <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
                     RECOMMENDED BLUEPRINT • RANK #1
@@ -126,7 +126,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
               </div>
 
               {/* Main Spec Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pb-6 border-b border-hairline-subtle">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start pb-6 border-b border-hairline-subtle">
                 {/* Left Info: Hardware & Provider */}
                 <div className="lg:col-span-5 flex flex-col gap-2">
                   <div>
@@ -152,7 +152,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
                 </div>
 
                 {/* Middle: Estimated Total Cost & Duration */}
-                <div className="lg:col-span-4 grid grid-cols-2 gap-4 bg-canvas-alternate/70 p-3.5 rounded-lg border border-hairline-subtle">
+                <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 bg-canvas-alternate/70 p-3.5 rounded-lg border border-hairline-subtle">
                   <div>
                     <div className="text-label-tag font-label-tag text-ink-muted uppercase">Estimated Cost</div>
                     <div className="text-headline-sm font-headline-sm text-ink-primary font-bold mt-0.5">$27.80</div>
@@ -184,18 +184,18 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
               </div>
 
               {/* Action & Detail Footer */}
-              <div className="pt-4 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
+              <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                   <button
                     onClick={onOpenEarlyAccess}
-                    className="h-10 px-5 rounded-full bg-ink-primary hover:bg-accent-olive-deep text-surface-elevated text-label-mono font-label-mono transition-all duration-150 flex items-center gap-2 shadow-sm active:scale-[0.99]"
+                    className="h-11 sm:h-10 px-5 rounded-full bg-ink-primary hover:bg-accent-olive-deep text-surface-elevated text-label-mono font-label-mono transition-all duration-150 flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] min-h-[44px]"
                   >
                     <span>Generate Execution Plan</span>
                     <span className="material-symbols-outlined text-[16px]">arrow_outward</span>
                   </button>
                   <button
                     onClick={() => toggleSave('l40s')}
-                    className={`h-10 px-4 rounded-full border text-label-mono font-label-mono transition-all duration-150 flex items-center gap-1.5 ${
+                    className={`h-11 sm:h-10 px-4 rounded-full border text-label-mono font-label-mono transition-all duration-150 flex items-center justify-center gap-1.5 min-h-[44px] ${
                       savedPlans.includes('l40s')
                         ? 'bg-secondary-container border-accent-olive text-accent-olive-deep font-semibold'
                         : 'bg-surface-elevated border-hairline-default text-ink-primary hover:bg-canvas-alternate'
@@ -209,7 +209,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
                 </div>
                 <button
                   onClick={() => setDetailsOpen(!detailsOpen)}
-                  className="text-body-sm font-body-sm text-accent-olive-deep hover:text-accent-olive flex items-center gap-1 font-medium transition-colors"
+                  className="text-body-sm font-body-sm text-accent-olive-deep hover:text-accent-olive flex items-center justify-center sm:justify-start gap-1 font-medium transition-colors py-1.5"
                 >
                   <span>{detailsOpen ? 'Hide Granular Details' : 'View Granular Details'}</span>
                   <span className="material-symbols-outlined text-[18px]">
@@ -220,7 +220,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
 
               {/* Collapsible Granular Detail Well */}
               {detailsOpen && (
-                <div className="mt-4 pt-4 border-t border-hairline-subtle grid grid-cols-1 md:grid-cols-3 gap-4 text-label-mono font-label-mono">
+                <div className="mt-4 pt-4 border-t border-hairline-subtle grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-label-mono font-label-mono">
                   <div className="bg-canvas-alternate p-3 rounded border border-hairline-subtle">
                     <span className="text-ink-subtle block mb-1">INTERCONNECT TOPOLOGY</span>
                     <span className="text-ink-primary font-medium">RoCE v2 non-blocking leaf-spine</span>
@@ -242,7 +242,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
           </article>
 
           {/* RANK #2: Fastest Completion */}
-          <article className="bg-surface-elevated rounded-xl border border-hairline-default shadow-sm p-6 transition-all duration-200 hover:border-hairline-strong">
+          <article className="bg-surface-elevated rounded-xl border border-hairline-default shadow-sm p-4 sm:p-6 transition-all duration-200 hover:border-hairline-strong">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-label-tag font-label-tag text-ink-primary tracking-wider uppercase font-semibold">
@@ -252,7 +252,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
               </div>
               <span className="text-label-tag font-label-tag text-status-healthy font-semibold">98.4% CLUSTER SLA</span>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pb-6 border-b border-hairline-subtle">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start pb-6 border-b border-hairline-subtle">
               <div className="lg:col-span-5 flex flex-col gap-1.5">
                 <div className="text-label-tag font-label-tag text-ink-muted uppercase font-bold">CoreWeave (US-East-1)</div>
                 <h2 className="text-headline-sm font-headline-sm text-ink-primary font-semibold">
@@ -267,7 +267,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
                   </span>
                 </div>
               </div>
-              <div className="lg:col-span-4 grid grid-cols-2 gap-4 bg-canvas-alternate/60 p-3.5 rounded-lg border border-hairline-subtle">
+              <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 bg-canvas-alternate/60 p-3.5 rounded-lg border border-hairline-subtle">
                 <div>
                   <div className="text-label-tag font-label-tag text-ink-muted uppercase">Estimated Cost</div>
                   <div className="text-headline-sm font-headline-sm text-ink-primary font-bold mt-0.5">$32.40</div>
@@ -290,22 +290,22 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
                 </p>
               </div>
             </div>
-            <div className="pt-4 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
+            <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <button
                   onClick={onOpenEarlyAccess}
-                  className="h-9 px-4 rounded-full bg-ink-primary hover:bg-accent-olive-deep text-surface-elevated text-label-mono font-label-mono transition-all duration-150 flex items-center gap-1.5 shadow-sm"
+                  className="h-11 sm:h-9 px-4 rounded-full bg-ink-primary hover:bg-accent-olive-deep text-surface-elevated text-label-mono font-label-mono transition-all duration-150 flex items-center justify-center gap-1.5 shadow-sm min-h-[44px] sm:min-h-0"
                 >
                   <span>Generate Execution Plan</span>
                 </button>
                 <button
                   onClick={() => toggleSave('h100')}
-                  className="h-9 px-3.5 rounded-full bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono font-label-mono hover:border-hairline-strong transition-all duration-150"
+                  className="h-11 sm:h-9 px-3.5 rounded-full bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono font-label-mono hover:border-hairline-strong transition-all duration-150 flex items-center justify-center min-h-[44px] sm:min-h-0"
                 >
                   {savedPlans.includes('h100') ? 'Saved' : 'Save Plan'}
                 </button>
               </div>
-              <span className="text-body-sm font-body-sm text-ink-muted flex items-center gap-1">
+              <span className="text-body-sm font-body-sm text-ink-muted flex items-center gap-1 justify-center sm:justify-start">
                 <span>NVLink 4 Fabric Verified</span>
                 <span className="material-symbols-outlined text-[16px] text-status-healthy">check</span>
               </span>
@@ -313,7 +313,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
           </article>
 
           {/* RANK #3: Max Cost Economy */}
-          <article className="bg-surface-elevated rounded-xl border border-hairline-default shadow-sm p-6 transition-all duration-200 hover:border-hairline-strong">
+          <article className="bg-surface-elevated rounded-xl border border-hairline-default shadow-sm p-4 sm:p-6 transition-all duration-200 hover:border-hairline-strong">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-label-tag font-label-tag text-ink-muted tracking-wider uppercase font-semibold">
@@ -323,7 +323,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
               </div>
               <span className="text-label-tag font-label-tag text-ink-muted">RELIABILITY INDEX: 96.1%</span>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pb-6 border-b border-hairline-subtle">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start pb-6 border-b border-hairline-subtle">
               <div className="lg:col-span-5 flex flex-col gap-1.5">
                 <div className="text-label-tag font-label-tag text-ink-muted uppercase font-bold">Lambda Cloud (US-Texas)</div>
                 <h2 className="text-headline-sm font-headline-sm text-ink-primary font-semibold">
@@ -333,7 +333,7 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
                   640GB Total VRAM • PCIe Interconnect • Dedicated Host
                 </div>
               </div>
-              <div className="lg:col-span-4 grid grid-cols-2 gap-4 bg-canvas-alternate/60 p-3.5 rounded-lg border border-hairline-subtle">
+              <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 bg-canvas-alternate/60 p-3.5 rounded-lg border border-hairline-subtle">
                 <div>
                   <div className="text-label-tag font-label-tag text-ink-muted uppercase">Estimated Cost</div>
                   <div className="text-headline-sm font-headline-sm text-ink-primary font-bold mt-0.5">$41.20</div>
@@ -356,37 +356,37 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
                 </p>
               </div>
             </div>
-            <div className="pt-4 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
+            <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <button
                   onClick={onOpenEarlyAccess}
-                  className="h-9 px-4 rounded-full bg-ink-primary hover:bg-accent-olive-deep text-surface-elevated text-label-mono font-label-mono transition-all duration-150"
+                  className="h-11 sm:h-9 px-4 rounded-full bg-ink-primary hover:bg-accent-olive-deep text-surface-elevated text-label-mono font-label-mono transition-all duration-150 flex items-center justify-center min-h-[44px] sm:min-h-0"
                 >
                   Generate Execution Plan
                 </button>
                 <button
                   onClick={() => toggleSave('a100')}
-                  className="h-9 px-3.5 rounded-full bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono font-label-mono"
+                  className="h-11 sm:h-9 px-3.5 rounded-full bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono font-label-mono flex items-center justify-center min-h-[44px] sm:min-h-0"
                 >
                   {savedPlans.includes('a100') ? 'Saved' : 'Save Plan'}
                 </button>
               </div>
-              <span className="text-body-sm font-body-sm text-ink-muted">PCIe Bandwidth Clamp</span>
+              <span className="text-body-sm font-body-sm text-ink-muted text-center sm:text-left">PCIe Bandwidth Clamp</span>
             </div>
           </article>
 
           {/* RANK #4: Next-Gen Sovereign Compute Preview */}
-          <article className="bg-canvas-alternate/60 rounded-xl border border-hairline-default p-5 border-dashed">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center gap-3 flex-wrap">
+          <article className="bg-canvas-alternate/60 rounded-xl border border-hairline-default p-4 sm:p-5 border-dashed">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                 <span className="px-2.5 py-0.5 rounded bg-surface-elevated border border-hairline-default text-label-tag font-label-tag text-accent-olive-deep font-semibold">
                   PREVIEW BATCH // RANK #4
                 </span>
                 <span className="text-title-sm font-title-sm font-medium text-ink-primary">4x NVIDIA GH200 Grace Hopper (480GB + 96GB HBM3)</span>
-                <span className="text-label-mono font-label-mono text-ink-muted hidden md:inline">Crusoe Cloud (EU-West Iceland)</span>
+                <span className="text-label-mono font-label-mono text-ink-muted">Crusoe Cloud (EU-West Iceland)</span>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="text-right">
+              <div className="flex items-center justify-between sm:justify-end gap-4">
+                <div className="text-left sm:text-right">
                   <span className="text-label-tag font-label-tag text-ink-subtle uppercase block">Est. Cost</span>
                   <span className="text-title-sm font-title-sm font-semibold text-ink-primary">$35.10 USD</span>
                 </div>
@@ -401,12 +401,15 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
 
         {/* SECTION 4: DEEP DIVE COMPARATIVE ARCHITECTURE MATRIX */}
         <section className="mt-space-md rounded-xl bg-surface-elevated border border-hairline-default overflow-hidden shadow-sm">
-          <div className="px-6 py-4 border-b border-hairline-default flex flex-wrap items-center justify-between gap-2 bg-gradient-to-r from-canvas-alternate to-surface-elevated">
+          <div className="px-4 sm:px-6 py-4 border-b border-hairline-default flex flex-wrap items-center justify-between gap-2 bg-gradient-to-r from-canvas-alternate to-surface-elevated">
             <div>
               <h3 className="text-title-md font-title-md text-ink-primary font-medium">Comparative Architectural Matrix</h3>
               <p className="text-body-sm font-body-sm text-ink-muted">Hardware bottlenecks, thermal profiling, and memory rooflines across solver candidates.</p>
             </div>
-            <span className="text-label-mono font-label-mono text-ink-muted">Roofline Model v4.1</span>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-label-mono text-ink-subtle md:hidden">Swipe sideways →</span>
+              <span className="text-label-mono font-label-mono text-ink-muted">Roofline Model v4.1</span>
+            </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[760px]">

@@ -8,14 +8,14 @@ interface ArchitecturePageProps {
 
 export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onOpenEarlyAccess }) => {
   return (
-    <main className="flex-1 w-full max-w-[1240px] mx-auto px-space-lg md:px-margin-desktop py-space-xl">
+    <main className="flex-1 w-full max-w-[1240px] mx-auto px-4 sm:px-6 md:px-margin-desktop py-6 sm:py-space-xl">
       <SEO
         title="Distributed Control Plane &amp; eBPF Telemetry"
         description="Technical specification of Kynetic AI's multi-cloud arbitration broker, eBPF telemetry daemons, and preemption immunity protocol."
         canonicalPath="/architecture"
       />
       {/* HERO SECTION */}
-      <section className="mb-space-xl pt-space-md">
+      <section className="mb-space-xl pt-space-xs sm:pt-space-md">
         {/* Eyebrow & Telemetry Badge */}
         <div className="flex flex-wrap items-center gap-space-sm mb-space-md">
           <div className="inline-flex items-center gap-2 h-6 px-2.5 rounded-full bg-sky-subtle border border-sky-soft text-label-tag font-label-tag text-blue-deep uppercase tracking-wider">
@@ -29,7 +29,7 @@ export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onOpenEarlyA
 
         {/* Main Headline & Subheading */}
         <div className="max-w-4xl space-y-space-md">
-          <h1 className="font-headline-xl text-headline-xl text-ink-primary tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-headline-xl font-headline-xl text-ink-primary tracking-tight">
             The intelligence layer between model code and bare-metal silicon.
           </h1>
           <p className="font-body-lg text-body-lg text-ink-muted max-w-3xl leading-relaxed">
@@ -39,7 +39,7 @@ export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onOpenEarlyA
         </div>
 
         {/* Quick Metrics Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-md mt-space-xl pt-space-lg border-t border-hairline-default">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-space-md mt-space-xl pt-space-lg border-t border-hairline-default">
           <div>
             <span className="block text-ink-subtle font-label-mono text-label-mono mb-1">
               SCHEDULING LATENCY
@@ -522,7 +522,7 @@ export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onOpenEarlyA
       </section>
 
       {/* SECURITY, COMPLIANCE & ISOLATION ARCHITECTURE */}
-      <section className="mb-space-xl bg-surface-elevated border border-hairline-default rounded-lg p-space-xl relative overflow-hidden">
+      <section className="mb-space-xl bg-surface-elevated border border-hairline-default rounded-lg p-5 sm:p-space-xl relative overflow-hidden">
         <div className="max-w-2xl mb-space-lg">
           <span className="font-label-mono text-label-mono text-blue-deep font-semibold tracking-wider uppercase">
             SECURITY &amp; COMPLIANCE
@@ -570,12 +570,12 @@ export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onOpenEarlyA
       </section>
 
       {/* ARCHITECTURE WHITE PAPER & CTA SECTION */}
-      <section className="my-space-xl p-space-xl bg-canvas-alternate border border-hairline-default rounded-lg text-center relative overflow-hidden">
+      <section className="my-space-xl p-5 sm:p-space-xl bg-canvas-alternate border border-hairline-default rounded-lg text-center relative overflow-hidden">
         <div className="max-w-2xl mx-auto space-y-space-md">
           <span className="font-label-mono text-label-mono text-blue-deep font-semibold tracking-wider uppercase">
             TECHNICAL SPECIFICATION
           </span>
-          <h2 className="font-headline-lg text-headline-lg text-ink-primary tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-headline-lg font-headline-lg text-ink-primary tracking-tight">
             Read the 42-page formal specification.
           </h2>
           <p className="font-body-md text-body-md text-ink-muted">
@@ -586,13 +586,13 @@ export const ArchitecturePage: React.FC<ArchitecturePageProps> = ({ onOpenEarlyA
           <div className="flex flex-col sm:flex-row items-center justify-center gap-space-sm pt-space-sm">
             <button
               onClick={onOpenEarlyAccess}
-              className="w-full sm:w-auto h-10 px-6 inline-flex items-center justify-center rounded-full bg-ink-primary text-surface-elevated text-label-mono font-label-mono hover:bg-neutral-800 transition-all duration-150"
+              className="w-full sm:w-auto min-h-[44px] px-6 inline-flex items-center justify-center rounded-full bg-ink-primary text-surface-elevated text-label-mono font-label-mono hover:bg-neutral-800 transition-all duration-150"
             >
               Inspect the Architecture Whitepaper (PDF)
             </button>
             <Link
               to="/docs"
-              className="w-full sm:w-auto h-10 px-6 inline-flex items-center justify-center rounded-full bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono font-label-mono hover:border-sky-ice hover:bg-sky-subtle transition-all duration-150"
+              className="w-full sm:w-auto min-h-[44px] px-6 inline-flex items-center justify-center rounded-full bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono font-label-mono hover:border-sky-ice hover:bg-sky-subtle transition-all duration-150"
             >
               Explore Documentation →
             </Link>

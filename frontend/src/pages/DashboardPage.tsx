@@ -219,17 +219,17 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onOpenEarlyAccess 
             </div>
 
             {/* Action CTAs */}
-            <div className="flex items-center gap-2.5 self-start md:self-auto flex-wrap">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
               <Link
                 to="/docs"
-                className="bg-surface-elevated hover:bg-canvas-alternate border border-hairline-default text-ink-primary font-label-mono text-xs px-3.5 py-1.5 rounded-full transition-all duration-150 flex items-center gap-1.5"
+                className="bg-surface-elevated hover:bg-canvas-alternate border border-hairline-default text-ink-primary font-label-mono text-xs px-3.5 py-2 sm:py-1.5 rounded-full transition-all duration-150 flex items-center justify-center gap-1.5 min-h-[40px] sm:min-h-0"
               >
                 <span className="material-symbols-outlined text-[15px]">terminal</span>
                 <span>Quick Dry-Run CLI</span>
               </Link>
               <Link
                 to="/workload-planner"
-                className="bg-ink-primary hover:bg-accent-olive text-surface-elevated font-label-mono text-xs px-4 py-1.5 rounded-full transition-all duration-150 shadow-xs flex items-center gap-1.5 border border-transparent hover:border-accent-olive"
+                className="bg-ink-primary hover:bg-accent-olive text-surface-elevated font-label-mono text-xs px-4 py-2 sm:py-1.5 rounded-full transition-all duration-150 shadow-xs flex items-center justify-center gap-1.5 border border-transparent hover:border-accent-olive min-h-[40px] sm:min-h-0"
               >
                 <span>Plan a Workload</span>
                 <span className="material-symbols-outlined text-[15px]">arrow_outward</span>
@@ -380,7 +380,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onOpenEarlyAccess 
         {/* 2. RECENT WORKLOADS & ACTIVE EXECUTIONS */}
         <section className="space-y-3.5">
           <div className="flex items-center justify-between flex-wrap gap-2.5">
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <h2 className="text-base sm:text-title-md font-title-md font-medium text-ink-primary">
                 Active Executions &amp; Recent Workloads
               </h2>
@@ -396,7 +396,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onOpenEarlyAccess 
                   <button
                     key={status}
                     onClick={() => setFilterType(status)}
-                    className={`font-label-mono text-[11px] px-2.5 py-1 rounded transition-colors ${
+                    className={`font-label-mono text-[11px] px-2.5 py-1 rounded transition-colors min-h-[32px] ${
                       filterType === status
                         ? 'bg-ink-primary text-surface-elevated font-medium'
                         : 'bg-surface-elevated text-ink-muted hover:text-ink-primary border border-hairline-default hover:bg-canvas-alternate'
@@ -409,8 +409,132 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onOpenEarlyAccess 
             </div>
           </div>
 
-          {/* Execution Matrix Container */}
-          <div className="bg-surface-elevated border border-hairline-default rounded-lg overflow-x-auto shadow-xs">
+          {/* Mobile View: Dedicated Responsive Workload Cards (< sm) */}
+          <div className="block sm:hidden space-y-3">
+            {filteredWorkloads.map((job) => {
+              const isExpanded = expandedWorkloadId === job.id;
+              const isRecommended = job.isRecommended;
+
+              return (
+                <div
+                  key={job.id}
+                  className={`bg-surface-elevated border rounded-lg p-3.5 transition-all text-left shadow-xs ${
+                    isRecommended
+                      ? 'border-accent-olive bg-[#FAF9F5] border-l-4'
+                      : 'border-hairline-default'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-1.5">
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-accent-olive text-[16px]">
+                          {job.status === 'RUNNING'
+                            ? 'neurology'
+                            : job.status === 'CHECKPOINTED'
+                            ? 'hub'
+                            : job.status === 'COMPLETED'
+                            ? 'image'
+                            : 'psychology'}
+                        </span>
+                        <span className="font-medium text-sm text-ink-primary">
+                          {job.name}
+                        </span>
+                      </div>
+                      <div className="font-label-mono text-[11px] text-ink-muted mt-0.5">
+                        {job.spec}
+                      </div>
+                    </div>
+                    <div
+                      className={`inline-flex items-center gap-1 font-label-mono text-[10px] px-2 py-0.5 rounded-full border shrink-0 ${
+                        job.status === 'RUNNING'
+                          ? 'bg-secondary-container border-secondary-fixed text-accent-olive font-semibold'
+                          : job.status === 'CHECKPOINTED'
+                          ? 'bg-canvas-alternate border-hairline-default text-ink-body font-medium'
+                          : job.status === 'COMPLETED'
+                          ? 'bg-canvas-alternate border-hairline-default text-ink-muted font-normal'
+                          : 'bg-canvas-alternate border-hairline-subtle text-ink-subtle'
+                      }`}
+                    >
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          job.status === 'RUNNING'
+                            ? 'bg-status-healthy animate-pulse'
+                            : job.status === 'CHECKPOINTED'
+                            ? 'bg-status-active'
+                            : job.status === 'COMPLETED'
+                            ? 'bg-ink-muted'
+                            : 'bg-ink-subtle'
+                        }`}
+                      ></span>
+                      <span>{job.status}</span>
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-ink-body mb-2 flex items-center justify-between flex-wrap gap-1 font-label-mono">
+                    <span className="font-semibold text-ink-primary">{job.cluster}</span>
+                    <span className="text-accent-olive bg-secondary-container px-1.5 py-0.2 rounded text-[10px]">
+                      {job.provider}
+                    </span>
+                  </div>
+
+                  <div className="text-[11px] text-ink-muted mb-3 font-body-sm bg-canvas-alternate p-2 rounded border border-hairline-subtle">
+                    {job.rationale}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-hairline-subtle font-label-mono text-xs mb-2">
+                    <div>
+                      <div className="text-ink-subtle text-[10px] uppercase">Runtime</div>
+                      <div className="text-ink-body font-medium">{job.runtime}</div>
+                    </div>
+                    <div>
+                      <div className="text-ink-subtle text-[10px] uppercase">Incurred / Saved</div>
+                      <div className="font-semibold text-ink-primary">
+                        {job.costIncurred}{' '}
+                        <span className="text-accent-olive text-[10px] font-normal">
+                          ({job.savings})
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Toggle Telemetry button */}
+                  <button
+                    onClick={() => setExpandedWorkloadId(isExpanded ? null : job.id)}
+                    className="w-full mt-1 py-1.5 px-3 bg-canvas-alternate hover:bg-canvas-base border border-hairline-default rounded text-xs font-label-mono text-ink-primary flex items-center justify-center gap-1.5 min-h-[38px]"
+                  >
+                    <span className="material-symbols-outlined text-[15px] text-accent-olive">
+                      {isExpanded ? 'expand_less' : 'query_stats'}
+                    </span>
+                    <span>{isExpanded ? 'Hide Hardware Telemetry' : 'Inspect Hardware Telemetry'}</span>
+                  </button>
+
+                  {/* Expanded Telemetry Drawer for Mobile */}
+                  {isExpanded && (
+                    <div className="mt-2.5 p-3 bg-surface-elevated rounded border border-hairline-default text-xs font-label-mono space-y-2">
+                      <div>
+                        <span className="text-ink-subtle block text-[10px]">HARDWARE UTILIZATION</span>
+                        <div className="text-ink-primary font-medium">{job.telemetry.gpuUtil}</div>
+                        <div className="text-ink-muted text-[11px]">VRAM: {job.telemetry.vramAllocated}</div>
+                      </div>
+                      <div className="pt-1.5 border-t border-hairline-subtle">
+                        <span className="text-ink-subtle block text-[10px]">FABRIC THROUGHPUT</span>
+                        <div className="text-ink-primary font-medium">{job.telemetry.memoryBandwidth}</div>
+                        <div className="text-ink-muted text-[11px]">{job.fabric}</div>
+                      </div>
+                      <div className="pt-1.5 border-t border-hairline-subtle">
+                        <span className="text-ink-subtle block text-[10px]">CHECKPOINT STATE &amp; SLA</span>
+                        <div className="text-accent-olive font-medium">{job.telemetry.checkpointState}</div>
+                        <div className="text-ink-muted text-[11px]">{job.telemetry.preemptionRisk}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop / Tablet View: Horizontally Scrollable Execution Matrix Table (sm+) */}
+          <div className="hidden sm:block bg-surface-elevated border border-hairline-default rounded-lg overflow-x-auto shadow-xs">
             <table className="w-full text-left border-collapse min-w-[840px]">
               <thead>
                 <tr className="bg-canvas-alternate border-b border-hairline-default font-label-mono text-label-mono text-ink-muted uppercase text-[11px]">

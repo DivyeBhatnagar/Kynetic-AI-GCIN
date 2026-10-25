@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { trackConversion } from '../utils/analytics';
 
@@ -20,6 +20,23 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
     bottleneck: 'Spot preemption & lost checkpoints',
     spendTier: 'tier2',
   });
+
+  // Handle Escape key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -62,26 +79,36 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-ink-primary/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-surface-elevated border border-hairline-default rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8 animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 overflow-y-auto bg-ink-primary/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-headline"
+    >
+      <div className="bg-surface-elevated border border-hairline-default rounded-xl w-full max-w-2xl max-h-[92vh] overflow-y-auto shadow-2xl relative p-4 sm:p-6 md:p-8 animate-in fade-in duration-200">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-ink-muted hover:text-ink-primary p-1 rounded-full border border-hairline-subtle hover:bg-canvas-alternate transition-colors"
+          className="absolute top-3 right-3 sm:top-5 sm:right-5 text-ink-muted hover:text-ink-primary p-2 rounded-full border border-hairline-subtle hover:bg-canvas-alternate transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Close modal"
         >
-          <span className="material-symbols-outlined text-[18px]">close</span>
+          <span className="material-symbols-outlined text-[20px]">close</span>
         </button>
 
         {submitted ? (
-          <div className="text-center py-10 space-y-4">
+          <div className="text-center py-8 sm:py-10 space-y-4">
             <div className="w-12 h-12 rounded-full bg-secondary-container border border-secondary-fixed text-accent-olive-deep flex items-center justify-center mx-auto">
               <span className="material-symbols-outlined text-[24px]">check</span>
             </div>
-            <h3 className="font-headline-sm text-headline-sm text-ink-primary">
+            <h3 id="modal-headline" className="font-headline-sm text-headline-sm text-ink-primary">
               Application Received
             </h3>
-            <p className="font-body-md text-ink-muted max-w-md mx-auto">
+            <p className="font-body-md text-ink-muted max-w-md mx-auto text-body-sm sm:text-body-md">
               We have queued your cohort request. An engineering lead will review your cluster spec
               and reply within 24 hours.
             </p>
@@ -89,7 +116,7 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
               <Link
                 to="/thank-you"
                 onClick={onClose}
-                className="px-5 py-2 bg-accent-olive text-white rounded-full font-label-mono text-label-mono font-medium hover:bg-accent-olive-deep shadow-sm"
+                className="w-full sm:w-auto px-5 py-2.5 bg-accent-olive text-white rounded-full font-label-mono text-label-mono font-medium hover:bg-accent-olive-deep shadow-sm min-h-[44px] flex items-center justify-center"
               >
                 View Confirmation Receipt →
               </Link>
@@ -98,7 +125,7 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
                   setSubmitted(false);
                   onClose();
                 }}
-                className="px-5 py-2 border border-hairline-default text-ink-primary rounded-full font-label-mono text-label-mono font-medium hover:bg-canvas-alternate"
+                className="w-full sm:w-auto px-5 py-2.5 border border-hairline-default text-ink-primary rounded-full font-label-mono text-label-mono font-medium hover:bg-canvas-alternate min-h-[44px] flex items-center justify-center"
               >
                 Close
               </button>
@@ -108,14 +135,14 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 rounded-full bg-status-healthy animate-pulse"></span>
-              <span className="text-label-mono font-label-mono text-ink-muted uppercase">
+              <span className="text-[11px] sm:text-label-mono font-label-mono text-ink-muted uppercase">
                 COHORT 04 ADMISSION
               </span>
             </div>
-            <h2 className="text-headline-sm font-headline-sm text-ink-primary mb-1">
+            <h2 id="modal-headline" className="text-lg sm:text-headline-sm font-headline-sm text-ink-primary mb-1">
               Request Early Access
             </h2>
-            <p className="text-body-sm font-body-sm text-ink-muted mb-6">
+            <p className="text-xs sm:text-body-sm font-body-sm text-ink-muted mb-5 sm:mb-6">
               Tailored compute concierge and non-blocking GPU scheduling for machine learning teams.
             </p>
 
@@ -125,7 +152,7 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
               {/* Anti-Spam Honeypot */}
               <div style={{ display: 'none' }} aria-hidden="true">
                 <label htmlFor="modal_website_confirm_hp">Do not fill this field</label>
@@ -141,7 +168,7 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
               </div>
 
               <div>
-                <label className="block text-label-mono font-label-mono text-ink-primary mb-1">
+                <label className="block text-label-mono font-label-mono text-ink-primary mb-1 text-xs sm:text-label-mono">
                   Work Email <span className="text-accent-olive">*</span>
                 </label>
                 <input
@@ -154,9 +181,9 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-label-mono font-label-mono text-ink-primary mb-1">
+                  <label className="block text-label-mono font-label-mono text-ink-primary mb-1 text-xs sm:text-label-mono">
                     Organization <span className="text-accent-olive">*</span>
                   </label>
                   <input
@@ -169,7 +196,7 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
                   />
                 </div>
                 <div>
-                  <label className="block text-label-mono font-label-mono text-ink-primary mb-1">
+                  <label className="block text-label-mono font-label-mono text-ink-primary mb-1 text-xs sm:text-label-mono">
                     GitHub / Hugging Face Handle
                   </label>
                   <input
@@ -183,7 +210,7 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
               </div>
 
               <div>
-                <label className="block text-label-mono font-label-mono text-ink-primary mb-2">
+                <label className="block text-label-mono font-label-mono text-ink-primary mb-2 text-xs sm:text-label-mono">
                   Current GPU Scale
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-body-sm">
@@ -192,7 +219,7 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
                       type="button"
                       key={tier}
                       onClick={() => setFormData({ ...formData, gpuScale: tier })}
-                      className={`h-9 flex items-center justify-center border rounded text-body-sm font-body-sm transition-all ${
+                      className={`h-10 px-2 flex items-center justify-center border rounded text-xs sm:text-body-sm font-body-sm transition-all ${
                         formData.gpuScale === tier
                           ? 'bg-secondary-container border-accent-olive text-accent-olive-deep font-medium'
                           : 'border-hairline-default bg-canvas-base text-ink-body hover:border-hairline-strong'
@@ -205,10 +232,10 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
               </div>
 
               <div>
-                <label className="block text-label-mono font-label-mono text-ink-primary mb-2">
+                <label className="block text-label-mono font-label-mono text-ink-primary mb-2 text-xs sm:text-label-mono">
                   Primary Workloads
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {[
                     'Distributed Pre-training',
                     'Fine-Tuning / LoRA (7B–70B+)',
@@ -222,7 +249,7 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
                         type="button"
                         key={wl}
                         onClick={() => toggleWorkload(wl)}
-                        className={`px-3 py-1 rounded-full text-xs font-body-sm border transition-all ${
+                        className={`px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-body-sm border transition-all min-h-[36px] flex items-center ${
                           isSelected
                             ? 'border-accent-olive bg-secondary-container text-accent-olive-deep font-medium'
                             : 'border-hairline-default bg-canvas-alternate text-ink-body hover:border-hairline-strong'
@@ -236,7 +263,7 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
               </div>
 
               <div>
-                <label className="block text-label-mono font-label-mono text-ink-primary mb-1">
+                <label className="block text-label-mono font-label-mono text-ink-primary mb-1 text-xs sm:text-label-mono">
                   Primary Bottleneck
                 </label>
                 <select
@@ -255,12 +282,12 @@ export const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onCl
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full h-11 rounded-full bg-ink-primary text-surface-elevated text-label-mono font-label-mono hover:bg-accent-olive-deep transition-all flex items-center justify-center gap-2 active:scale-[0.99]"
+                  className="w-full h-11 rounded-full bg-ink-primary text-surface-elevated text-xs sm:text-label-mono font-label-mono hover:bg-accent-olive-deep transition-all flex items-center justify-center gap-2 active:scale-[0.99] min-h-[44px]"
                 >
                   <span>Submit Early Access Application</span>
                   <span className="text-xs">↗</span>
                 </button>
-                <p className="text-center font-label-tag text-ink-subtle text-xs mt-3">
+                <p className="text-center font-label-tag text-ink-subtle text-[11px] sm:text-xs mt-3">
                   Zero data ingress · Weights remain inside your VPC · SOC2 Type II Certified
                 </p>
               </div>

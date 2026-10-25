@@ -35,7 +35,7 @@ export const SignInPage: React.FC = () => {
       <main className="flex-1 max-w-[1240px] w-full mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* LEFT COLUMN: PRIMARY SIGN-IN CARD (7 cols) */}
-          <section className="lg:col-span-7 bg-surface-elevated border border-hairline-default rounded-xl p-6 sm:p-8 lg:p-10 shadow-xs relative">
+          <section className="lg:col-span-7 bg-surface-elevated border border-hairline-default rounded-xl p-5 sm:p-8 lg:p-10 shadow-xs relative">
             {/* Eyebrow Tag */}
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
               <span className="h-1.5 w-1.5 rounded-full bg-accent-olive"></span>
@@ -57,7 +57,7 @@ export const SignInPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/dashboard')}
-                className="w-full flex items-center justify-center gap-3 h-10 px-4 rounded-full border border-hairline-default bg-canvas-base hover:bg-canvas-alternate hover:border-hairline-strong transition-all duration-150 active:scale-[0.99] text-ink-primary font-label-mono text-xs sm:text-label-mono font-medium"
+                className="w-full flex items-center justify-center gap-3 h-11 sm:h-10 min-h-[44px] px-4 rounded-full border border-hairline-default bg-canvas-base hover:bg-canvas-alternate hover:border-hairline-strong transition-all duration-150 active:scale-[0.99] text-ink-primary font-label-mono text-xs sm:text-label-mono font-medium"
               >
                 {/* GitHub Minimal SVG */}
                 <svg aria-hidden="true" className="w-4 h-4 fill-current text-ink-primary" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@ export const SignInPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/dashboard')}
-                className="w-full flex items-center justify-center gap-3 h-10 px-4 rounded-full border border-hairline-default bg-canvas-base hover:bg-canvas-alternate hover:border-hairline-strong transition-all duration-150 active:scale-[0.99] text-ink-primary font-label-mono text-xs sm:text-label-mono font-medium"
+                className="w-full flex items-center justify-center gap-3 h-11 sm:h-10 min-h-[44px] px-4 rounded-full border border-hairline-default bg-canvas-base hover:bg-canvas-alternate hover:border-hairline-strong transition-all duration-150 active:scale-[0.99] text-ink-primary font-label-mono text-xs sm:text-label-mono font-medium"
               >
                 {/* Google Minimal SVG */}
                 <svg aria-hidden="true" className="w-4 h-4" viewBox="0 0 24 24">
@@ -100,7 +100,7 @@ export const SignInPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/dashboard')}
-                className="w-full flex items-center justify-between h-10 px-4 rounded-full border border-hairline-default bg-canvas-base hover:bg-canvas-alternate hover:border-hairline-strong transition-all duration-150 active:scale-[0.99] text-ink-primary font-label-mono text-xs sm:text-label-mono font-medium"
+                className="w-full flex items-center justify-between h-11 sm:h-10 min-h-[44px] px-4 rounded-full border border-hairline-default bg-canvas-base hover:bg-canvas-alternate hover:border-hairline-strong transition-all duration-150 active:scale-[0.99] text-ink-primary font-label-mono text-xs sm:text-label-mono font-medium"
               >
                 <span className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-[16px] text-accent-olive">lock_open</span>
@@ -149,7 +149,7 @@ export const SignInPage: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="alex@frontier-research.ai"
-                    className="w-full h-10 px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary font-body-sm text-sm placeholder:text-ink-subtle focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all"
+                    className="w-full h-11 sm:h-10 min-h-[44px] px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary font-body-sm text-sm placeholder:text-ink-subtle focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all"
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-ink-subtle">
                     <span className="material-symbols-outlined text-[17px]">alternate_email</span>
@@ -169,7 +169,7 @@ export const SignInPage: React.FC = () => {
                       e.preventDefault();
                       alert('Password reset link sent to registered email.');
                     }}
-                    className="font-body-sm text-xs text-accent-olive hover:underline transition-colors"
+                    className="font-body-sm text-xs text-accent-olive hover:underline transition-colors py-1"
                   >
                     Forgot password?
                   </a>
@@ -182,12 +182,12 @@ export const SignInPage: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full h-10 px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary font-body-sm text-sm placeholder:text-ink-subtle focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all"
+                    className="w-full h-11 sm:h-10 min-h-[44px] px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary font-body-sm text-sm placeholder:text-ink-subtle focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-ink-subtle hover:text-ink-primary transition-colors focus:outline-none"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-ink-subtle hover:text-ink-primary transition-colors focus:outline-none min-h-[44px] min-w-[44px] justify-center"
                     title={showPassword ? 'Hide password' : 'Show password'}
                   >
                     <span className="material-symbols-outlined text-[17px]">
@@ -199,7 +199,7 @@ export const SignInPage: React.FC = () => {
 
               {/* Remember session & MFA indication */}
               <div className="flex items-center justify-between pt-1">
-                <label className="flex items-center gap-2 cursor-pointer select-none">
+                <label className="flex items-center gap-2 cursor-pointer select-none py-1">
                   <input
                     type="checkbox"
                     checked={rememberDevice}
@@ -216,7 +216,7 @@ export const SignInPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-10 mt-2 rounded-full bg-ink-primary text-canvas-base hover:bg-accent-olive active:scale-[0.99] font-label-mono text-xs sm:text-label-mono font-medium transition-all duration-150 flex items-center justify-center gap-2 shadow-xs"
+                className="w-full h-11 sm:h-10 min-h-[44px] mt-2 rounded-full bg-ink-primary text-canvas-base hover:bg-accent-olive active:scale-[0.99] font-label-mono text-xs sm:text-label-mono font-medium transition-all duration-150 flex items-center justify-center gap-2 shadow-xs"
               >
                 <span>{isSubmitting ? 'Authenticating...' : 'Sign In to Console'}</span>
                 <span className="material-symbols-outlined text-[15px]">arrow_outward</span>

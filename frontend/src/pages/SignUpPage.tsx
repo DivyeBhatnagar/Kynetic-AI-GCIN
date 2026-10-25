@@ -40,7 +40,7 @@ export const SignUpPage: React.FC = () => {
       <main className="flex-1 w-full max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* LEFT COLUMN: Workspace Provisioning Form */}
-          <section className="lg:col-span-7 bg-surface-elevated border border-hairline-default rounded-xl p-6 sm:p-8 lg:p-10 shadow-xs relative">
+          <section className="lg:col-span-7 bg-surface-elevated border border-hairline-default rounded-xl p-5 sm:p-8 lg:p-10 shadow-xs relative">
             {/* Header Group */}
             <div className="space-y-2.5 mb-6">
               <div className="inline-flex items-center gap-2 font-label-tag text-[10px] sm:text-label-tag text-accent-olive tracking-wider">
@@ -60,7 +60,7 @@ export const SignUpPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/dashboard')}
-                className="flex items-center justify-center gap-3 h-10 px-5 rounded-full bg-canvas-base border border-hairline-default text-ink-primary font-label-mono text-xs sm:text-label-mono hover:border-hairline-strong hover:bg-canvas-alternate active:scale-[0.99] transition-all duration-150 font-medium"
+                className="flex items-center justify-center gap-3 h-11 sm:h-10 min-h-[44px] px-5 rounded-full bg-canvas-base border border-hairline-default text-ink-primary font-label-mono text-xs sm:text-label-mono hover:border-hairline-strong hover:bg-canvas-alternate active:scale-[0.99] transition-all duration-150 font-medium"
               >
                 <svg aria-hidden="true" className="w-4 h-4 fill-current text-ink-primary" viewBox="0 0 24 24">
                   <path
@@ -75,7 +75,7 @@ export const SignUpPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/dashboard')}
-                className="flex items-center justify-center gap-3 h-10 px-5 rounded-full bg-canvas-base border border-hairline-default text-ink-primary font-label-mono text-xs sm:text-label-mono hover:border-hairline-strong hover:bg-canvas-alternate active:scale-[0.99] transition-all duration-150 font-medium"
+                className="flex items-center justify-center gap-3 h-11 sm:h-10 min-h-[44px] px-5 rounded-full bg-canvas-base border border-hairline-default text-ink-primary font-label-mono text-xs sm:text-label-mono hover:border-hairline-strong hover:bg-canvas-alternate active:scale-[0.99] transition-all duration-150 font-medium"
               >
                 <svg aria-hidden="true" className="w-4 h-4" viewBox="0 0 24 24">
                   <path
@@ -135,7 +135,7 @@ export const SignUpPage: React.FC = () => {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="Dr. Alex Mercer"
-                    className="w-full h-10 px-3.5 rounded bg-surface-elevated border border-hairline-default text-ink-primary font-body-sm text-sm focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all placeholder:text-ink-subtle"
+                    className="w-full h-11 sm:h-10 min-h-[44px] px-3.5 rounded bg-surface-elevated border border-hairline-default text-ink-primary font-body-sm text-sm focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all placeholder:text-ink-subtle"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -149,7 +149,7 @@ export const SignUpPage: React.FC = () => {
                     value={workEmail}
                     onChange={(e) => setWorkEmail(e.target.value)}
                     placeholder="alex@frontier-research.ai"
-                    className="w-full h-10 px-3.5 rounded bg-surface-elevated border border-hairline-default text-ink-primary font-body-sm text-sm focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all placeholder:text-ink-subtle"
+                    className="w-full h-11 sm:h-10 min-h-[44px] px-3.5 rounded bg-surface-elevated border border-hairline-default text-ink-primary font-body-sm text-sm focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all placeholder:text-ink-subtle"
                   />
                 </div>
               </div>
@@ -169,7 +169,7 @@ export const SignUpPage: React.FC = () => {
                   value={organization}
                   onChange={(e) => setOrganization(e.target.value)}
                   placeholder="Synthetix Labs or Institute ID"
-                  className="w-full h-10 px-3.5 rounded bg-surface-elevated border border-hairline-default text-ink-primary font-body-sm text-sm focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all placeholder:text-ink-subtle"
+                  className="w-full h-11 sm:h-10 min-h-[44px] px-3.5 rounded bg-surface-elevated border border-hairline-default text-ink-primary font-body-sm text-sm focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all placeholder:text-ink-subtle"
                 />
               </div>
 
@@ -187,7 +187,7 @@ export const SignUpPage: React.FC = () => {
                   ].map((role) => (
                     <label
                       key={role.id}
-                      className={`flex items-center justify-center p-2.5 rounded border cursor-pointer transition-all ${
+                      className={`flex items-center justify-center p-2.5 min-h-[44px] rounded border cursor-pointer transition-all ${
                         workloadRole === role.id
                           ? 'border-accent-olive bg-[#FAF9F5] ring-1 ring-accent-olive font-semibold text-ink-primary'
                           : 'border-hairline-default bg-canvas-base hover:border-hairline-strong text-ink-muted'
@@ -225,12 +225,12 @@ export const SignUpPage: React.FC = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full h-10 px-3.5 pr-10 rounded bg-surface-elevated border border-hairline-default text-ink-primary font-body-sm text-sm focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all font-mono"
+                    className="w-full h-11 sm:h-10 min-h-[44px] px-3.5 pr-11 rounded bg-surface-elevated border border-hairline-default text-ink-primary font-body-sm text-sm focus:border-ink-primary focus:ring-1 focus:ring-ink-primary focus:outline-none transition-all font-mono"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-2.5 text-ink-subtle hover:text-ink-primary transition-colors focus:outline-none"
+                    className="absolute right-0 top-0 bottom-0 px-3 text-ink-subtle hover:text-ink-primary transition-colors focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
                     title={showPassword ? 'Hide password' : 'Show password'}
                   >
                     <span className="material-symbols-outlined text-[17px]">

@@ -84,55 +84,55 @@ job.wait_for_completion()`;
   };
 
   return (
-    <main className="w-full flex-1 max-w-[1240px] mx-auto px-space-md md:px-margin-desktop py-space-lg">
+    <main className="w-full flex-1 max-w-[1240px] mx-auto px-4 sm:px-6 md:px-margin-desktop py-6 sm:py-space-lg">
       <SEO
         title="Roofline Workload Planner &amp; GPU Simulation"
         description="Dry-run AI models against arithmetic intensity curves, memory bandwidth envelopes, and spot candidate rankings across GPU clouds."
         canonicalPath="/workload-planner"
       />
       {/* Hero / Eyebrow Header with Atmospheric Gradient */}
-      <section className="relative pt-space-md pb-space-lg halo-atmosphere border-b border-hairline-subtle">
+      <section className="relative pt-space-xs sm:pt-space-md pb-space-md sm:pb-space-lg halo-atmosphere border-b border-hairline-subtle">
         {/* Eyebrow with Luminous Pulse */}
-        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-sky-subtle border border-sky-soft text-blue-deep font-label-tag text-label-tag mb-space-sm">
-          <span className="relative flex h-2 w-2">
+        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-sky-subtle border border-sky-soft text-blue-deep font-label-tag text-xs sm:text-label-tag mb-space-sm max-w-full truncate">
+          <span className="relative flex h-2 w-2 shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-electric opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-electric"></span>
           </span>
-          INTELLIGENT COMPUTE SCHEDULING &amp; ARBITRAGE
+          <span className="truncate">INTELLIGENT COMPUTE SCHEDULING &amp; ARBITRAGE</span>
         </div>
-        <h1 className="font-headline-lg text-headline-lg text-ink-primary tracking-tight max-w-3xl mb-space-xs">
+        <h1 className="font-headline-lg text-2xl sm:text-3xl md:text-headline-lg text-ink-primary tracking-tight max-w-3xl mb-space-xs">
           Workload Planner: Deterministic multi-cloud GPU provisioning.
         </h1>
-        <p className="font-body-lg text-body-lg text-ink-muted max-w-3xl mb-space-md">
+        <p className="font-body-lg text-sm sm:text-body-lg text-ink-muted max-w-3xl mb-space-md leading-relaxed">
           Simulate model training, fine-tuning, and batch inference runs across heterogeneous clusters
           before spending a single dollar.
         </p>
 
         {/* Quick Action Presets Bar */}
-        <div className="flex flex-wrap items-center gap-space-xs pt-space-xs">
-          <span className="font-label-mono text-label-mono text-ink-subtle uppercase mr-space-xs">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-space-xs pt-space-xs">
+          <span className="font-label-mono text-xs sm:text-label-mono text-ink-subtle uppercase mr-1">
             Preset Blueprints:
           </span>
           <button
-            className="preset-btn px-3 py-1 rounded bg-canvas-alternate hover:bg-sky-subtle text-ink-body hover:text-blue-deep text-label-mono font-label-mono border border-hairline-default hover:border-sky-ice transition-all duration-150"
+            className="preset-btn px-2.5 sm:px-3 py-1.5 sm:py-1 rounded bg-canvas-alternate hover:bg-sky-subtle text-ink-body hover:text-blue-deep text-xs sm:text-label-mono font-label-mono border border-hairline-default hover:border-sky-ice transition-all duration-150 min-h-[36px]"
             onClick={() => applyPreset('llama')}
           >
             Llama 3 70B LoRA
           </button>
           <button
-            className="preset-btn px-3 py-1 rounded bg-canvas-alternate hover:bg-sky-subtle text-ink-body hover:text-blue-deep text-label-mono font-label-mono border border-hairline-default hover:border-sky-ice transition-all duration-150"
+            className="preset-btn px-2.5 sm:px-3 py-1.5 sm:py-1 rounded bg-canvas-alternate hover:bg-sky-subtle text-ink-body hover:text-blue-deep text-xs sm:text-label-mono font-label-mono border border-hairline-default hover:border-sky-ice transition-all duration-150 min-h-[36px]"
             onClick={() => applyPreset('deepseek')}
           >
             DeepSeek-R1 Distill 8B
           </button>
           <button
-            className="preset-btn px-3 py-1 rounded bg-canvas-alternate hover:bg-sky-subtle text-ink-body hover:text-blue-deep text-label-mono font-label-mono border border-hairline-default hover:border-sky-ice transition-all duration-150"
+            className="preset-btn px-2.5 sm:px-3 py-1.5 sm:py-1 rounded bg-canvas-alternate hover:bg-sky-subtle text-ink-body hover:text-blue-deep text-xs sm:text-label-mono font-label-mono border border-hairline-default hover:border-sky-ice transition-all duration-150 min-h-[36px]"
             onClick={() => applyPreset('sdxl')}
           >
             SDXL Batch 10k Images
           </button>
           <button
-            className="preset-btn px-3 py-1 rounded bg-canvas-alternate hover:bg-sky-subtle text-ink-body hover:text-blue-deep text-label-mono font-label-mono border border-hairline-default hover:border-sky-ice transition-all duration-150"
+            className="preset-btn px-2.5 sm:px-3 py-1.5 sm:py-1 rounded bg-canvas-alternate hover:bg-sky-subtle text-ink-body hover:text-blue-deep text-xs sm:text-label-mono font-label-mono border border-hairline-default hover:border-sky-ice transition-all duration-150 min-h-[36px]"
             onClick={() => applyPreset('mistral')}
           >
             Mistral Large Fine-tune
@@ -141,9 +141,9 @@ job.wait_for_completion()`;
       </section>
 
       {/* Interactive Workload Configuration Console (Bento Grid) */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-space-md my-space-lg">
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-space-md my-space-md sm:my-space-lg">
         {/* Step 1: Workload Specification (4 Columns) */}
-        <div className="lg:col-span-4 bg-surface-elevated border border-hairline-default rounded-xl p-space-md shadow-sm relative flex flex-col justify-between">
+        <div className="lg:col-span-4 bg-surface-elevated border border-hairline-default rounded-xl p-4 sm:p-space-md shadow-sm relative flex flex-col justify-between">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sky-subtle to-sky-ice rounded-t-xl"></div>
           <div>
             <div className="flex items-center justify-between mb-space-sm">
@@ -326,7 +326,7 @@ job.wait_for_completion()`;
               <label className="block font-label-mono text-label-mono text-ink-body mb-2">
                 Eligible Compute Providers
               </label>
-              <div className="grid grid-cols-2 gap-2 text-body-sm font-body-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-body-sm font-body-sm">
                 {[
                   { name: 'Lambda Cloud', checked: true },
                   { name: 'CoreWeave', checked: true },
@@ -337,11 +337,11 @@ job.wait_for_completion()`;
                 ].map((p, idx) => (
                   <label
                     key={idx}
-                    className="flex items-center gap-2 p-1.5 rounded hover:bg-canvas-base border border-hairline-subtle cursor-pointer"
+                    className="flex items-center gap-2 p-2 sm:p-1.5 rounded hover:bg-canvas-base border border-hairline-subtle cursor-pointer min-h-[40px] sm:min-h-0"
                   >
                     <input
                       defaultChecked={p.checked}
-                      className="rounded border-hairline-strong text-blue-electric focus:ring-0"
+                      className="rounded border-hairline-strong text-blue-electric focus:ring-0 h-4 w-4"
                       type="checkbox"
                     />
                     <span className="text-ink-body">{p.name}</span>
@@ -509,14 +509,14 @@ job.wait_for_completion()`;
         <div className="space-y-space-sm">
           {/* Candidate 1: H100 CoreWeave */}
           <div
-            className={`bg-surface-elevated border rounded-lg p-space-md transition-all duration-150 grid grid-cols-1 md:grid-cols-12 gap-4 items-center ${
+            className={`bg-surface-elevated border rounded-lg p-space-md transition-all duration-150 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4 items-start md:items-center ${
               selectedCandidate === 'h100'
                 ? 'border-blue-electric ring-1 ring-blue-electric shadow-sm'
                 : 'border-hairline-default hover:border-hairline-strong'
             }`}
           >
-            <div className="md:col-span-4">
-              <div className="flex items-center gap-2 mb-1">
+            <div className="sm:col-span-2 md:col-span-4">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
                 <span className="font-title-sm text-title-sm font-semibold text-ink-primary">
                   8x NVIDIA H100 SXM5 (80GB)
                 </span>
@@ -553,9 +553,9 @@ job.wait_for_completion()`;
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-electric"></span> Compatible
               </span>
             </div>
-            <div className="md:col-span-2 flex justify-end">
+            <div className="sm:col-span-2 md:col-span-2 flex justify-start md:justify-end w-full">
               <button
-                className="px-3 py-1.5 rounded-full border border-hairline-default hover:border-sky-ice text-body-sm font-body-sm text-ink-primary hover:bg-sky-subtle transition-all duration-150"
+                className="w-full md:w-auto px-4 py-2 min-h-[44px] md:min-h-0 rounded-full border border-hairline-default hover:border-sky-ice text-body-sm font-body-sm text-ink-primary hover:bg-sky-subtle transition-all duration-150 flex items-center justify-center"
                 onClick={() => {
                   setSelectedCandidate('h100');
                   setInspectedCandidate('8x NVIDIA H100 SXM5 Cluster');
@@ -569,16 +569,16 @@ job.wait_for_completion()`;
 
           {/* Candidate 2: 8x L40S - Optimal Recommendation */}
           <div
-            className={`bg-gradient-to-r from-sky-subtle/40 via-surface-elevated to-surface-elevated border-2 border-blue-electric rounded-lg p-space-md grid grid-cols-1 md:grid-cols-12 gap-4 items-center relative ${
+            className={`bg-gradient-to-r from-sky-subtle/40 via-surface-elevated to-surface-elevated border-2 border-blue-electric rounded-lg p-space-md grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4 items-start md:items-center relative ${
               selectedCandidate === 'l40s' ? 'ring-2 ring-blue-electric/40' : ''
             }`}
           >
-            <div className="absolute -top-3 left-6 bg-blue-electric text-on-primary font-label-tag text-label-tag px-2.5 py-0.5 rounded-full shadow-xs flex items-center gap-1">
+            <div className="absolute -top-3 left-3 sm:left-6 bg-blue-electric text-on-primary font-label-tag text-label-tag px-2.5 py-0.5 rounded-full shadow-xs flex items-center gap-1">
               <span className="material-symbols-outlined text-xs">auto_awesome</span>
               <span>OPTIMAL ARBITRAGE BLUEPRINT</span>
             </div>
-            <div className="md:col-span-4 mt-1 md:mt-0">
-              <div className="flex items-center gap-2 mb-1">
+            <div className="sm:col-span-2 md:col-span-4 mt-2 md:mt-0">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
                 <span className="font-title-sm text-title-sm font-bold text-ink-primary">
                   8x NVIDIA L40S (48GB Ada)
                 </span>
@@ -619,14 +619,14 @@ job.wait_for_completion()`;
                 Best Tradeoff
               </span>
             </div>
-            <div className="md:col-span-2 flex justify-end gap-2">
+            <div className="sm:col-span-2 md:col-span-2 flex justify-start md:justify-end gap-2 w-full">
               <button
                 onClick={() => {
                   setSelectedCandidate('l40s');
                   setInspectedCandidate('8x NVIDIA L40S Cluster');
                   setTelemetryOpen(true);
                 }}
-                className="bg-primary text-on-primary text-label-mono font-label-mono px-4 py-2 rounded-full hover:bg-neutral-800 transition-all duration-150"
+                className="w-full md:w-auto bg-primary text-on-primary text-label-mono font-label-mono px-5 py-2.5 min-h-[44px] md:min-h-0 rounded-full hover:bg-neutral-800 transition-all duration-150 flex items-center justify-center"
               >
                 Select
               </button>
@@ -635,14 +635,14 @@ job.wait_for_completion()`;
 
           {/* Candidate 3: 8x A100 Lambda Cloud */}
           <div
-            className={`bg-surface-elevated border rounded-lg p-space-md transition-all duration-150 grid grid-cols-1 md:grid-cols-12 gap-4 items-center ${
+            className={`bg-surface-elevated border rounded-lg p-space-md transition-all duration-150 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4 items-start md:items-center ${
               selectedCandidate === 'a100'
                 ? 'border-blue-electric ring-1 ring-blue-electric shadow-sm'
                 : 'border-hairline-default hover:border-hairline-strong'
             }`}
           >
-            <div className="md:col-span-4">
-              <div className="flex items-center gap-2 mb-1">
+            <div className="sm:col-span-2 md:col-span-4">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
                 <span className="font-title-sm text-title-sm font-medium text-ink-primary">
                   8x NVIDIA A100 (80GB PCIe)
                 </span>
@@ -678,9 +678,9 @@ job.wait_for_completion()`;
                 Cost
               </span>
             </div>
-            <div className="md:col-span-2 flex justify-end">
+            <div className="sm:col-span-2 md:col-span-2 flex justify-start md:justify-end w-full">
               <button
-                className="px-3 py-1.5 rounded-full border border-hairline-default hover:border-sky-ice text-body-sm font-body-sm text-ink-primary hover:bg-sky-subtle transition-all duration-150"
+                className="w-full md:w-auto px-4 py-2 min-h-[44px] md:min-h-0 rounded-full border border-hairline-default hover:border-sky-ice text-body-sm font-body-sm text-ink-primary hover:bg-sky-subtle transition-all duration-150 flex items-center justify-center"
                 onClick={() => {
                   setSelectedCandidate('a100');
                   setInspectedCandidate('8x NVIDIA A100 PCIe Cluster');
@@ -694,14 +694,14 @@ job.wait_for_completion()`;
 
           {/* Candidate 4: 4x GH200 Crusoe */}
           <div
-            className={`bg-surface-elevated border rounded-lg p-space-md transition-all duration-150 grid grid-cols-1 md:grid-cols-12 gap-4 items-center ${
+            className={`bg-surface-elevated border rounded-lg p-space-md transition-all duration-150 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4 items-start md:items-center ${
               selectedCandidate === 'gh200'
                 ? 'border-blue-electric ring-1 ring-blue-electric shadow-sm'
                 : 'border-hairline-default hover:border-hairline-strong'
             }`}
           >
-            <div className="md:col-span-4">
-              <div className="flex items-center gap-2 mb-1">
+            <div className="sm:col-span-2 md:col-span-4">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
                 <span className="font-title-sm text-title-sm font-medium text-ink-primary">
                   4x NVIDIA GH200 Grace Hopper (480GB+96GB)
                 </span>
@@ -739,9 +739,9 @@ job.wait_for_completion()`;
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-electric"></span> High Headroom
               </span>
             </div>
-            <div className="md:col-span-2 flex justify-end">
+            <div className="sm:col-span-2 md:col-span-2 flex justify-start md:justify-end w-full">
               <button
-                className="px-3 py-1.5 rounded-full border border-hairline-default hover:border-sky-ice text-body-sm font-body-sm text-ink-primary hover:bg-sky-subtle transition-all duration-150"
+                className="w-full md:w-auto px-4 py-2 min-h-[44px] md:min-h-0 rounded-full border border-hairline-default hover:border-sky-ice text-body-sm font-body-sm text-ink-primary hover:bg-sky-subtle transition-all duration-150 flex items-center justify-center"
                 onClick={() => {
                   setSelectedCandidate('gh200');
                   setInspectedCandidate('4x NVIDIA GH200 Grace Hopper');
@@ -761,7 +761,7 @@ job.wait_for_completion()`;
           className="bg-canvas-alternate border border-hairline-default rounded-xl p-space-md mb-space-lg"
           id="telemetry-drawer"
         >
-          <div className="flex items-center justify-between pb-space-sm border-b border-hairline-subtle mb-space-md">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-space-sm border-b border-hairline-subtle mb-space-md gap-2">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-blue-electric text-lg">
                 query_stats
@@ -770,19 +770,20 @@ job.wait_for_completion()`;
                 Granular Telemetry Diagnostic: {inspectedCandidate}
               </h3>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between sm:justify-end gap-3">
               <span className="font-label-mono text-label-mono text-ink-muted">
                 RunPod US-Central Pod #892
               </span>
               <button
                 onClick={() => setTelemetryOpen(false)}
-                className="text-ink-subtle hover:text-ink-primary text-xs"
+                className="text-ink-subtle hover:text-ink-primary text-xs p-1"
+                aria-label="Close telemetry breakdown"
               >
                 ✕ Hide
               </button>
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-space-md">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-space-md">
             {/* Egress Cost */}
             <div className="p-3 bg-surface-elevated rounded border border-hairline-subtle">
               <span className="font-label-mono text-label-mono text-ink-subtle block mb-1">
@@ -833,25 +834,25 @@ job.wait_for_completion()`;
             </div>
           </div>
           {/* Action Button Group */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-space-xs">
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-space-xs">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto">
               <button
                 onClick={onOpenEarlyAccess}
-                className="bg-primary text-on-primary text-label-mono font-label-mono px-5 py-2.5 rounded-full hover:bg-neutral-800 transition-all duration-150 flex items-center gap-1.5 shadow-sm"
+                className="w-full sm:w-auto bg-primary text-on-primary text-label-mono font-label-mono px-5 py-2.5 min-h-[44px] rounded-full hover:bg-neutral-800 transition-all duration-150 flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <span className="material-symbols-outlined text-sm">rocket_launch</span>
                 <span>Dispatch via Kynetic Agent</span>
               </button>
               <button
                 onClick={copySnippet}
-                className="bg-surface-elevated text-ink-primary border border-hairline-default text-label-mono font-label-mono px-4 py-2.5 rounded-full hover:bg-sky-subtle hover:border-sky-ice transition-all duration-150 flex items-center gap-1.5"
+                className="w-full sm:w-auto bg-surface-elevated text-ink-primary border border-hairline-default text-label-mono font-label-mono px-4 py-2.5 min-h-[44px] rounded-full hover:bg-sky-subtle hover:border-sky-ice transition-all duration-150 flex items-center justify-center gap-1.5"
               >
                 <span className="material-symbols-outlined text-sm">terminal</span>
                 <span>Run CLI Dry-Run</span>
               </button>
               <button
                 onClick={onOpenEarlyAccess}
-                className="bg-surface-elevated text-ink-primary border border-hairline-default text-label-mono font-label-mono px-4 py-2.5 rounded-full hover:bg-sky-subtle hover:border-sky-ice transition-all duration-150 flex items-center gap-1.5"
+                className="w-full sm:w-auto bg-surface-elevated text-ink-primary border border-hairline-default text-label-mono font-label-mono px-4 py-2.5 min-h-[44px] rounded-full hover:bg-sky-subtle hover:border-sky-ice transition-all duration-150 flex items-center justify-center gap-1.5"
               >
                 <span className="material-symbols-outlined text-sm">code</span>
                 <span>Export Terraform / Pulumi Spec</span>
@@ -886,7 +887,7 @@ job.wait_for_completion()`;
               <span>{copiedCode ? 'Copied!' : 'Copy SDK code'}</span>
             </button>
           </div>
-          <pre className="p-4 text-ink-primary font-label-mono text-label-mono overflow-x-auto bg-[#F4F3EE]">
+          <pre className="p-3 sm:p-4 text-xs sm:text-label-mono text-ink-primary font-label-mono overflow-x-auto bg-[#F4F3EE]">
             <code>
               <span className="text-ink-subtle"># Generated by Kynetic AI Workload Planner</span>
               {'\n'}

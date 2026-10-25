@@ -215,7 +215,7 @@ export const ProvidersPage: React.FC = () => {
         description="Explore live pricing, SXM5 NVLink interconnect availability, and spot capacities across CoreWeave, Lambda Labs, RunPod, and Crusoe."
         canonicalPath="/providers"
       />
-      <main className="w-full px-space-lg md:px-margin-desktop py-space-xl max-w-[1240px] mx-auto">
+      <main className="w-full px-4 sm:px-6 md:px-margin-desktop py-6 sm:py-space-xl max-w-[1240px] mx-auto">
         {/* 1. Header & Live Mesh Stats */}
         <div className="mb-space-xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-hairline-default">
@@ -234,16 +234,16 @@ export const ProvidersPage: React.FC = () => {
                 Real-time cost arbitrage, interconnect topology audits, and hardware health metrics across vetted GPU clouds and sovereign HPC clusters.
               </p>
             </div>
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 shrink-0 w-full sm:w-auto">
               <Link
                 to="/workload-planner"
-                className="px-4 py-2 rounded bg-ink-primary text-surface-elevated text-label-mono font-medium hover:bg-neutral-800 transition-colors shadow-xs"
+                className="px-4 py-2 min-h-[44px] rounded bg-ink-primary text-surface-elevated text-label-mono font-medium hover:bg-neutral-800 transition-colors shadow-xs flex items-center justify-center"
               >
                 Plan Workload ↗
               </Link>
               <Link
                 to="/recommendations"
-                className="px-4 py-2 rounded bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono font-medium hover:bg-secondary-container hover:border-accent-olive/40 transition-colors"
+                className="px-4 py-2 min-h-[44px] rounded bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono font-medium hover:bg-secondary-container hover:border-accent-olive/40 transition-colors flex items-center justify-center"
               >
                 View Recommendations ↗
               </Link>
@@ -251,7 +251,7 @@ export const ProvidersPage: React.FC = () => {
           </div>
 
           {/* Top Real-time Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-6">
             <div className="p-4 rounded border border-hairline-default bg-surface-elevated">
               <span className="text-label-mono text-ink-subtle uppercase block text-[11px]">ACTIVE MONITORED NODES</span>
               <div className="flex items-baseline gap-2 mt-1">
@@ -339,13 +339,13 @@ export const ProvidersPage: React.FC = () => {
           </div>
 
           {/* Secondary Dropdown Selectors */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 text-label-mono text-[12px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-4 text-label-mono text-[12px]">
             <div>
               <label className="block text-ink-subtle uppercase mb-1">Architecture</label>
               <select
                 value={archFilter}
                 onChange={e => setArchFilter(e.target.value)}
-                className="w-full bg-canvas-base border border-hairline-default rounded px-3 py-1.5 text-ink-primary focus:outline-hidden focus:border-accent-olive"
+                className="w-full bg-canvas-base border border-hairline-default rounded px-3 py-2 sm:py-1.5 text-ink-primary focus:outline-hidden focus:border-accent-olive min-h-[40px] sm:min-h-0"
               >
                 <option value="ALL">All Architectures</option>
                 <option value="H100">NVIDIA H100 / H200 SXM5</option>
@@ -360,7 +360,7 @@ export const ProvidersPage: React.FC = () => {
               <select
                 value={interconnectFilter}
                 onChange={e => setInterconnectFilter(e.target.value)}
-                className="w-full bg-canvas-base border border-hairline-default rounded px-3 py-1.5 text-ink-primary focus:outline-hidden focus:border-accent-olive"
+                className="w-full bg-canvas-base border border-hairline-default rounded px-3 py-2 sm:py-1.5 text-ink-primary focus:outline-hidden focus:border-accent-olive min-h-[40px] sm:min-h-0"
               >
                 <option value="ALL">All Interconnects</option>
                 <option value="IB">3.2 Tbps Quantum-2 IB</option>
@@ -374,7 +374,7 @@ export const ProvidersPage: React.FC = () => {
               <select
                 value={tierFilter}
                 onChange={e => setTierFilter(e.target.value)}
-                className="w-full bg-canvas-base border border-hairline-default rounded px-3 py-1.5 text-ink-primary focus:outline-hidden focus:border-accent-olive"
+                className="w-full bg-canvas-base border border-hairline-default rounded px-3 py-2 sm:py-1.5 text-ink-primary focus:outline-hidden focus:border-accent-olive min-h-[40px] sm:min-h-0"
               >
                 <option value="ALL">All Verified Tiers</option>
                 <option value="TIER1">Specialized AI Cloud (Tier-1)</option>
@@ -388,7 +388,7 @@ export const ProvidersPage: React.FC = () => {
               <select
                 value={contractFilter}
                 onChange={e => setContractFilter(e.target.value)}
-                className="w-full bg-canvas-base border border-hairline-default rounded px-3 py-1.5 text-ink-primary focus:outline-hidden focus:border-accent-olive"
+                className="w-full bg-canvas-base border border-hairline-default rounded px-3 py-2 sm:py-1.5 text-ink-primary focus:outline-hidden focus:border-accent-olive min-h-[40px] sm:min-h-0"
               >
                 <option value="ALL">Spot & On-Demand</option>
                 <option value="SPOT">Spot Only</option>
@@ -412,7 +412,7 @@ export const ProvidersPage: React.FC = () => {
                   setInterconnectFilter('ALL');
                   setActiveSlice('all');
                 }}
-                className="mt-4 px-4 py-1.5 bg-accent-olive text-surface-elevated text-label-mono rounded hover:bg-accent-olive-deep transition-colors"
+                className="mt-4 px-4 py-2 min-h-[44px] bg-accent-olive text-surface-elevated text-label-mono rounded hover:bg-accent-olive-deep transition-colors"
               >
                 Reset Filters
               </button>
@@ -424,10 +424,10 @@ export const ProvidersPage: React.FC = () => {
                 className="bg-surface-elevated border border-hairline-default rounded-lg hover:border-accent-olive/40 transition-all overflow-hidden shadow-xs"
               >
                 {/* Header row */}
-                <div className="p-5 md:p-6 border-b border-hairline-subtle bg-canvas-base">
+                <div className="p-4 sm:p-5 md:p-6 border-b border-hairline-subtle bg-canvas-base">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded bg-surface-elevated border border-hairline-default flex items-center justify-center font-headline-md font-semibold text-ink-primary text-xl shadow-xs shrink-0">
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-surface-elevated border border-hairline-default flex items-center justify-center font-headline-md font-semibold text-ink-primary text-lg sm:text-xl shadow-xs shrink-0">
                         {provider.initials}
                       </div>
                       <div>
@@ -451,14 +451,14 @@ export const ProvidersPage: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col md:items-end gap-2 shrink-0">
-                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container border border-secondary-fixed text-label-tag font-mono text-accent-olive">
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container border border-secondary-fixed text-label-tag font-mono text-accent-olive self-start md:self-auto">
                         <span className={`w-1.5 h-1.5 rounded-full ${provider.availability.color}`}></span>
                         <span>{provider.availability.status}</span>
                       </div>
-                      <div className="flex items-center gap-2 mt-1">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-1 w-full sm:w-auto">
                         <Link
                           to="/workload-planner"
-                          className="px-4 py-1.5 rounded-full bg-ink-primary text-surface-elevated text-label-mono font-medium hover:bg-neutral-800 transition-colors shadow-xs"
+                          className="px-4 py-2 sm:py-1.5 min-h-[44px] sm:min-h-0 rounded-full bg-ink-primary text-surface-elevated text-label-mono font-medium hover:bg-neutral-800 transition-colors shadow-xs flex items-center justify-center"
                         >
                           Configure in Planner ↗
                         </Link>
@@ -466,7 +466,7 @@ export const ProvidersPage: React.FC = () => {
                           href={provider.websiteUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-3 py-1.5 rounded-full bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono hover:bg-secondary-container hover:border-accent-olive/40 transition-colors"
+                          className="px-3 py-2 sm:py-1.5 min-h-[44px] sm:min-h-0 rounded-full bg-surface-elevated border border-hairline-default text-ink-primary text-label-mono hover:bg-secondary-container hover:border-accent-olive/40 transition-colors flex items-center justify-center"
                         >
                           Provider Website ↗
                         </a>
@@ -476,7 +476,7 @@ export const ProvidersPage: React.FC = () => {
                 </div>
 
                 {/* Details 4-col Grid */}
-                <div className="p-5 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-6 bg-surface-elevated text-body-sm font-sans">
+                <div className="p-4 sm:p-5 md:p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 bg-surface-elevated text-body-sm font-sans">
                   <div>
                     <span className="text-label-mono text-ink-subtle uppercase block mb-1 text-[11px]">
                       COMPUTE CONFIGURATION
@@ -527,7 +527,7 @@ export const ProvidersPage: React.FC = () => {
         </section>
 
         {/* 4. Provider Benchmark Comparison Matrix (Telemetry Well) */}
-        <section className="bg-surface-elevated border border-hairline-default rounded-lg p-6 mb-space-xl shadow-xs">
+        <section className="bg-surface-elevated border border-hairline-default rounded-lg p-4 sm:p-6 mb-space-xl shadow-xs">
           <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-hairline-default gap-2">
             <div>
               <span className="text-label-mono text-accent-olive tracking-wider uppercase">
@@ -537,15 +537,18 @@ export const ProvidersPage: React.FC = () => {
                 Interconnect Throughput, Cold Starts & Network Stability
               </h3>
             </div>
-            <div className="text-label-tag font-mono text-ink-muted flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-status-healthy"></span>
-              <span>Sweep Cycle: Every 60s via eBPF probes</span>
+            <div className="text-label-tag font-mono text-ink-muted flex items-center justify-between md:justify-end gap-2">
+              <span className="text-[11px] text-ink-subtle md:hidden">Swipe sideways →</span>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-status-healthy"></span>
+                <span>Sweep: 60s via eBPF probes</span>
+              </div>
             </div>
           </div>
 
           {/* Comparison Matrix Table */}
           <div className="overflow-x-auto mt-4">
-            <table className="w-full text-left text-body-sm font-sans">
+            <table className="w-full text-left text-body-sm font-sans min-w-[680px]">
               <thead>
                 <tr className="border-b border-hairline-default text-label-mono text-ink-muted text-[11px]">
                   <th className="py-3 px-3">PROVIDER</th>

@@ -291,39 +291,39 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
       {/* 2. HERO SECTION                            */}
       {/* ========================================== */}
       <section
-        className="pt-16 pb-12 md:pt-24 md:pb-16 px-6 md:px-12 max-w-7xl mx-auto flex flex-col items-center text-center"
+        className="pt-12 pb-10 sm:pt-16 sm:pb-12 md:pt-24 md:pb-16 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto flex flex-col items-center text-center"
         id="hero"
       >
         {/* Eyebrow Pill */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-canvas-alternate border border-hairline-default rounded-full mb-8">
-          <span className="w-2 h-2 rounded-full bg-status-healthy"></span>
-          <span className="font-label-mono text-label-mono uppercase text-ink-body tracking-wider">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-canvas-alternate border border-hairline-default rounded-full mb-6 sm:mb-8 max-w-full">
+          <span className="w-2 h-2 rounded-full bg-status-healthy shrink-0"></span>
+          <span className="font-label-mono text-[11px] sm:text-label-mono uppercase text-ink-body tracking-wider truncate">
             COMPUTE INTELLIGENCE, REIMAGINED
           </span>
         </div>
 
         {/* Main Headline */}
-        <h1 className="font-headline-xl text-headline-xl max-w-4xl text-ink-primary tracking-tight mb-6">
+        <h1 className="font-headline-xl text-3xl sm:text-4xl md:text-5xl lg:text-headline-xl max-w-4xl text-ink-primary tracking-tight mb-4 sm:mb-6">
           Your AI workloads. Always on the{' '}
           <span className="text-accent-olive font-medium">right compute</span>.
         </h1>
 
         {/* Subhead */}
-        <p className="font-body-lg text-body-lg text-ink-muted max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="font-body-lg text-sm sm:text-body-lg text-ink-muted max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">
           Kynetic finds the best way to run your AI workloads across compute providers—balancing
           cost, performance, reliability, and time to completion.
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8 w-full max-w-xs sm:max-w-none">
           <button
             onClick={onOpenEarlyAccess}
-            className="inline-flex items-center justify-center h-10 px-6 bg-ink-primary hover:bg-accent-olive-deep text-canvas-base rounded-full font-label-mono text-label-mono font-medium transition-all duration-150 active:scale-[0.98]"
+            className="inline-flex items-center justify-center h-11 sm:h-10 px-6 bg-ink-primary hover:bg-accent-olive-deep text-canvas-base rounded-full font-label-mono text-xs sm:text-label-mono font-medium transition-all duration-150 active:scale-[0.98] min-h-[44px]"
           >
             Get early access ↗
           </button>
           <a
-            className="inline-flex items-center justify-center h-10 px-6 bg-transparent hover:bg-canvas-alternate border border-hairline-default hover:border-ink-primary text-ink-primary rounded-full font-label-mono text-label-mono font-medium transition-all duration-150"
+            className="inline-flex items-center justify-center h-11 sm:h-10 px-6 bg-transparent hover:bg-canvas-alternate border border-hairline-default hover:border-ink-primary text-ink-primary rounded-full font-label-mono text-xs sm:text-label-mono font-medium transition-all duration-150 min-h-[44px]"
             href="#platform"
           >
             Explore the platform →
@@ -331,56 +331,56 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
         </div>
 
         {/* Trust Line */}
-        <p className="font-label-mono text-label-mono text-ink-subtle uppercase tracking-wider mb-8">
+        <p className="font-label-mono text-[11px] sm:text-label-mono text-ink-subtle uppercase tracking-wider mb-6 sm:mb-8 px-2">
           Built for AI engineers, research teams, and compute-intensive businesses.
         </p>
 
         {/* Cloud Supported Logos Strip (Original Colors, Light Webpage Background) */}
-        <SupportedCloudsStrip className="mt-2" />
+        <SupportedCloudsStrip className="mt-2 w-full" />
       </section>
 
       {/* ========================================== */}
       {/* 3. HERO PRODUCT VISUALIZATION (PLANNER)   */}
       {/* ========================================== */}
-      <section className="px-6 md:px-12 max-w-7xl mx-auto pb-24" id="workload-planner">
+      <section className="px-3.5 sm:px-6 md:px-12 max-w-7xl mx-auto pb-16 sm:pb-24" id="workload-planner">
         <div className="border border-hairline-default rounded-lg bg-surface-elevated overflow-hidden shadow-sm">
           {/* Planner Header Terminal Strip */}
-          <div className="bg-canvas-alternate px-6 py-3.5 border-b border-hairline-default flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="font-label-mono text-label-mono uppercase tracking-wider text-ink-primary font-semibold">
+          <div className="bg-canvas-alternate px-3.5 sm:px-6 py-3 border-b border-hairline-default flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="font-label-mono text-xs sm:text-label-mono uppercase tracking-wider text-ink-primary font-semibold">
                 WORKLOAD PLANNER
               </span>
-              <span className="text-hairline-strong font-label-mono text-label-mono">|</span>
-              <span className="font-label-mono text-label-mono text-ink-muted">
+              <span className="text-hairline-strong font-label-mono text-label-mono hidden sm:inline">|</span>
+              <span className="font-label-mono text-[11px] sm:text-label-mono text-ink-muted">
                 v2.4 Kernel Optimizer &amp; Roofline Twin
               </span>
             </div>
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-canvas-base border border-hairline-default">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 rounded-full bg-canvas-base border border-hairline-default">
               <span className="w-2 h-2 rounded-full bg-status-active"></span>
-              <span className="font-label-mono text-label-mono text-ink-body">
+              <span className="font-label-mono text-[10px] sm:text-label-mono text-ink-body">
                 AUTONOMOUS ROUTING ENGINE
               </span>
             </div>
           </div>
 
           {/* Compute Topology Mesh Visualization */}
-          <div className="border-b border-hairline-default">
+          <div className="border-b border-hairline-default overflow-hidden">
             <ComputeTopologyMesh />
           </div>
 
-          <div className="p-6 md:p-8">
+          <div className="p-3.5 sm:p-6 md:p-8">
             {/* 4-Stage Autonomous Intelligence Flow Pipeline */}
-            <div className="mb-6 border border-hairline-default rounded-md bg-canvas-base p-3.5">
-              <div className="flex items-center justify-between mb-2.5">
-                <span className="font-label-mono text-[11px] text-ink-muted uppercase tracking-wider font-semibold">
+            <div className="mb-6 border border-hairline-default rounded-md bg-canvas-base p-3 sm:p-3.5">
+              <div className="flex flex-wrap items-center justify-between gap-1 mb-2.5">
+                <span className="font-label-mono text-[10px] sm:text-[11px] text-ink-muted uppercase tracking-wider font-semibold">
                   INTELLIGENCE PIPELINE FLOW
                 </span>
-                <span className="font-label-mono text-[11px] text-status-healthy flex items-center gap-1.5 font-medium">
+                <span className="font-label-mono text-[10px] sm:text-[11px] text-status-healthy flex items-center gap-1.5 font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-status-healthy animate-pulse"></span>
                   Multi-Provider Telemetry Active
                 </span>
               </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 text-left">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-left">
                 <div className="p-2.5 rounded bg-surface-elevated border border-hairline-default">
                   <div className="font-label-mono text-[10px] text-accent-olive font-semibold">STAGE 01</div>
                   <div className="font-headline-sm text-xs text-ink-primary font-medium">Intent Ingestion</div>
@@ -406,11 +406,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
 
             {/* Workload Presets Switcher */}
             <div className="mb-4">
-              <div className="flex items-center justify-between mb-2">
-                <label className="block font-label-mono text-label-mono text-ink-muted uppercase tracking-wider">
+              <div className="flex flex-wrap items-center justify-between gap-1 mb-2">
+                <label className="block font-label-mono text-xs sm:text-label-mono text-ink-muted uppercase tracking-wider">
                   Select Workload Simulation Preset:
                 </label>
-                <span className="font-label-mono text-[11px] text-ink-subtle">
+                <span className="font-label-mono text-[10px] sm:text-[11px] text-ink-subtle">
                   Click to inspect live routing
                 </span>
               </div>
@@ -422,7 +422,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
                     <button
                       key={key}
                       onClick={() => handlePresetChange(key)}
-                      className={`text-left p-3 rounded border transition-all text-xs ${
+                      className={`text-left p-3 rounded border transition-all text-xs min-h-[44px] ${
                         isActive
                           ? 'bg-canvas-alternate border-accent-olive ring-1 ring-accent-olive text-ink-primary'
                           : 'bg-canvas-base border-hairline-default text-ink-muted hover:border-hairline-strong hover:text-ink-primary'
@@ -440,157 +440,230 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
 
             {/* User Input Prompt Box */}
             <div className="mb-6">
-              <label className="block font-label-mono text-label-mono text-ink-muted uppercase tracking-wider mb-2">
+              <label className="block font-label-mono text-xs sm:text-label-mono text-ink-muted uppercase tracking-wider mb-2">
                 Parsed Natural Language Intent
               </label>
-              <div className="flex items-center justify-between p-4 bg-canvas-base border border-hairline-default rounded-md text-ink-primary font-headline-sm text-title-md">
-                <div className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-accent-olive">terminal</span>
-                  <span className="font-body-md text-body-md text-ink-primary font-medium">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 sm:p-4 bg-canvas-base border border-hairline-default rounded-md text-ink-primary gap-2">
+                <div className="flex items-start sm:items-center gap-2.5 sm:gap-3">
+                  <span className="material-symbols-outlined text-accent-olive text-lg shrink-0 mt-0.5 sm:mt-0">terminal</span>
+                  <span className="font-body-md text-sm sm:text-body-md text-ink-primary font-medium leading-relaxed">
                     {currentPreset.prompt}
                   </span>
                 </div>
-                <span className="font-label-mono text-label-mono text-ink-muted bg-canvas-alternate px-2 py-1 rounded border border-hairline-subtle hidden sm:inline-block">
+                <span className="font-label-mono text-[11px] sm:text-label-mono text-ink-muted bg-canvas-alternate px-2 py-0.5 sm:py-1 rounded border border-hairline-subtle self-start sm:self-auto shrink-0">
                   PARSED INTENT
                 </span>
               </div>
             </div>
 
             {/* Constraint Chips Row */}
-            <div className="flex flex-wrap items-center gap-2 mb-8">
-              <span className="font-label-mono text-label-mono text-ink-muted mr-1">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-6 sm:mb-8">
+              <span className="font-label-mono text-xs sm:text-label-mono text-ink-muted mr-1">
                 Constraints:
               </span>
               {currentPreset.constraints.map((c, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-canvas-alternate border border-hairline-default rounded text-ink-body font-label-mono text-label-mono"
+                  className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-canvas-alternate border border-hairline-default rounded text-ink-body font-label-mono text-xs sm:text-label-mono min-h-[32px]"
                 >
-                  <span className="material-symbols-outlined text-sm text-ink-muted">{c.icon}</span>
+                  <span className="material-symbols-outlined text-xs sm:text-sm text-ink-muted">{c.icon}</span>
                   {c.label}
                 </span>
               ))}
             </div>
 
-            {/* Comparison Table Structure */}
-            <div className="border border-hairline-default rounded overflow-hidden">
-              <div className="bg-canvas-alternate grid grid-cols-12 px-5 py-2.5 font-label-mono text-label-mono uppercase tracking-wider text-ink-muted border-b border-hairline-default">
-                <div className="col-span-5">Provider &amp; Architecture</div>
-                <div className="col-span-2 text-right">Estimated Total</div>
-                <div className="col-span-2 text-right">Runtime</div>
-                <div className="col-span-1 text-center">Memory</div>
-                <div className="col-span-2 text-right">Status</div>
-              </div>
-
+            {/* Mobile View: Dedicated Responsive Cards (< sm) */}
+            <div className="block sm:hidden space-y-3">
               {currentPreset.options.map((opt) => {
                 const isSelected = selectedPlan === opt.id;
                 return (
                   <div
                     key={opt.id}
                     onClick={() => setSelectedPlan(opt.id)}
-                    className={`grid grid-cols-12 px-5 py-4 items-center border-b border-hairline-subtle transition-colors cursor-pointer ${
+                    className={`p-3.5 rounded border transition-colors cursor-pointer text-left ${
                       opt.isRec
-                        ? 'border-y-2 border-accent-olive bg-[#FAF9F5] relative ' +
-                          (isSelected ? 'ring-1 ring-accent-olive shadow-sm' : '')
+                        ? 'border-2 border-accent-olive bg-[#FAF9F5] ' +
+                          (isSelected ? 'ring-2 ring-accent-olive shadow-sm' : '')
                         : isSelected
-                        ? 'bg-canvas-base border-l-4 border-l-ink-primary'
-                        : 'hover:bg-canvas-base'
+                        ? 'bg-canvas-base border-l-4 border-l-ink-primary border-hairline-default'
+                        : 'bg-surface-elevated border-hairline-default hover:border-hairline-strong'
                     }`}
                   >
-                    <div className="col-span-5 flex items-center gap-3">
-                      <span
-                        className={`font-label-mono text-label-mono ${
-                          opt.isRec ? 'text-accent-olive font-bold' : 'text-ink-subtle'
-                        }`}
-                      >
-                        {opt.num}
-                      </span>
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <div className="flex items-center gap-2">
+                        <span className={`font-label-mono text-xs ${opt.isRec ? 'text-accent-olive font-bold' : 'text-ink-subtle'}`}>
+                          {opt.num}
+                        </span>
+                        <span className={`font-headline-sm text-sm text-ink-primary ${opt.isRec ? 'font-semibold' : 'font-medium'}`}>
+                          {opt.name}
+                        </span>
+                      </div>
+                      {opt.isRec && (
+                        <span className="px-2 py-0.5 rounded-full bg-accent-olive text-canvas-base font-label-mono font-medium text-[9px] shrink-0">
+                          RECOMMENDED
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-xs text-ink-muted mb-3 font-body-sm">
+                      {opt.provider}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-hairline-subtle font-label-mono text-xs">
                       <div>
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`font-headline-sm text-title-sm text-ink-primary ${
-                              opt.isRec ? 'font-semibold' : 'font-medium'
-                            }`}
-                          >
-                            {opt.name}
-                          </span>
-                          {opt.isRec && (
-                            <span className="px-2 py-0.5 rounded-full bg-accent-olive text-canvas-base font-label-mono text-label-mono font-medium text-[10px]">
-                              RECOMMENDED
-                            </span>
-                          )}
-                        </div>
-                        <div
-                          className={`font-body-sm text-body-sm ${
-                            opt.isRec ? 'text-accent-olive font-medium' : 'text-ink-muted'
-                          }`}
-                        >
-                          {opt.provider}
+                        <div className="text-ink-subtle text-[10px] uppercase">Est. Total</div>
+                        <div className={`text-sm font-semibold ${opt.isRec ? 'text-accent-olive' : 'text-ink-primary'}`}>
+                          {opt.cost}
                         </div>
                       </div>
-                    </div>
-                    <div
-                      className={`col-span-2 text-right font-headline-sm text-title-sm text-ink-primary ${
-                        opt.isRec ? 'font-semibold' : 'font-medium'
-                      }`}
-                    >
-                      {opt.cost}
-                    </div>
-                    <div
-                      className={`col-span-2 text-right font-body-md text-body-md ${
-                        opt.isRec ? 'text-ink-primary font-medium' : 'text-ink-body'
-                      }`}
-                    >
-                      {opt.runtime}
-                    </div>
-                    <div className="col-span-1 text-center font-label-mono text-label-mono text-ink-muted">
-                      {opt.memory}
-                    </div>
-                    <div className="col-span-2 text-right">
-                      <span
-                        className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border font-label-mono text-label-mono ${
-                          opt.isRec
-                            ? 'bg-canvas-alternate border-accent-olive text-ink-primary font-medium'
-                            : 'bg-canvas-alternate border-hairline-default text-ink-body'
-                        }`}
-                      >
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            opt.isRec
-                              ? 'bg-status-active'
-                              : opt.status === 'SLA Breach'
-                              ? 'bg-red-500'
-                              : 'bg-status-healthy'
-                          }`}
-                        ></span>
-                        {opt.status}
-                      </span>
+                      <div>
+                        <div className="text-ink-subtle text-[10px] uppercase">Runtime</div>
+                        <div className="text-ink-body font-medium">{opt.runtime}</div>
+                      </div>
+                      <div>
+                        <div className="text-ink-subtle text-[10px] uppercase">Memory</div>
+                        <div className="text-ink-muted">{opt.memory}</div>
+                      </div>
+                      <div>
+                        <div className="text-ink-subtle text-[10px] uppercase">Status</div>
+                        <div className="inline-flex items-center gap-1 font-medium text-ink-body">
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              opt.isRec
+                                ? 'bg-status-active'
+                                : opt.status === 'SLA Breach'
+                                ? 'bg-red-500'
+                                : 'bg-status-healthy'
+                            }`}
+                          ></span>
+                          <span>{opt.status}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
               })}
             </div>
 
+            {/* Desktop / Tablet View: Horizontally Scrollable Comparison Table (sm+) */}
+            <div className="hidden sm:block border border-hairline-default rounded overflow-x-auto">
+              <div className="min-w-[620px]">
+                <div className="bg-canvas-alternate grid grid-cols-12 px-5 py-2.5 font-label-mono text-label-mono uppercase tracking-wider text-ink-muted border-b border-hairline-default">
+                  <div className="col-span-5">Provider &amp; Architecture</div>
+                  <div className="col-span-2 text-right">Estimated Total</div>
+                  <div className="col-span-2 text-right">Runtime</div>
+                  <div className="col-span-1 text-center">Memory</div>
+                  <div className="col-span-2 text-right">Status</div>
+                </div>
+
+                {currentPreset.options.map((opt) => {
+                  const isSelected = selectedPlan === opt.id;
+                  return (
+                    <div
+                      key={opt.id}
+                      onClick={() => setSelectedPlan(opt.id)}
+                      className={`grid grid-cols-12 px-5 py-4 items-center border-b border-hairline-subtle transition-colors cursor-pointer ${
+                        opt.isRec
+                          ? 'border-y-2 border-accent-olive bg-[#FAF9F5] relative ' +
+                            (isSelected ? 'ring-1 ring-accent-olive shadow-sm' : '')
+                          : isSelected
+                          ? 'bg-canvas-base border-l-4 border-l-ink-primary'
+                          : 'hover:bg-canvas-base'
+                      }`}
+                    >
+                      <div className="col-span-5 flex items-center gap-3">
+                        <span
+                          className={`font-label-mono text-label-mono ${
+                            opt.isRec ? 'text-accent-olive font-bold' : 'text-ink-subtle'
+                          }`}
+                        >
+                          {opt.num}
+                        </span>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`font-headline-sm text-title-sm text-ink-primary ${
+                                opt.isRec ? 'font-semibold' : 'font-medium'
+                              }`}
+                            >
+                              {opt.name}
+                            </span>
+                            {opt.isRec && (
+                              <span className="px-2 py-0.5 rounded-full bg-accent-olive text-canvas-base font-label-mono text-label-mono font-medium text-[10px]">
+                                RECOMMENDED
+                              </span>
+                            )}
+                          </div>
+                          <div
+                            className={`font-body-sm text-body-sm ${
+                              opt.isRec ? 'text-accent-olive font-medium' : 'text-ink-muted'
+                            }`}
+                          >
+                            {opt.provider}
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className={`col-span-2 text-right font-headline-sm text-title-sm text-ink-primary ${
+                          opt.isRec ? 'font-semibold' : 'font-medium'
+                        }`}
+                      >
+                        {opt.cost}
+                      </div>
+                      <div
+                        className={`col-span-2 text-right font-body-md text-body-md ${
+                          opt.isRec ? 'text-ink-primary font-medium' : 'text-ink-body'
+                        }`}
+                      >
+                        {opt.runtime}
+                      </div>
+                      <div className="col-span-1 text-center font-label-mono text-label-mono text-ink-muted">
+                        {opt.memory}
+                      </div>
+                      <div className="col-span-2 text-right">
+                        <span
+                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border font-label-mono text-label-mono ${
+                            opt.isRec
+                              ? 'bg-canvas-alternate border-accent-olive text-ink-primary font-medium'
+                              : 'bg-canvas-alternate border-hairline-default text-ink-body'
+                          }`}
+                        >
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              opt.isRec
+                                ? 'bg-status-active'
+                                : opt.status === 'SLA Breach'
+                                ? 'bg-red-500'
+                                : 'bg-status-healthy'
+                            }`}
+                          ></span>
+                          {opt.status}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Recommendation Rationale Callout Card */}
-            <div className="mt-4 p-5 rounded-lg border border-hairline-default bg-[#FAF9F5] flex flex-col md:flex-row gap-5 items-start md:items-center justify-between">
+            <div className="mt-4 p-4 sm:p-5 rounded-lg border border-hairline-default bg-[#FAF9F5] flex flex-col md:flex-row gap-4 sm:gap-5 items-start md:items-center justify-between">
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1.5">
+                <div className="flex flex-wrap items-center gap-2 mb-1.5">
                   <span className="w-2 h-2 rounded-full bg-status-healthy"></span>
-                  <span className="font-label-mono text-label-mono font-bold text-accent-olive uppercase tracking-wider">
+                  <span className="font-label-mono text-xs sm:text-label-mono font-bold text-accent-olive uppercase tracking-wider">
                     RECOMMENDATION RATIONALE
                   </span>
                   <span className="text-[10px] px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-subtle font-label-mono text-ink-muted">
                     Deterministic Math
                   </span>
                 </div>
-                <div className="font-headline-sm text-body-md text-ink-primary font-semibold mb-1">
+                <div className="font-headline-sm text-sm sm:text-body-md text-ink-primary font-semibold mb-1">
                   {currentPreset.recommendation.headline}
                 </div>
-                <p className="font-body-sm text-body-sm text-ink-muted leading-relaxed">
+                <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted leading-relaxed">
                   {currentPreset.recommendation.details}
                 </p>
               </div>
-              <div className="flex sm:flex-row md:flex-col gap-2 shrink-0 w-full md:w-auto">
+              <div className="flex flex-col sm:flex-row md:flex-col gap-2 shrink-0 w-full md:w-auto">
                 {currentPreset.recommendation.metrics.map((m, idx) => (
                   <div
                     key={idx}
@@ -610,7 +683,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
             </div>
 
             {/* Footer Note */}
-            <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between text-ink-muted font-label-mono text-label-mono gap-2">
+            <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between text-ink-muted font-label-mono text-xs sm:text-label-mono gap-2">
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-sm text-ink-subtle">info</span>
                 Calculated via eBPF hardware profiling &amp; dynamic spot arbitrage engine.
@@ -624,35 +697,35 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
       {/* ========================================== */}
       {/* 4. POSITIONING / CAPABILITY STRIP          */}
       {/* ========================================== */}
-      <section className="border-y border-hairline-default bg-canvas-alternate py-10">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <p className="font-label-mono text-label-mono uppercase tracking-widest text-ink-muted text-center mb-8">
+      <section className="border-y border-hairline-default bg-canvas-alternate py-8 sm:py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+          <p className="font-label-mono text-xs sm:text-label-mono uppercase tracking-widest text-ink-muted text-center mb-6 sm:mb-8">
             ONE INTELLIGENCE LAYER. MULTIPLE COMPUTE PROVIDERS.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <div className="text-center md:text-left border-b md:border-b-0 md:border-r border-hairline-default pb-6 md:pb-0 md:pr-6">
-              <div className="font-headline-sm text-title-md text-ink-primary font-medium mb-1">
+              <div className="font-headline-sm text-base sm:text-title-md text-ink-primary font-medium mb-1">
                 Compare total cost
               </div>
-              <p className="font-body-sm text-body-sm text-ink-muted">
+              <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted">
                 Factor in start latency, egress penalties, memory overhead, and true job completion
                 duration.
               </p>
             </div>
             <div className="text-center md:text-left border-b md:border-b-0 md:border-r border-hairline-default pb-6 md:pb-0 md:px-6">
-              <div className="font-headline-sm text-title-sm text-ink-primary font-medium mb-1">
+              <div className="font-headline-sm text-base sm:text-title-sm text-ink-primary font-medium mb-1">
                 Predict workload performance
               </div>
-              <p className="font-body-sm text-body-sm text-ink-muted">
+              <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted">
                 Simulate runtime accuracy based on model parameter architecture and memory
                 bandwidth constraints.
               </p>
             </div>
             <div className="text-center md:text-left md:pl-6">
-              <div className="font-headline-sm text-title-sm text-ink-primary font-medium mb-1">
+              <div className="font-headline-sm text-base sm:text-title-sm text-ink-primary font-medium mb-1">
                 Optimize execution
               </div>
-              <p className="font-body-sm text-body-sm text-ink-muted">
+              <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted">
                 Continuously assess whether migrating or rebalancing checkpoints yields net
                 savings under live conditions.
               </p>
@@ -664,15 +737,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
       {/* ========================================== */}
       {/* 5. PROBLEM -> SOLUTION (01, 02, 03)        */}
       {/* ========================================== */}
-      <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto" id="platform">
-        <div className="mb-16 max-w-3xl">
-          <span className="font-label-mono text-label-mono uppercase tracking-wider text-accent-olive font-semibold mb-2 block">
+      <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto" id="platform">
+        <div className="mb-10 sm:mb-16 max-w-3xl">
+          <span className="font-label-mono text-xs sm:text-label-mono uppercase tracking-wider text-accent-olive font-semibold mb-2 block">
             THE COMPUTATION DILEMMA
           </span>
-          <h2 className="font-headline-lg text-headline-lg text-ink-primary tracking-tight mb-4">
+          <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-headline-lg text-ink-primary tracking-tight mb-3 sm:mb-4">
             Choosing a GPU shouldn't be guesswork.
           </h2>
-          <p className="font-body-lg text-body-lg text-ink-muted leading-relaxed">
+          <p className="font-body-lg text-sm sm:text-body-lg text-ink-muted leading-relaxed">
             Hourly pricing only tells part of the story. The real cost depends on runtime, startup
             delays, data movement, failures, and recovery.
           </p>
@@ -680,21 +753,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 border border-hairline-default rounded-lg bg-surface-elevated overflow-hidden divide-y md:divide-y-0 md:divide-x divide-hairline-default">
           {/* Column 01 */}
-          <div className="p-8 flex flex-col justify-between">
+          <div className="p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="font-label-mono text-label-mono text-ink-subtle uppercase tracking-wider mb-6">
+              <div className="font-label-mono text-xs sm:text-label-mono text-ink-subtle uppercase tracking-wider mb-4 sm:mb-6">
                 STEP 01
               </div>
-              <h3 className="font-headline-sm text-headline-sm text-ink-primary font-medium mb-4">
+              <h3 className="font-headline-sm text-lg sm:text-headline-sm text-ink-primary font-medium mb-3 sm:mb-4">
                 01 — Compare beyond hourly rates
               </h3>
-              <p className="font-body-md text-body-md text-ink-muted leading-relaxed mb-6">
+              <p className="font-body-md text-xs sm:text-body-md text-ink-muted leading-relaxed mb-6">
                 A cheaper GPU per hour that runs twice as long costs more. Kynetic models actual
                 runtimes across hardware generations before you provision a single minute of
                 compute.
               </p>
             </div>
-            <div className="p-4 bg-canvas-alternate rounded border border-hairline-subtle font-label-mono text-label-mono text-ink-body">
+            <div className="p-3.5 sm:p-4 bg-canvas-alternate rounded border border-hairline-subtle font-label-mono text-xs sm:text-label-mono text-ink-body">
               <div className="flex justify-between mb-1">
                 <span>Hourly Rate</span>
                 <span className="text-ink-subtle">Partial truth</span>
@@ -707,21 +780,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
           </div>
 
           {/* Column 02 */}
-          <div className="p-8 flex flex-col justify-between">
+          <div className="p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="font-label-mono text-label-mono text-ink-subtle uppercase tracking-wider mb-6">
+              <div className="font-label-mono text-xs sm:text-label-mono text-ink-subtle uppercase tracking-wider mb-4 sm:mb-6">
                 STEP 02
               </div>
-              <h3 className="font-headline-sm text-headline-sm text-ink-primary font-medium mb-4">
+              <h3 className="font-headline-sm text-lg sm:text-headline-sm text-ink-primary font-medium mb-3 sm:mb-4">
                 02 — Predict before you provision
               </h3>
-              <p className="font-body-md text-body-md text-ink-muted leading-relaxed mb-6">
+              <p className="font-body-md text-xs sm:text-body-md text-ink-muted leading-relaxed mb-6">
                 Input your model size, batch parameters, and framework. Our performance twin
                 predicts memory fit, time-to-completion, and throttling probability with calibrated
                 confidence intervals.
               </p>
             </div>
-            <div className="p-4 bg-canvas-alternate rounded border border-hairline-subtle font-label-mono text-label-mono text-ink-body">
+            <div className="p-3.5 sm:p-4 bg-canvas-alternate rounded border border-hairline-subtle font-label-mono text-xs sm:text-label-mono text-ink-body">
               <div className="flex justify-between mb-1">
                 <span>Runtime Variance</span>
                 <span className="text-status-healthy">± 4.2% Verified</span>
@@ -734,21 +807,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
           </div>
 
           {/* Column 03 */}
-          <div className="p-8 flex flex-col justify-between">
+          <div className="p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="font-label-mono text-label-mono text-ink-subtle uppercase tracking-wider mb-6">
+              <div className="font-label-mono text-xs sm:text-label-mono text-ink-subtle uppercase tracking-wider mb-4 sm:mb-6">
                 STEP 03
               </div>
-              <h3 className="font-headline-sm text-headline-sm text-ink-primary font-medium mb-4">
+              <h3 className="font-headline-sm text-lg sm:text-headline-sm text-ink-primary font-medium mb-3 sm:mb-4">
                 03 — Optimize as conditions change
               </h3>
-              <p className="font-body-md text-body-md text-ink-muted leading-relaxed mb-6">
+              <p className="font-body-md text-xs sm:text-body-md text-ink-muted leading-relaxed mb-6">
                 Spot market drops or node degradations trigger real-time arbitrage. Kynetic
                 calculates whether the cost of migrating checkpoints is offset by the destination's
                 superior efficiency.
               </p>
             </div>
-            <div className="p-4 bg-canvas-alternate rounded border border-hairline-subtle font-label-mono text-label-mono text-ink-body">
+            <div className="p-3.5 sm:p-4 bg-canvas-alternate rounded border border-hairline-subtle font-label-mono text-xs sm:text-label-mono text-ink-body">
               <div className="flex justify-between mb-1">
                 <span>Arbitrage Gain</span>
                 <span className="text-accent-olive">Net positive threshold</span>
@@ -765,109 +838,109 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
       {/* ========================================== */}
       {/* 6. HOW IT WORKS (Horizontal Pipeline)      */}
       {/* ========================================== */}
-      <section className="py-20 border-t border-hairline-default bg-canvas-base" id="how-it-works">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
+      <section className="py-16 sm:py-20 border-t border-hairline-default bg-canvas-base" id="how-it-works">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16">
             <div>
-              <span className="font-label-mono text-label-mono uppercase tracking-wider text-accent-olive font-semibold mb-2 block">
+              <span className="font-label-mono text-xs sm:text-label-mono uppercase tracking-wider text-accent-olive font-semibold mb-2 block">
                 PIPELINE EXECUTION
               </span>
-              <h2 className="font-headline-lg text-headline-lg text-ink-primary tracking-tight">
+              <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-headline-lg text-ink-primary tracking-tight">
                 From workload to execution.
               </h2>
             </div>
-            <p className="font-body-md text-body-md text-ink-muted max-w-md mt-4 md:mt-0">
+            <p className="font-body-md text-xs sm:text-body-md text-ink-muted max-w-md mt-3 md:mt-0">
               A continuous four-stage control loop running autonomously behind every training
               session, batch inference job, or fine-tuning run.
             </p>
           </div>
 
           {/* 4-step horizontal pipeline */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative">
             {/* Step 1 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-5 sm:p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
               <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-label-mono text-label-mono font-bold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-ink-primary">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
+                  <span className="font-label-mono text-xs sm:text-label-mono font-bold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-ink-primary">
                     01
                   </span>
                   <span className="material-symbols-outlined text-ink-muted">edit_note</span>
                 </div>
-                <h4 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                <h4 className="font-headline-sm text-base sm:text-title-md text-ink-primary font-medium mb-2">
                   Describe
                 </h4>
-                <p className="font-body-sm text-body-sm text-ink-muted">
+                <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted">
                   Define model parameters, target duration, hardware preferences, and budgetary
                   ceilings.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-hairline-subtle font-label-mono text-label-mono text-ink-subtle">
+              <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-hairline-subtle font-label-mono text-[11px] sm:text-label-mono text-ink-subtle">
                 Input parsing layer
               </div>
             </div>
 
             {/* Step 2 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-5 sm:p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
               <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-label-mono text-label-mono font-bold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-ink-primary">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
+                  <span className="font-label-mono text-xs sm:text-label-mono font-bold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-ink-primary">
                     02
                   </span>
                   <span className="material-symbols-outlined text-ink-muted">analytics</span>
                 </div>
-                <h4 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                <h4 className="font-headline-sm text-base sm:text-title-md text-ink-primary font-medium mb-2">
                   Evaluate
                 </h4>
-                <p className="font-body-sm text-body-sm text-ink-muted">
+                <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted">
                   Simulate job performance across bare metal, multi-cloud, and secondary compute
                   clusters.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-hairline-subtle font-label-mono text-label-mono text-ink-subtle">
+              <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-hairline-subtle font-label-mono text-[11px] sm:text-label-mono text-ink-subtle">
                 Benchmark digital twin
               </div>
             </div>
 
             {/* Step 3 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-5 sm:p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
               <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-label-mono text-label-mono font-bold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-ink-primary">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
+                  <span className="font-label-mono text-xs sm:text-label-mono font-bold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-ink-primary">
                     03
                   </span>
                   <span className="material-symbols-outlined text-ink-muted">alt_route</span>
                 </div>
-                <h4 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                <h4 className="font-headline-sm text-base sm:text-title-md text-ink-primary font-medium mb-2">
                   Plan
                 </h4>
-                <p className="font-body-sm text-body-sm text-ink-muted">
+                <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted">
                   Receive deterministic recommendations detailing exact financial, time, and
                   reliability metrics.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-hairline-subtle font-label-mono text-label-mono text-ink-subtle">
+              <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-hairline-subtle font-label-mono text-[11px] sm:text-label-mono text-ink-subtle">
                 Constrained routing
               </div>
             </div>
 
             {/* Step 4 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-5 sm:p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
               <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-label-mono text-label-mono font-bold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-ink-primary">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
+                  <span className="font-label-mono text-xs sm:text-label-mono font-bold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default text-ink-primary">
                     04
                   </span>
                   <span className="material-symbols-outlined text-ink-muted">sync</span>
                 </div>
-                <h4 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                <h4 className="font-headline-sm text-base sm:text-title-md text-ink-primary font-medium mb-2">
                   Optimize
                 </h4>
-                <p className="font-body-sm text-body-sm text-ink-muted">
+                <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted">
                   Maintain active telemetry to dynamically checkpoint, pause, or rebalance execution
                   if costs fluctuate.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-hairline-subtle font-label-mono text-label-mono text-ink-subtle">
+              <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-hairline-subtle font-label-mono text-[11px] sm:text-label-mono text-ink-subtle">
                 Active telemetry loop
               </div>
             </div>
@@ -878,16 +951,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
       {/* ========================================== */}
       {/* 7. COMPUTE INTELLIGENCE SECTION            */}
       {/* ========================================== */}
-      <section className="py-24 bg-canvas-alternate border-y border-hairline-default">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="max-w-2xl mb-16">
-            <span className="font-label-mono text-label-mono uppercase tracking-wider text-accent-olive font-semibold mb-2 block">
+      <section className="py-16 sm:py-20 md:py-24 bg-canvas-alternate border-y border-hairline-default">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+          <div className="max-w-2xl mb-10 sm:mb-16">
+            <span className="font-label-mono text-xs sm:text-label-mono uppercase tracking-wider text-accent-olive font-semibold mb-2 block">
               CORE ARCHITECTURE
             </span>
-            <h2 className="font-headline-lg text-headline-lg text-ink-primary tracking-tight mb-4">
+            <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-headline-lg text-ink-primary tracking-tight mb-3 sm:mb-4">
               Not another GPU marketplace. An intelligence layer.
             </h2>
-            <p className="font-body-lg text-body-lg text-ink-muted leading-relaxed">
+            <p className="font-body-lg text-sm sm:text-body-lg text-ink-muted leading-relaxed">
               Marketplaces sell capacity. Kynetic optimizes decisions across all of them without
               lock-in or supplier preference.
             </p>
@@ -895,81 +968,81 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between hover:border-hairline-strong transition-colors">
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-5 sm:p-6 flex flex-col justify-between hover:border-hairline-strong transition-colors">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-9 h-9 rounded bg-canvas-alternate border border-hairline-default flex items-center justify-center">
                     <span className="material-symbols-outlined text-ink-primary text-lg">model_training</span>
                   </div>
-                  <span className="font-label-mono text-[11px] text-accent-olive font-semibold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default">
+                  <span className="font-label-mono text-[10px] sm:text-[11px] text-accent-olive font-semibold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default">
                     CORE 01
                   </span>
                 </div>
-                <h3 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                <h3 className="font-headline-sm text-base sm:text-title-md text-ink-primary font-medium mb-2">
                   Workload Performance Digital Twin
                 </h3>
-                <p className="font-body-sm text-body-sm text-ink-muted leading-relaxed mb-4">
+                <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted leading-relaxed mb-4">
                   Predict runtime, cost, and memory saturation before launch. Built using actual
                   execution curves across thousands of foundation models.
                 </p>
 
                 {/* Bespoke Interactive Diagram */}
-                <div className="mb-4">
+                <div className="mb-4 overflow-x-auto">
                   <DigitalTwinDiagram />
                 </div>
               </div>
 
-              <ul className="space-y-2 border-t border-hairline-subtle pt-4 font-label-mono text-label-mono text-ink-body">
+              <ul className="space-y-2 border-t border-hairline-subtle pt-4 font-label-mono text-xs sm:text-label-mono text-ink-body">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-status-healthy"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-status-healthy shrink-0"></span>
                   <span>Bandwidth profiling (PCIe vs NVLink)</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-status-healthy"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-status-healthy shrink-0"></span>
                   <span>Batch throughput curves</span>
                 </li>
               </ul>
             </div>
 
             {/* Card 2 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between hover:border-hairline-strong transition-colors">
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-5 sm:p-6 flex flex-col justify-between hover:border-hairline-strong transition-colors">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-9 h-9 rounded bg-canvas-alternate border border-hairline-default flex items-center justify-center">
                     <span className="material-symbols-outlined text-ink-primary text-lg">balance</span>
                   </div>
-                  <span className="font-label-mono text-[11px] text-accent-olive font-semibold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default">
+                  <span className="font-label-mono text-[10px] sm:text-[11px] text-accent-olive font-semibold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default">
                     CORE 02
                   </span>
                 </div>
-                <h3 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                <h3 className="font-headline-sm text-base sm:text-title-md text-ink-primary font-medium mb-2">
                   Predictive Compute Arbitrage
                 </h3>
-                <p className="font-body-sm text-body-sm text-ink-muted leading-relaxed mb-4">
+                <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted leading-relaxed mb-4">
                   Compare remaining workload cost against migration penalties in real time. Never
                   leave money on the table when secondary market spot prices dive.
                 </p>
 
                 {/* Bespoke Interactive Diagram */}
-                <div className="mb-4">
+                <div className="mb-4 overflow-x-auto">
                   <ArbitrageDiagram />
                 </div>
               </div>
 
-              <ul className="space-y-2 border-t border-hairline-subtle pt-4 font-label-mono text-label-mono text-ink-body">
+              <ul className="space-y-2 border-t border-hairline-subtle pt-4 font-label-mono text-xs sm:text-label-mono text-ink-body">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-status-healthy"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-status-healthy shrink-0"></span>
                   <span>Egress cost compensation</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-status-healthy"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-status-healthy shrink-0"></span>
                   <span>SLA violation safeguards</span>
                 </li>
               </ul>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-5 sm:p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-9 h-9 rounded bg-canvas-alternate border border-hairline-default flex items-center justify-center">
@@ -977,31 +1050,31 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
                       history_toggle_off
                     </span>
                   </div>
-                  <span className="font-label-mono text-label-mono px-2 py-0.5 rounded bg-canvas-alternate text-ink-muted border border-hairline-default">
+                  <span className="font-label-mono text-xs sm:text-label-mono px-2 py-0.5 rounded bg-canvas-alternate text-ink-muted border border-hairline-default">
                     Roadmap
                   </span>
                 </div>
-                <h3 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                <h3 className="font-headline-sm text-base sm:text-title-md text-ink-primary font-medium mb-2">
                   Checkpoint &amp; Resume
                 </h3>
-                <p className="font-body-sm text-body-sm text-ink-muted leading-relaxed mb-4">
+                <p className="font-body-sm text-xs sm:text-body-sm text-ink-muted leading-relaxed mb-4">
                   Seamlessly capture state across divergent hardware platforms without code alteration.
                   Moving an in-flight PyTorch session from Lambda to RunPod effortlessly.
                 </p>
 
                 {/* Bespoke Interactive Diagram */}
-                <div className="mb-4">
+                <div className="mb-4 overflow-x-auto">
                   <CheckpointDiagram />
                 </div>
               </div>
 
-              <ul className="space-y-2 border-t border-hairline-subtle pt-4 font-label-mono text-label-mono text-ink-body">
+              <ul className="space-y-2 border-t border-hairline-subtle pt-4 font-label-mono text-xs sm:text-label-mono text-ink-body">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-ink-subtle"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-ink-subtle shrink-0"></span>
                   <span>Universal tensor state serialization</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-ink-subtle"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-ink-subtle shrink-0"></span>
                   <span>Zero-downtime shard re-hydration</span>
                 </li>
               </ul>
@@ -1013,49 +1086,49 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
       {/* ========================================== */}
       {/* 8. DEVELOPER EXPERIENCE SECTION           */}
       {/* ========================================== */}
-      <section className="py-24 px-6 md:px-12 max-w-7xl mx-auto" id="developers">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto" id="developers">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Explanatory Column */}
           <div className="lg:col-span-5">
-            <span className="font-label-mono text-label-mono uppercase tracking-wider text-accent-olive font-semibold mb-2 block">
+            <span className="font-label-mono text-xs sm:text-label-mono uppercase tracking-wider text-accent-olive font-semibold mb-2 block">
               SDK &amp; WORKFLOW
             </span>
-            <h2 className="font-headline-lg text-headline-lg text-ink-primary tracking-tight mb-4">
+            <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-headline-lg text-ink-primary tracking-tight mb-3 sm:mb-4">
               Designed for developers. Built for real workloads.
             </h2>
-            <p className="font-body-lg text-body-lg text-ink-muted mb-8 leading-relaxed">
+            <p className="font-body-lg text-sm sm:text-body-lg text-ink-muted mb-6 sm:mb-8 leading-relaxed">
               Keep your existing workflows. Add a layer of intelligence around where and how your
               workloads run.
             </p>
-            <div className="space-y-4 mb-8">
+            <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
               <div className="flex items-start gap-3">
-                <span className="material-symbols-outlined text-accent-olive mt-0.5">
+                <span className="material-symbols-outlined text-accent-olive mt-0.5 text-lg shrink-0">
                   check_circle
                 </span>
-                <p className="font-body-md text-body-md text-ink-body">
+                <p className="font-body-md text-xs sm:text-body-md text-ink-body">
                   Native Python client with async scheduling primitives.
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <span className="material-symbols-outlined text-accent-olive mt-0.5">
+                <span className="material-symbols-outlined text-accent-olive mt-0.5 text-lg shrink-0">
                   check_circle
                 </span>
-                <p className="font-body-md text-body-md text-ink-body">
+                <p className="font-body-md text-xs sm:text-body-md text-ink-body">
                   Drop-in compatibility with PyTorch, Ray, and Hugging Face Trainer.
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <span className="material-symbols-outlined text-accent-olive mt-0.5">
+                <span className="material-symbols-outlined text-accent-olive mt-0.5 text-lg shrink-0">
                   check_circle
                 </span>
-                <p className="font-body-md text-body-md text-ink-body">
+                <p className="font-body-md text-xs sm:text-body-md text-ink-body">
                   Deterministic dry-runs via CLI to inspect cost curves locally.
                 </p>
               </div>
             </div>
             <Link
               to="/docs"
-              className="inline-flex items-center gap-2 font-headline-sm text-title-sm text-ink-primary hover:text-accent-olive transition-colors font-medium"
+              className="inline-flex items-center gap-2 font-headline-sm text-sm sm:text-title-sm text-ink-primary hover:text-accent-olive transition-colors font-medium min-h-[44px]"
             >
               <span>Explore the developer platform</span>
               <span>→</span>
@@ -1063,20 +1136,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
           </div>
 
           {/* Right Terminal / Code Panel */}
-          <div className="lg:col-span-7">
-            <div className="bg-[#141413] border border-[#2B2A27] rounded-lg overflow-hidden shadow-none">
+          <div className="lg:col-span-7 w-full overflow-hidden">
+            <div className="bg-[#141413] border border-[#2B2A27] rounded-lg overflow-hidden shadow-none w-full">
               {/* Terminal Titlebar */}
-              <div className="px-4 py-3 bg-[#1C1B19] border-b border-[#2B2A27] flex items-center justify-between text-[#8E8D88] font-label-mono text-label-mono">
+              <div className="px-3.5 sm:px-4 py-2.5 sm:py-3 bg-[#1C1B19] border-b border-[#2B2A27] flex items-center justify-between text-[#8E8D88] font-label-mono text-xs sm:text-label-mono">
                 <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-[#33322E]"></span>
-                  <span className="w-3 h-3 rounded-full bg-[#33322E]"></span>
-                  <span className="w-3 h-3 rounded-full bg-[#33322E]"></span>
-                  <span className="ml-2 text-[#C4C3BC]">plan_execution.py</span>
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#33322E]"></span>
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#33322E]"></span>
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#33322E]"></span>
+                  <span className="ml-1 sm:ml-2 text-[#C4C3BC] text-xs">plan_execution.py</span>
                 </div>
-                <span>python3 · kynetic-v0.9.4</span>
+                <span className="text-[11px] sm:text-xs">python3 · kynetic-v0.9.4</span>
               </div>
               {/* Code Content */}
-              <div className="p-6 technical-code text-[13px] leading-relaxed overflow-x-auto text-[#E4E3DD]">
+              <div className="p-4 sm:p-6 technical-code text-xs sm:text-[13px] leading-relaxed overflow-x-auto text-[#E4E3DD]">
                 <div>
                   <span className="text-[#7F7E77]"># 1. Initialize Kynetic compute layer</span>
                 </div>
@@ -1142,7 +1215,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
                 </div>
               </div>
               {/* Panel Footer Disclaimer */}
-              <div className="px-5 py-2.5 bg-[#181816] border-t border-[#2B2A27] text-[11px] text-[#7F7E77] font-label-mono">
+              <div className="px-4 sm:px-5 py-2.5 bg-[#181816] border-t border-[#2B2A27] text-[10px] sm:text-[11px] text-[#7F7E77] font-label-mono">
                 Conceptual SDK example — API availability and syntax are subject to implementation.
               </div>
             </div>
@@ -1158,15 +1231,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
       {/* ========================================== */}
       {/* 9. FINAL SPACIOUS CTA                      */}
       {/* ========================================== */}
-      <section className="py-24 border-t border-hairline-default bg-canvas-base text-center" id="access">
-        <div className="max-w-4xl mx-auto px-6">
-          <span className="font-label-mono text-label-mono uppercase tracking-widest text-accent-olive font-semibold mb-4 block">
+      <section className="py-16 sm:py-24 border-t border-hairline-default bg-canvas-base text-center" id="access">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <span className="font-label-mono text-xs sm:text-label-mono uppercase tracking-widest text-accent-olive font-semibold mb-3 sm:mb-4 block">
             GET STARTED
           </span>
-          <h2 className="font-headline-xl text-headline-xl text-ink-primary tracking-tight mb-6">
+          <h2 className="font-headline-xl text-3xl sm:text-4xl md:text-headline-xl text-ink-primary tracking-tight mb-4 sm:mb-6">
             Better compute decisions start here.
           </h2>
-          <p className="font-body-lg text-body-lg text-ink-muted max-w-xl mx-auto mb-10">
+          <p className="font-body-lg text-sm sm:text-body-lg text-ink-muted max-w-xl mx-auto mb-8 sm:mb-10 px-2">
             Join leading machine learning teams using Kynetic to eliminate overprovisioning and run
             workloads on the optimal hardware.
           </p>
@@ -1174,10 +1247,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
           {emailSubmitted ? (
             <div className="p-4 bg-canvas-alternate border border-hairline-default rounded-lg max-w-md mx-auto text-ink-primary font-body-md flex items-center justify-center gap-2">
               <span className="material-symbols-outlined text-status-healthy text-[20px]">check_circle</span>
-              <span>Thank you! We'll invite your team in Cohort 04.</span>
+              <span className="text-sm sm:text-base">Thank you! We'll invite your team in Cohort 04.</span>
             </div>
           ) : (
-            <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+            <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto w-full">
               {/* Invisible Honeypot */}
               <div style={{ display: 'none' }} aria-hidden="true">
                 <input
@@ -1191,7 +1264,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
               </div>
 
               <input
-                className="w-full sm:w-72 h-10 px-4 rounded bg-surface-elevated border border-hairline-default text-ink-primary placeholder:text-ink-subtle text-body-md focus:border-ink-primary focus:ring-0 focus:outline-none"
+                className="w-full sm:w-72 h-11 sm:h-10 px-4 rounded bg-surface-elevated border border-hairline-default text-ink-primary placeholder:text-ink-subtle text-sm sm:text-body-md focus:border-ink-primary focus:ring-0 focus:outline-none min-h-[44px]"
                 placeholder="name@company.com"
                 type="email"
                 required
@@ -1199,7 +1272,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
                 onChange={(e) => setEmailInput(e.target.value)}
               />
               <button
-                className="w-full sm:w-auto inline-flex items-center justify-center h-10 px-6 bg-ink-primary hover:bg-accent-olive-deep text-canvas-base rounded-full font-label-mono text-label-mono font-medium transition-all duration-150 active:scale-[0.98] whitespace-nowrap"
+                className="w-full sm:w-auto inline-flex items-center justify-center h-11 sm:h-10 px-6 bg-ink-primary hover:bg-accent-olive-deep text-canvas-base rounded-full font-label-mono text-xs sm:text-label-mono font-medium transition-all duration-150 active:scale-[0.98] whitespace-nowrap min-h-[44px]"
                 type="submit"
               >
                 Request early access ↗
@@ -1207,7 +1280,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
             </form>
           )}
 
-          <p className="font-label-mono text-label-mono text-ink-subtle mt-4">
+          <p className="font-label-mono text-[11px] sm:text-label-mono text-ink-subtle mt-4 px-2">
             Selective developer cohort rollout · No billing required for simulation access
           </p>
         </div>

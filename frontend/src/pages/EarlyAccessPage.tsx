@@ -72,7 +72,7 @@ export const EarlyAccessPage: React.FC = () => {
         <div className="w-[840px] h-[340px] mx-auto bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-subtle via-canvas-base/40 to-transparent blur-2xl"></div>
       </div>
 
-      <div className="max-w-[1240px] mx-auto px-space-lg md:px-margin-desktop pt-space-xl pb-space-xl relative z-10">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-margin-desktop pt-6 sm:pt-space-xl pb-8 sm:pb-space-xl relative z-10">
         {/* HERO CONTEXT */}
         <section className="max-w-3xl mb-space-xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-canvas-alternate border border-hairline-default mb-space-md">
@@ -81,7 +81,7 @@ export const EarlyAccessPage: React.FC = () => {
               PRIVATE ADMISSION // COHORT 04
             </span>
           </div>
-          <h1 className="text-headline-lg md:text-headline-xl font-headline-xl tracking-tight text-ink-primary mb-space-md">
+          <h1 className="text-3xl sm:text-headline-lg md:text-headline-xl font-headline-xl tracking-tight text-ink-primary mb-space-md">
             Architectural compute orchestration for high-scale AI engineering.
           </h1>
           <p className="text-body-lg font-body-lg text-ink-body leading-relaxed mb-space-lg max-w-2xl">
@@ -112,7 +112,7 @@ export const EarlyAccessPage: React.FC = () => {
         {/* TWO-COLUMN WORKBENCH / APPLICATION LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
           {/* LEFT COLUMN: APPLICATION FORM (7 COLS) */}
-          <section className="lg:col-span-7 bg-surface-elevated border border-hairline-default rounded-xl p-space-lg md:p-space-xl">
+          <section className="lg:col-span-7 bg-surface-elevated border border-hairline-default rounded-xl p-4 sm:p-space-lg md:p-space-xl">
             <div className="flex items-center justify-between border-b border-hairline-subtle pb-space-md mb-space-lg">
               <div>
                 <h2 className="text-headline-sm font-headline-sm text-ink-primary">
@@ -148,7 +148,7 @@ export const EarlyAccessPage: React.FC = () => {
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="mt-4 px-6 py-2 bg-ink-primary text-canvas-base rounded-full font-label-mono text-label-mono font-medium hover:bg-neutral-800"
+                  className="mt-4 px-6 py-2 min-h-[44px] bg-ink-primary text-canvas-base rounded-full font-label-mono text-label-mono font-medium hover:bg-neutral-800"
                 >
                   Edit Submission
                 </button>
@@ -179,7 +179,7 @@ export const EarlyAccessPage: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      className="w-full h-10 px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary placeholder:text-ink-subtle focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm"
+                      className="w-full h-11 sm:h-10 min-h-[44px] px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary placeholder:text-ink-subtle focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm"
                       id="work-email"
                       placeholder="alex@frontier-research.ai"
                       required
@@ -203,7 +203,7 @@ export const EarlyAccessPage: React.FC = () => {
                       Organization / Entity <span className="text-blue-electric">*</span>
                     </label>
                     <input
-                      className="w-full h-10 px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary placeholder:text-ink-subtle focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm"
+                      className="w-full h-11 sm:h-10 min-h-[44px] px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary placeholder:text-ink-subtle focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm"
                       id="org-name"
                       placeholder="Synthetix Labs Inc."
                       required
@@ -220,7 +220,7 @@ export const EarlyAccessPage: React.FC = () => {
                       GitHub / Hugging Face Handle
                     </label>
                     <input
-                      className="w-full h-10 px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary placeholder:text-ink-subtle focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm"
+                      className="w-full h-11 sm:h-10 min-h-[44px] px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary placeholder:text-ink-subtle focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm"
                       id="handle"
                       placeholder="org-or-lead-eng"
                       type="text"
@@ -256,7 +256,7 @@ export const EarlyAccessPage: React.FC = () => {
                           checked={gpuScale === item.val}
                           onChange={() => setGpuScale(item.val)}
                         />
-                        <div className="h-10 flex items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
+                        <div className="h-11 sm:h-10 min-h-[44px] flex items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
                           {item.label}
                         </div>
                       </label>
@@ -301,7 +301,7 @@ export const EarlyAccessPage: React.FC = () => {
                   <label className="block text-label-mono font-label-mono text-ink-primary mb-2">
                     Current GPU Compute Providers In Use
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-2.5">
                     {[
                       { name: 'Lambda Cloud', checked: true },
                       { name: 'CoreWeave', checked: true },
@@ -312,11 +312,11 @@ export const EarlyAccessPage: React.FC = () => {
                     ].map((provider, i) => (
                       <label
                         key={i}
-                        className="flex items-center gap-2 p-2.5 rounded border border-hairline-default bg-canvas-base hover:border-hairline-strong cursor-pointer transition-colors"
+                        className="flex items-center gap-2 p-2.5 rounded border border-hairline-default bg-canvas-base hover:border-hairline-strong cursor-pointer transition-colors min-h-[42px]"
                       >
                         <input
                           defaultChecked={provider.checked}
-                          className="w-4 h-4 text-blue-electric rounded border-hairline-default focus:ring-0"
+                          className="w-4 h-4 text-blue-electric rounded border-hairline-default focus:ring-0 shrink-0"
                           type="checkbox"
                         />
                         <span className="text-body-sm font-body-sm text-ink-primary">
@@ -337,7 +337,7 @@ export const EarlyAccessPage: React.FC = () => {
                   </label>
                   <div className="relative">
                     <select
-                      className="w-full h-10 pl-3.5 pr-10 bg-surface-elevated border border-hairline-default rounded text-ink-primary focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm appearance-none"
+                      className="w-full h-11 sm:h-10 min-h-[44px] pl-3.5 pr-10 bg-surface-elevated border border-hairline-default rounded text-ink-primary focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm appearance-none"
                       id="bottleneck"
                       value={bottleneck}
                       onChange={(e) => setBottleneck(e.target.value)}
@@ -356,7 +356,7 @@ export const EarlyAccessPage: React.FC = () => {
 
                 {/* Monthly Spend Ceiling */}
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
                     <label className="text-label-mono font-label-mono text-ink-primary">
                       Target Monthly GPU Compute Spend
                     </label>
@@ -364,7 +364,7 @@ export const EarlyAccessPage: React.FC = () => {
                       ESTIMATED QUOTA
                     </span>
                   </div>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {[
                       { val: 'tier1', label: '$5k – $20k /mo' },
                       { val: 'tier2', label: '$20k – $100k /mo' },
@@ -379,7 +379,7 @@ export const EarlyAccessPage: React.FC = () => {
                           checked={spendTier === tier.val}
                           onChange={() => setSpendTier(tier.val)}
                         />
-                        <div className="h-10 flex flex-col items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
+                        <div className="min-h-[44px] py-2 px-2 text-center flex flex-col items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
                           {tier.label}
                         </div>
                       </label>
@@ -390,7 +390,7 @@ export const EarlyAccessPage: React.FC = () => {
                 {/* CTA Action */}
                 <div className="pt-space-sm">
                   <button
-                    className="w-full h-11 px-space-lg rounded-full bg-ink-primary text-surface-elevated text-label-mono font-label-mono hover:bg-blue-deep transition-all duration-150 flex items-center justify-center gap-2 group shadow-sm active:scale-[0.99]"
+                    className="w-full h-12 min-h-[48px] px-space-lg rounded-full bg-ink-primary text-surface-elevated text-label-mono font-label-mono hover:bg-blue-deep transition-all duration-150 flex items-center justify-center gap-2 group shadow-sm active:scale-[0.99]"
                     type="submit"
                   >
                     <span>Submit Early Access Application</span>
@@ -398,8 +398,8 @@ export const EarlyAccessPage: React.FC = () => {
                       north_east
                     </span>
                   </button>
-                  <div className="flex items-center justify-center gap-2 mt-3.5 text-label-tag font-label-tag text-ink-muted">
-                    <span className="material-symbols-outlined text-[14px] text-ink-subtle">
+                  <div className="flex items-center justify-center gap-2 mt-3.5 text-label-tag font-label-tag text-ink-muted text-center">
+                    <span className="material-symbols-outlined text-[14px] text-ink-subtle shrink-0">
                       verified_user
                     </span>
                     <span>
@@ -414,7 +414,7 @@ export const EarlyAccessPage: React.FC = () => {
           {/* RIGHT COLUMN: COHORT ADVANTAGES & LIVE TELEMETRY (5 COLS) */}
           <aside className="lg:col-span-5 space-y-space-lg">
             {/* Card 1: Cohort Inclusions */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-xl p-space-lg">
+            <div className="bg-surface-elevated border border-hairline-default rounded-xl p-4 sm:p-space-lg">
               <div className="flex items-center justify-between border-b border-hairline-subtle pb-space-sm mb-space-md">
                 <h3 className="text-title-sm font-title-sm text-ink-primary font-medium">
                   Cohort 04 Admissions Guarantee
@@ -484,7 +484,7 @@ export const EarlyAccessPage: React.FC = () => {
             </div>
 
             {/* Card 2: Live Broker & Telemetry Well */}
-            <div className="bg-canvas-alternate border border-hairline-default rounded-xl p-space-lg">
+            <div className="bg-canvas-alternate border border-hairline-default rounded-xl p-4 sm:p-space-lg">
               <div className="flex items-center justify-between pb-space-sm border-b border-hairline-default mb-space-md">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-status-healthy"></span>
@@ -548,7 +548,7 @@ export const EarlyAccessPage: React.FC = () => {
             </div>
 
             {/* Micro Quote / Attestation */}
-            <div className="p-space-md rounded-lg border border-hairline-subtle bg-surface-elevated/60 text-ink-muted text-body-sm font-body-sm italic">
+            <div className="p-4 sm:p-space-md rounded-lg border border-hairline-subtle bg-surface-elevated/60 text-ink-muted text-body-sm font-body-sm italic">
               “Kynetic cut our checkpoint failure recovery latency from 45 minutes to 22 seconds
               across spot instances.”
               <div className="mt-2 text-label-mono font-label-mono not-italic text-ink-primary font-medium flex items-center gap-1.5">

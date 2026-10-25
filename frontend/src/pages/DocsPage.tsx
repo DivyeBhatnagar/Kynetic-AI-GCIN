@@ -11,6 +11,7 @@ export const DocsPage: React.FC<DocsPageProps> = ({ onOpenEarlyAccess: _onOpenEa
   const [copiedScript, setCopiedScript] = useState(false);
   const [copiedPip, setCopiedPip] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const pythonCode = `# Import the universal orchestrator
 import kynetic as kn
@@ -93,14 +94,37 @@ kn run dispatch --plan-id plan_98a72f10 --auto-resume`;
   };
 
   return (
-    <div className="w-full max-w-[1240px] mx-auto flex-1 flex flex-col md:flex-row px-space-md md:px-space-lg lg:px-margin-desktop py-space-lg gap-space-lg">
+    <div className="w-full max-w-[1240px] mx-auto flex-1 flex flex-col md:flex-row px-4 sm:px-space-md md:px-space-lg lg:px-margin-desktop py-4 sm:py-space-lg gap-4 md:gap-space-lg">
       <SEO
         title="Python SDK, CLI &amp; Workload API Documentation"
         description="Developer quickstart, Python SDK client reference, CLI deployment guide, and REST API specification for Kynetic AI compute orchestration."
         canonicalPath="/docs"
       />
+
+      {/* MOBILE NAV TRIGGER (Visible only on < md) */}
+      <div className="md:hidden">
+        <button
+          onClick={() => setMobileNavOpen(!mobileNavOpen)}
+          className="w-full flex items-center justify-between p-3 rounded-lg border border-hairline-default bg-surface-elevated text-ink-primary font-medium text-body-sm min-h-[44px]"
+          aria-expanded={mobileNavOpen}
+          aria-label="Toggle documentation navigation index"
+        >
+          <span className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[18px] text-accent-olive">menu_book</span>
+            <span>Documentation Index {mobileNavOpen ? '(Hide)' : '(Show)'}</span>
+          </span>
+          <span className="material-symbols-outlined text-[18px]">
+            {mobileNavOpen ? 'expand_less' : 'expand_more'}
+          </span>
+        </button>
+      </div>
+
       {/* LEFT SIDEBAR: Collapsible Architectural Nav */}
-      <aside className="w-full md:w-64 lg:w-72 flex-shrink-0 md:border-r border-hairline-default md:pr-space-md self-start md:sticky md:top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+      <aside
+        className={`w-full md:w-64 lg:w-72 flex-shrink-0 md:border-r border-hairline-default md:pr-space-md self-start md:sticky md:top-20 max-h-[calc(100vh-6rem)] overflow-y-auto ${
+          mobileNavOpen ? 'block' : 'hidden md:block'
+        }`}
+      >
         <div className="flex items-center justify-between pb-space-sm mb-space-sm border-b border-hairline-subtle">
           <span className="text-label-tag font-label-tag uppercase tracking-wider text-ink-muted">
             Navigation Index
@@ -446,12 +470,15 @@ kn run dispatch --plan-id plan_98a72f10 --auto-resume`;
             <span className="w-1.5 h-4 bg-blue-electric rounded"></span>
             4. Workload Constraint Parameters
           </h2>
-          <p className="text-body-md font-body-md text-ink-body mb-space-sm">
-            Technical specifications passed to the autonomous allocation engine:
-          </p>
+          <div className="flex items-center justify-between mb-space-sm">
+            <p className="text-body-md font-body-md text-ink-body">
+              Technical specifications passed to the autonomous allocation engine:
+            </p>
+            <span className="text-[11px] font-label-mono text-ink-subtle md:hidden shrink-0 ml-2">Swipe sideways →</span>
+          </div>
           {/* Technical Spec Table */}
           <div className="border border-hairline-default rounded-lg overflow-x-auto bg-surface-elevated">
-            <table className="w-full text-left border-collapse text-body-sm font-body-sm">
+            <table className="w-full text-left border-collapse text-body-sm font-body-sm min-w-[640px]">
               <thead>
                 <tr className="border-b border-hairline-default bg-canvas-alternate text-ink-muted text-label-tag font-label-tag">
                   <th className="py-2.5 px-4 font-semibold uppercase">Parameter</th>

@@ -20,29 +20,29 @@ export const ThankYouPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-canvas-base text-ink-primary font-body-md pt-28 pb-20 px-6">
+    <div className="min-h-screen bg-canvas-base text-ink-primary font-body-md pt-24 sm:pt-28 pb-12 sm:pb-20 px-4 sm:px-6">
       <SEO
         title="Application Received &amp; Confirmed"
         description="Your early access application for Kynetic AI enterprise compute orchestration has been confirmed."
       />
 
       <div className="max-w-3xl mx-auto w-full">
-        <div className="p-8 md:p-12 rounded border border-hairline-default bg-surface-elevated shadow-sm space-y-8">
+        <div className="p-5 sm:p-8 md:p-12 rounded border border-hairline-default bg-surface-elevated shadow-sm space-y-6 sm:space-y-8">
           {/* Header Status */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-hairline-subtle">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-hairline-subtle">
             <div className="flex items-center gap-2.5">
-              <span className="w-3 h-3 rounded-full bg-status-healthy"></span>
-              <span className="font-label-mono text-label-mono uppercase tracking-wider text-status-healthy font-bold">
+              <span className="w-2.5 h-2.5 rounded-full bg-status-healthy shrink-0"></span>
+              <span className="font-label-mono text-xs sm:text-label-mono uppercase tracking-wider text-status-healthy font-bold">
                 APPLICATION CONFIRMED • CONVERSION COMPLETE
               </span>
             </div>
-            <div className="px-3 py-1 rounded bg-canvas-alternate border border-hairline-default font-label-mono text-xs text-ink-primary">
+            <div className="self-start sm:self-auto px-3 py-1 rounded bg-canvas-alternate border border-hairline-default font-label-mono text-xs text-ink-primary">
               REF: <span className="font-semibold text-accent-olive">{refId}</span>
             </div>
           </div>
 
           <div className="space-y-3">
-            <h1 className="font-headline-lg text-headline-lg text-ink-primary tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-headline-lg font-headline-lg text-ink-primary tracking-tight">
               Welcome to the Kynetic Compute Mesh
             </h1>
             <p className="font-body-md text-ink-muted leading-relaxed">
@@ -52,7 +52,7 @@ export const ThankYouPage: React.FC = () => {
 
           {/* Process Timeline Steps */}
           <div className="space-y-4">
-            <h3 className="font-label-mono text-label-mono uppercase text-ink-muted tracking-wider font-semibold">
+            <h3 className="font-label-mono text-xs sm:text-label-mono uppercase text-ink-muted tracking-wider font-semibold">
               Onboarding Pipeline Protocol
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -86,16 +86,16 @@ export const ThankYouPage: React.FC = () => {
           <div className="pt-6 border-t border-hairline-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
             <Link
               to="/workload-planner"
-              className="w-full sm:w-auto px-6 py-2.5 rounded bg-accent-olive text-white font-label-mono text-label-mono uppercase tracking-wider hover:bg-accent-olive-deep transition-all text-center shadow-sm"
+              className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded bg-accent-olive text-white font-label-mono text-label-mono uppercase tracking-wider hover:bg-accent-olive-deep transition-all text-center shadow-sm flex items-center justify-center"
             >
               Simulate Another Workload
             </Link>
-            <div className="flex items-center gap-4 text-xs font-label-mono text-ink-muted">
-              <Link to="/dashboard" className="text-accent-olive hover:underline font-medium">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-4 text-xs font-label-mono text-ink-muted">
+              <Link to="/dashboard" className="text-accent-olive hover:underline font-medium min-h-[36px] flex items-center">
                 View Live Dashboard
               </Link>
               <span>•</span>
-              <Link to="/docs" className="text-ink-primary hover:underline">
+              <Link to="/docs" className="text-ink-primary hover:underline min-h-[36px] flex items-center">
                 Read Python SDK Docs
               </Link>
             </div>
