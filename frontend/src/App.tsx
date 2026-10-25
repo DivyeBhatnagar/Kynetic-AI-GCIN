@@ -9,6 +9,9 @@ import { ArchitecturePage } from './pages/ArchitecturePage';
 import { DocsPage } from './pages/DocsPage';
 import { EarlyAccessPage } from './pages/EarlyAccessPage';
 import { MobileHomePage } from './pages/MobileHomePage';
+import { DashboardPage } from './pages/DashboardPage';
+import { RecommendationsPage } from './pages/RecommendationsPage';
+import { ProvidersPage } from './pages/ProvidersPage';
 
 // Scroll to top on navigation helper
 const ScrollToTop: React.FC = () => {
@@ -51,6 +54,42 @@ export const App: React.FC = () => {
               <>
                 <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
                 <WorkloadPlannerPage onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+
+          {/* Console / Dashboard Page */}
+          <Route
+            path="/dashboard"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <DashboardPage onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+
+          {/* Compute Recommendations Page */}
+          <Route
+            path="/recommendations"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <RecommendationsPage onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+
+          {/* Compute Providers Directory Page */}
+          <Route
+            path="/providers"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <ProvidersPage />
                 <Footer variant="editorial" />
               </>
             }

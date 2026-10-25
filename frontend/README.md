@@ -13,7 +13,7 @@ The frontend is built with a single unified **Olive Green Brutalist** design sys
 - **Primary Olive Brand Palette:** Deep forest tones (`#3E4736`), earthy olive accents (`#59664D`), and vibrant status indicators (`#84A96C`).
 - **Warm Monastic Canvas:** High-contrast, glare-free warm stone backgrounds (`#FAF9F5` / `#F8F7F3`).
 - **Crisp Typography:** Standardized on Google Fonts **Geist** (`font-display`), **Inter** (`font-sans`), and **JetBrains Mono** (`font-mono`).
-- **Official Brand Mark:** Standardized exclusively on [`/public/assets/image.png`](/assets/image.png).
+- **Official Brand Mark:** Standardized exclusively on [`/public/assets/Kynetic AI Logo.png`](/assets/Kynetic%20AI%20Logo.png).
 
 ---
 
@@ -22,7 +22,10 @@ The frontend is built with a single unified **Olive Green Brutalist** design sys
 | Route | Component | Description |
 | :--- | :--- | :--- |
 | `/` | [`HomePage.tsx`](src/pages/HomePage.tsx) | Flagship Desktop Homepage featuring the Hero, interactive planner preview, 4-stage pipeline, and declarative Python SDK panel. |
+| `/dashboard` | [`DashboardPage.tsx`](src/pages/DashboardPage.tsx) | Mission Control Dashboard with 4 high-level telemetry cards, active execution matrix table, blueprint candidates, live 20Hz eBPF terminal log, and cluster health meter. |
 | `/workload-planner` | [`WorkloadPlannerPage.tsx`](src/pages/WorkloadPlannerPage.tsx) | Full Interactive Workload Planner with blueprint presets, context token sliders, VRAM estimators, and 4-candidate dispatch matrix. |
+| `/recommendations` | [`RecommendationsPage.tsx`](src/pages/RecommendationsPage.tsx) | Benchmark-Verified Compute Recommendations with ranked candidate cards (Ada L40S, H100 SXM5, A100, Grace Hopper), roofline efficiency, and comparative architecture matrix. |
+| `/providers` | [`ProvidersPage.tsx`](src/pages/ProvidersPage.tsx) | Global Compute Providers Directory with architecture/interconnect/tier dropdown filters, quick slices, and deep provider audits (CoreWeave, RunPod, Lambda, Crusoe, Nebius). |
 | `/architecture` | [`ArchitecturePage.tsx`](src/pages/ArchitecturePage.tsx) | Control Plane Strata Layers 01–04, live simulated telemetry trace logs, and zero-trust execution pillars. |
 | `/docs` | [`DocsPage.tsx`](src/pages/DocsPage.tsx) | Developer documentation with interactive multi-language code switchers (Python SDK, CLI `kn`, and cURL REST). |
 | `/early-access` | [`EarlyAccessPage.tsx`](src/pages/EarlyAccessPage.tsx) | Cohort 04 admissions portal with real-time cluster size selection, workload checklists, and broker telemetry well. |
@@ -33,7 +36,7 @@ The frontend is built with a single unified **Olive Green Brutalist** design sys
 ## 🧩 Core Architecture & Components
 
 - **[`src/components/Navbar.tsx`](src/components/Navbar.tsx):**
-  - Sticky glassmorphic header with official brand mark (`/assets/image.png`).
+  - Sticky glassmorphic header with official brand mark (`/assets/Kynetic AI Logo.png`).
   - Active route indicators, responsive mobile drawer navigation, and early access trigger buttons.
 - **[`src/components/Footer.tsx`](src/components/Footer.tsx):**
   - Modular footer supporting flagship 4-column brutalist layouts and clean editorial system-status modes.

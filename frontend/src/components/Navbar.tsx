@@ -22,20 +22,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
         {/* Brand Logo Anchor */}
         <Link
           to="/"
-          className="text-title-md font-headline-md tracking-tight text-ink-primary flex items-center gap-2.5 group"
+          className="flex items-center group py-1"
+          aria-label="Kynetic AI Home"
         >
           <img
-            alt="Kynetic AI Logo"
-            className="w-7 h-7 object-contain rounded-sm"
-            src="/assets/image.png"
+            alt="Kynetic AI"
+            className="h-8 md:h-9 w-auto object-contain transition-opacity group-hover:opacity-90"
+            src="/assets/Kynetic%20AI%20Logo.png"
           />
-          <span className="font-headline-sm text-headline-sm tracking-tight text-ink-primary">
-            Kynetic AI
-          </span>
         </Link>
 
         {/* Center Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden lg:flex items-center space-x-6 text-[13px]">
           <Link
             to="/"
             className={currentPath === '/' ? activeLinkClass : inactiveLinkClass}
@@ -43,10 +41,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
             Platform
           </Link>
           <Link
+            to="/dashboard"
+            className={currentPath === '/dashboard' ? activeLinkClass : inactiveLinkClass}
+          >
+            Dashboard
+          </Link>
+          <Link
             to="/workload-planner"
             className={currentPath === '/workload-planner' ? activeLinkClass : inactiveLinkClass}
           >
             Workload Planner
+          </Link>
+          <Link
+            to="/recommendations"
+            className={currentPath === '/recommendations' ? activeLinkClass : inactiveLinkClass}
+          >
+            Recommendations
+          </Link>
+          <Link
+            to="/providers"
+            className={currentPath === '/providers' ? activeLinkClass : inactiveLinkClass}
+          >
+            Providers
           </Link>
           <Link
             to="/architecture"
@@ -88,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
           {/* Mobile hamburger button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-1.5 text-ink-primary rounded border border-hairline-default hover:bg-canvas-alternate"
+            className="lg:hidden p-1.5 text-ink-primary rounded border border-hairline-default hover:bg-canvas-alternate"
             aria-label="Toggle navigation menu"
           >
             <span className="material-symbols-outlined text-[20px]">
@@ -100,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-hairline-default bg-canvas-alternate px-6 py-4 space-y-3">
+        <div className="lg:hidden border-t border-hairline-default bg-canvas-alternate px-6 py-4 space-y-3">
           <nav className="flex flex-col gap-3 font-body-sm text-ink-body">
             <Link
               to="/"
@@ -111,12 +127,42 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
               {currentPath === '/' && <span className="text-xs text-accent-olive">●</span>}
             </Link>
             <Link
+              to="/dashboard"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-1 hover:text-ink-primary flex items-center justify-between"
+            >
+              <span>Dashboard</span>
+              {currentPath === '/dashboard' && (
+                <span className="text-xs text-accent-olive">●</span>
+              )}
+            </Link>
+            <Link
               to="/workload-planner"
               onClick={() => setMobileMenuOpen(false)}
               className="py-1 hover:text-ink-primary flex items-center justify-between"
             >
               <span>Workload Planner</span>
               {currentPath === '/workload-planner' && (
+                <span className="text-xs text-accent-olive">●</span>
+              )}
+            </Link>
+            <Link
+              to="/recommendations"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-1 hover:text-ink-primary flex items-center justify-between"
+            >
+              <span>Recommendations</span>
+              {currentPath === '/recommendations' && (
+                <span className="text-xs text-accent-olive">●</span>
+              )}
+            </Link>
+            <Link
+              to="/providers"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-1 hover:text-ink-primary flex items-center justify-between"
+            >
+              <span>Providers</span>
+              {currentPath === '/providers' && (
                 <span className="text-xs text-accent-olive">●</span>
               )}
             </Link>

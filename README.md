@@ -193,10 +193,10 @@ stateDiagram-v2
 ├── frontend/                           # Client interface (React 19 + TypeScript + Vite)
 │   ├── public/
 │   │   └── assets/
-│   │       └── image.png               # Official Kynetic AI brand mark
+│   │       └── Kynetic AI Logo.png     # Official Kynetic AI brand mark
 │   ├── src/
 │   │   ├── components/                 # Navbar, Footer, EarlyAccessModal
-│   │   ├── pages/                      # HomePage, WorkloadPlannerPage, ArchitecturePage, DocsPage, EarlyAccessPage, MobileHomePage
+│   │   ├── pages/                      # HomePage, DashboardPage, WorkloadPlannerPage, RecommendationsPage, ProvidersPage, ArchitecturePage, DocsPage, EarlyAccessPage, MobileHomePage
 │   │   ├── App.tsx                     # Client-side routing with unified Olive Green theme
 │   │   ├── index.css                   # Monastic brutalist styles & custom tokens
 │   │   └── main.tsx                    # React DOM entry point

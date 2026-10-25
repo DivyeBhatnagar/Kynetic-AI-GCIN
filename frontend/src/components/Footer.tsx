@@ -6,7 +6,7 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
-  const logoSrc = '/assets/image.png';
+  const logoSrc = '/assets/Kynetic%20AI%20Logo.png';
 
   if (variant === 'editorial') {
     return (
@@ -14,14 +14,13 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
         <div className="w-full px-6 md:px-12 py-12 max-w-7xl mx-auto">
           {/* Top Row: Brand & Live System Status */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between pb-6 border-b border-hairline-subtle gap-4">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-5 h-5 rounded bg-ink-primary text-surface-elevated text-xs font-semibold">
-                K
-              </span>
-              <span className="text-title-sm font-title-sm font-medium text-ink-primary">
-                Kynetic AI
-              </span>
-            </div>
+            <Link to="/" className="flex items-center group py-0.5" aria-label="Kynetic AI Home">
+              <img
+                alt="Kynetic AI"
+                className="h-7 w-auto object-contain transition-opacity group-hover:opacity-90"
+                src={logoSrc}
+              />
+            </Link>
             {/* Live Operations Telemetry Status */}
             <div className="flex flex-wrap items-center gap-4 text-label-tag font-label-tag">
               <div className="flex items-center gap-1.5">
@@ -68,19 +67,13 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-14">
           {/* Brand Wordmark Col */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
+            <Link to="/" className="inline-block mb-4 group" aria-label="Kynetic AI Home">
               <img
-                alt="Kynetic AI Logo"
-                className="w-6 h-6 object-contain rounded-sm"
+                alt="Kynetic AI"
+                className="h-8 md:h-9 w-auto object-contain transition-opacity group-hover:opacity-90"
                 src={logoSrc}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/assets/logo_olive.svg';
-                }}
               />
-              <span className="font-headline-sm text-title-sm text-ink-primary font-medium tracking-tight">
-                Kynetic AI
-              </span>
-            </div>
+            </Link>
             <p className="font-body-sm text-body-sm text-ink-muted max-w-xs leading-relaxed">
               High-scale compute orchestration &amp; GPU optimization. Autonomous intelligence across distributed providers.
             </p>
@@ -93,18 +86,23 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
             </h4>
             <ul className="space-y-2 text-body-sm font-body-sm text-ink-muted">
               <li>
+                <Link to="/dashboard" className="hover:text-ink-primary transition-colors">
+                  Console Dashboard
+                </Link>
+              </li>
+              <li>
                 <Link to="/workload-planner" className="hover:text-ink-primary transition-colors">
                   Workload Planner
                 </Link>
               </li>
               <li>
-                <Link to="/architecture" className="hover:text-ink-primary transition-colors">
-                  Performance Twin
+                <Link to="/recommendations" className="hover:text-ink-primary transition-colors">
+                  Compute Recommendations
                 </Link>
               </li>
               <li>
-                <Link to="/architecture" className="hover:text-ink-primary transition-colors">
-                  Arbitrage Engine
+                <Link to="/providers" className="hover:text-ink-primary transition-colors">
+                  Compute Providers Directory
                 </Link>
               </li>
               <li>

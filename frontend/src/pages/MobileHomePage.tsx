@@ -13,16 +13,13 @@ export const MobileHomePage: React.FC<MobileHomePageProps> = ({ onOpenEarlyAcces
       {/* 1. Top Navigation Bar (Mobile Optimized: 390px Viewport) */}
       <header className="sticky top-0 z-50 bg-canvas-base/95 backdrop-blur-sm border-b border-hairline-default w-full">
         <div className="max-w-[420px] mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center group" aria-label="Kynetic AI Home">
             <img
-              alt="Kynetic AI Logo"
-              className="w-6 h-6 object-contain rounded-sm"
-              src="/assets/image.png"
+              alt="Kynetic AI"
+              className="h-7 w-auto object-contain transition-opacity group-hover:opacity-90"
+              src="/assets/Kynetic%20AI%20Logo.png"
             />
-            <span className="font-headline-sm text-title-md tracking-tight font-semibold text-ink-primary">
-              Kynetic AI
-            </span>
-          </div>
+          </Link>
           <div className="flex items-center gap-2.5">
             <button
               onClick={onOpenEarlyAccess}
@@ -555,13 +552,12 @@ export const MobileHomePage: React.FC<MobileHomePageProps> = ({ onOpenEarlyAcces
 
         {/* 10. Minimalist Mobile Footer */}
         <footer className="pt-6 border-t border-hairline-default text-center space-y-3 text-ink-muted font-body-sm text-[12px]">
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center">
             <img
-              alt="Kynetic AI Logo"
-              className="w-4 h-4 object-contain rounded-xs"
-              src="/assets/image.png"
+              alt="Kynetic AI"
+              className="h-6 w-auto object-contain"
+              src="/assets/Kynetic%20AI%20Logo.png"
             />
-            <span className="font-semibold text-ink-primary">Kynetic AI</span>
           </div>
           <p>© 2025 Kynetic AI Inc. Monastic Brutalist Infrastructure.</p>
           <div className="flex justify-center gap-4 text-ink-body font-label-mono text-[11px]">
