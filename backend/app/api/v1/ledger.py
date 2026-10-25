@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.adapters.persistence.database import get_db
-from app.adapters.persistence.models import CostLedgerEntryModel, UsageObservationModel, RunModel
+from app.adapters.persistence.models import CostLedgerEntryModel, RunModel
 from app.core.security import AuthContext
 from app.api.deps import get_current_auth, verify_tenant_access
 from app.core.errors import EntityNotFoundError

@@ -1,4 +1,4 @@
-import re
+import string
 from datetime import datetime, timezone
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Any
@@ -69,7 +69,6 @@ class CheckpointVerifier:
     """
 
     ALLOWED_SCHEMES = ("s3://", "gcs://", "gs://", "file://", "r2://", "https://")
-    HEX_64_PATTERN = re.compile(r"^[a-fA-F0-9]{64}$")
 
     @classmethod
     def verify(
@@ -108,7 +107,7 @@ class CheckpointVerifier:
 
         # Step 2: Size & Cryptographic SHA-256 Digest Validation
         size_valid = size_bytes > 1024  # Checkpoints must be at least 1 KB
-        digest_valid = bool(cls.HEX_64_PATTERN.match(sha256_digest))
+        digest_valid = len(sha256_digest) == 64 and all(c in string.hexdigits for c in sha256_digest)
 
         if size_valid and digest_valid:
             steps.append(CheckpointVerificationStep(

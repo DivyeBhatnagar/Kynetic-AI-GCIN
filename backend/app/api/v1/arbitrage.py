@@ -19,7 +19,6 @@ from app.adapters.persistence.models import (
 )
 from app.core.security import AuthContext
 from app.api.deps import get_current_auth
-from app.adapters.providers.fake_provider import FakeProviderAdapter
 from app.adapters.providers.registry import ProviderRegistry
 from app.domain.checkpoints.transfer_estimator import TransferEstimator
 from app.domain.arbitrage.schemas import (
@@ -34,7 +33,6 @@ from app.domain.arbitrage.safeguards import AntiOscillationGuard
 
 
 router = APIRouter(prefix="/v1", tags=["Predictive Compute Arbitrage"])
-fake_adapter = FakeProviderAdapter()
 
 
 @router.post("/runs/{run_id}/arbitrage/scan", response_model=list[ArbitrageOpportunityResponse])
@@ -104,19 +102,15 @@ async def scan_arbitrage_opportunities(
     if current_offer:
         current_price = current_offer.price_per_hour
         source_provider = current_offer.provider_id
+        all_offers = await ProviderRegistry.list_all_active_offers()
     else:
         all_offers = await ProviderRegistry.list_all_active_offers()
-        if not all_offers:
-            all_offers = await fake_adapter.list_offers()
         curr_sim = next((o for o in all_offers if o.id == run.compute_offer_id), None)
         if curr_sim:
             current_price = curr_sim.price_per_hour
             source_provider = curr_sim.provider_key
 
     # 6. Fetch candidate alternative offers across all registered providers & DB catalog
-    all_offers = await ProviderRegistry.list_all_active_offers()
-    if not all_offers:
-        all_offers = await fake_adapter.list_offers()
     candidates: list[dict[str, Any]] = [
         {
             "id": o.id,

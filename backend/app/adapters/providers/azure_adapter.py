@@ -16,12 +16,13 @@ from app.ports.provider_adapter import (
 from app.domain.common import Currency, SourceType
 from app.adapters.providers.base import (
     BaseHttpProviderClient,
+    BaseInMemoryProviderAdapter,
     ProviderApiError,
     ProviderAuthError
 )
 
 
-class AzureAdapter:
+class AzureAdapter(BaseInMemoryProviderAdapter):
     """
     Production integration adapter for Microsoft Azure (Virtual Machines).
     Supports NDv5 (H100), NDv4 (A100), and NC-series with Azure Spot instances.
@@ -38,6 +39,7 @@ class AzureAdapter:
         default_location: str = "eastus2",
         base_url: str = "https://management.azure.com"
     ):
+        super().__init__()
         self.tenant_id = tenant_id or "mock-azure-tenant"
         self.client_id = client_id or "mock-azure-client"
         self.client_secret = client_secret or "mock-azure-secret"
@@ -47,8 +49,6 @@ class AzureAdapter:
             base_url=base_url,
             default_headers={"Authorization": "Bearer mock-azure-token"}
         )
-        self._in_memory_resources: dict[str, ProviderResource] = {}
-        self._idempotency_table: dict[str, str] = {}
 
     async def validate_credentials(self) -> bool:
         """Verifies Azure Service Principal credentials."""
@@ -137,9 +137,9 @@ class AzureAdapter:
         return LaunchValidation(is_valid=len(errors) == 0, errors=errors, warnings=warnings)
 
     async def create_resource(self, request: LaunchRequest, idempotency_key: str) -> ProviderResource:
-        if idempotency_key in self._idempotency_table:
-            existing_id = self._idempotency_table[idempotency_key]
-            return self._in_memory_resources[existing_id]
+        existing = self._get_existing(idempotency_key)
+        if existing:
+            return existing
 
         vm_name = f"az-vm-{uuid.uuid4().hex[:10]}"
         now = datetime.now(timezone.utc)
@@ -155,62 +155,8 @@ class AzureAdapter:
                 "idempotency_key": idempotency_key
             }
         )
-        self._in_memory_resources[vm_name] = res
-        self._idempotency_table[idempotency_key] = vm_name
+        self._save_resource(idempotency_key, res)
         return res
-
-    async def get_resource(self, provider_resource_id: str) -> ProviderResource:
-        if provider_resource_id in self._in_memory_resources:
-            return self._in_memory_resources[provider_resource_id]
-        now = datetime.now(timezone.utc)
-        return ProviderResource(
-            provider_resource_id=provider_resource_id,
-            status="RUNNING",
-            region_key="eastus2",
-            created_at=now - timedelta(minutes=18),
-            metadata={"provider": "azure"}
-        )
-
-    async def stop_resource(self, provider_resource_id: str) -> ProviderActionResult:
-        if provider_resource_id in self._in_memory_resources:
-            res = self._in_memory_resources[provider_resource_id]
-            self._in_memory_resources[provider_resource_id] = res.model_copy(update={"status": "STOPPED"})
-        return ProviderActionResult(
-            success=True,
-            action="STOP",
-            message=f"Azure VM {provider_resource_id} successfully deallocated",
-            provider_resource_id=provider_resource_id
-        )
-
-    async def terminate_resource(self, provider_resource_id: str, idempotency_key: str) -> ProviderActionResult:
-        if provider_resource_id in self._in_memory_resources:
-            res = self._in_memory_resources[provider_resource_id]
-            self._in_memory_resources[provider_resource_id] = res.model_copy(update={"status": "TERMINATED"})
-        return ProviderActionResult(
-            success=True,
-            action="TERMINATE",
-            message=f"Azure VM {provider_resource_id} permanently deleted",
-            provider_resource_id=provider_resource_id
-        )
-
-    async def get_usage(self, provider_resource_id: str) -> list[UsageObservationInfo]:
-        now = datetime.now(timezone.utc)
-        return [
-            UsageObservationInfo(
-                metric_name="run_duration_seconds",
-                value=Decimal("4500.00"),
-                unit="SECONDS",
-                period_start=now - timedelta(minutes=75),
-                period_end=now
-            ),
-            UsageObservationInfo(
-                metric_name="gpu_utilization_avg",
-                value=Decimal("95.40"),
-                unit="PERCENT",
-                period_start=now - timedelta(minutes=75),
-                period_end=now
-            )
-        ]
 
     async def get_logs(self, provider_resource_id: str, tail: int = 100) -> list[str]:
         return [

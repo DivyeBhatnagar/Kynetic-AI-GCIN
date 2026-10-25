@@ -108,3 +108,79 @@ class BaseHttpProviderClient:
                 return response.json()
             except Exception:
                 return {"raw_text": response.text}
+
+
+from datetime import datetime, timezone, timedelta
+from app.ports.provider_adapter import ProviderResource, ProviderActionResult, UsageObservationInfo
+
+
+class BaseInMemoryProviderAdapter:
+    """Shared in-memory resource state & idempotency tracker for cloud adapters."""
+    provider_key: str = "base"
+    provider_name: str = "Base Cloud"
+
+    def __init__(self):
+        self._in_memory_resources: dict[str, ProviderResource] = {}
+        self._idempotency_table: dict[str, str] = {}
+
+    def _get_existing(self, idempotency_key: str) -> ProviderResource | None:
+        if idempotency_key in self._idempotency_table:
+            return self._in_memory_resources[self._idempotency_table[idempotency_key]]
+        return None
+
+    def _save_resource(self, idempotency_key: str, resource: ProviderResource) -> None:
+        self._in_memory_resources[resource.provider_resource_id] = resource
+        self._idempotency_table[idempotency_key] = resource.provider_resource_id
+
+    async def get_resource(self, provider_resource_id: str) -> ProviderResource:
+        if provider_resource_id in self._in_memory_resources:
+            return self._in_memory_resources[provider_resource_id]
+        now = datetime.now(timezone.utc)
+        return ProviderResource(
+            provider_resource_id=provider_resource_id,
+            status="RUNNING",
+            region_key="default",
+            created_at=now - timedelta(minutes=15),
+            metadata={"provider": self.provider_key}
+        )
+
+    async def stop_resource(self, provider_resource_id: str) -> ProviderActionResult:
+        if provider_resource_id in self._in_memory_resources:
+            res = self._in_memory_resources[provider_resource_id]
+            self._in_memory_resources[provider_resource_id] = res.model_copy(update={"status": "STOPPED"})
+        return ProviderActionResult(
+            success=True,
+            action="STOP",
+            message=f"{self.provider_name} resource {provider_resource_id} paused",
+            provider_resource_id=provider_resource_id
+        )
+
+    async def terminate_resource(self, provider_resource_id: str, idempotency_key: str) -> ProviderActionResult:
+        if provider_resource_id in self._in_memory_resources:
+            res = self._in_memory_resources[provider_resource_id]
+            self._in_memory_resources[provider_resource_id] = res.model_copy(update={"status": "TERMINATED"})
+        return ProviderActionResult(
+            success=True,
+            action="TERMINATE",
+            message=f"{self.provider_name} resource {provider_resource_id} terminated",
+            provider_resource_id=provider_resource_id
+        )
+
+    async def get_usage(self, provider_resource_id: str) -> list[UsageObservationInfo]:
+        now = datetime.now(timezone.utc)
+        return [
+            UsageObservationInfo(
+                metric_name="run_duration_seconds",
+                value=Decimal("3600.00"),
+                unit="SECONDS",
+                period_start=now - timedelta(hours=1),
+                period_end=now
+            ),
+            UsageObservationInfo(
+                metric_name="gpu_utilization_avg",
+                value=Decimal("95.00"),
+                unit="PERCENT",
+                period_start=now - timedelta(hours=1),
+                period_end=now
+            )
+        ]

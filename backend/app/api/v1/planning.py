@@ -13,7 +13,6 @@ from app.adapters.persistence.models import (
     PlanModel,
     PlanCandidateModel
 )
-from app.adapters.providers.fake_provider import FakeProviderAdapter
 from app.adapters.providers.registry import ProviderRegistry
 from app.domain.workloads.manifest import WorkloadManifest
 from app.domain.planning.candidate_evaluator import CandidateEvaluator, CandidateEvaluation
@@ -22,8 +21,6 @@ from app.api.deps import get_current_auth, verify_tenant_access
 from app.core.errors import EntityNotFoundError, ConstraintUnsatisfiableError, AuthorizationError
 
 router = APIRouter(tags=["Planning & Dry-Runs"])
-
-fake_adapter = FakeProviderAdapter()
 
 
 class PlanCandidateResponse(BaseModel):
@@ -98,8 +95,6 @@ async def create_execution_plan(
 
     # 3. Fetch candidate offers across all live and simulated providers
     offers = await ProviderRegistry.list_all_active_offers()
-    if not offers:
-        offers = await fake_adapter.list_offers()
     candidates_raw = [
         {
             "id": o.id,

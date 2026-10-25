@@ -4,7 +4,7 @@ from fastapi import Header, Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.adapters.persistence.database import get_db
 from app.core.security import AuthContext, Role, verify_api_token
-from app.core.errors import AuthenticationRequiredError, AuthorizationError, TenantMismatchError
+from app.core.errors import AuthenticationRequiredError, TenantMismatchError
 
 
 def get_request_id(x_request_id: str | None = Header(None)) -> str:
@@ -52,14 +52,6 @@ async def get_current_auth(
         organization_id="default-org",
         role=Role.OWNER
     )
-
-
-def require_permission(permission: str):
-    def checker(auth: Annotated[AuthContext, Depends(get_current_auth)]) -> AuthContext:
-        if not auth.has_permission(permission):
-            raise AuthorizationError(f"Role '{auth.role.value}' lacks required permission '{permission}'.")
-        return auth
-    return checker
 
 
 def verify_tenant_access(resource_org_id: str, auth: AuthContext) -> None:

@@ -19,12 +19,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.adapters.persistence.database import Base
 
 
-def generate_uuid() -> str:
-    return str(uuid.uuid4())
-
-
-def utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+generate_uuid = lambda: str(uuid.uuid4())
+utc_now = lambda: datetime.now(timezone.utc)
 
 
 class OrganizationModel(Base):

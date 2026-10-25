@@ -8,8 +8,6 @@ from app.adapters.persistence.database import get_db
 from app.adapters.persistence.models import (
     ProviderModel,
     ComputeOfferModel,
-    PriceObservationModel,
-    RegionModel,
     ProviderConnectionModel
 )
 from app.adapters.providers.fake_provider import FakeProviderAdapter

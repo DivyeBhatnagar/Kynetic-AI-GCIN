@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kynetic AI — Request Early Access</title>
+<!-- Typography & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Script -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "hairline-strong": "#C5C4BA",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#e5e2e1",
+            "on-tertiary-fixed": "#001c39",
+            "on-surface": "#1b1c1a",
+            "inverse-surface": "#2f312e",
+            "sky-subtle": "#E0F2FE",
+            "background": "#faf9f5",
+            "on-tertiary-container": "#3c86d9",
+            "on-primary-fixed-variant": "#474746",
+            "hairline-subtle": "#E8E7E0",
+            "tertiary": "#000000",
+            "on-secondary": "#ffffff",
+            "hairline-default": "#DEDDD5",
+            "surface-container-highest": "#e3e2df",
+            "ink-muted": "#686861",
+            "surface-tint": "#5f5e5e",
+            "outline-variant": "#c4c7c7",
+            "surface-container-high": "#e9e8e4",
+            "blue-deep": "#1D4ED8",
+            "sky-ice": "#93C5FD",
+            "inverse-on-surface": "#f2f1ed",
+            "error": "#ba1a1a",
+            "on-primary-container": "#858383",
+            "secondary-fixed": "#d8e2ff",
+            "blue-electric": "#3B82F6",
+            "tertiary-fixed-dim": "#a4c9ff",
+            "sky-vibrant": "#60A5FA",
+            "ink-primary": "#191919",
+            "tertiary-container": "#001c39",
+            "surface-container-lowest": "#ffffff",
+            "surface-elevated": "#FFFFFF",
+            "on-secondary-container": "#fefcff",
+            "primary": "#000000",
+            "on-error": "#ffffff",
+            "surface-container": "#efeeea",
+            "secondary-container": "#2170e4",
+            "on-primary-fixed": "#1c1b1b",
+            "surface-variant": "#e3e2df",
+            "canvas-base": "#F8F7F3",
+            "status-active": "#3B82F6",
+            "on-background": "#1b1c1a",
+            "canvas-alternate": "#F0EFE9",
+            "on-error-container": "#93000a",
+            "surface-container-low": "#f4f4f0",
+            "status-healthy": "#60A5FA",
+            "status-warning": "#F59E0B",
+            "sky-soft": "#BAE6FD",
+            "surface-dim": "#dbdad6",
+            "secondary-fixed-dim": "#adc6ff",
+            "surface-bright": "#faf9f5",
+            "primary-container": "#1c1b1b",
+            "ink-subtle": "#9E9D95",
+            "ink-body": "#4E4E4A",
+            "surface": "#faf9f5",
+            "inverse-primary": "#c8c6c5",
+            "primary-fixed-dim": "#c8c6c5",
+            "on-surface-variant": "#444748",
+            "on-tertiary-fixed-variant": "#004883",
+            "outline": "#747878",
+            "on-secondary-fixed-variant": "#004395",
+            "on-secondary-fixed": "#001a42",
+            "on-primary": "#ffffff",
+            "secondary": "#0058be",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed": "#d4e3ff",
+            "status-critical": "#EF4444"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter-sm": "1rem",
+            "margin-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-lg": "2rem",
+            "margin-desktop": "3rem",
+            "gutter": "1.5rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "title-sm": ["Inter"],
+            "headline-xl": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "body-md": ["Inter"],
+            "headline-md": ["Geist"],
+            "label-tag": ["Inter"],
+            "body-lg": ["Inter"],
+            "title-md": ["Inter"],
+            "headline-lg": ["Geist"],
+            "body-sm": ["Inter"],
+            "headline-xl-mobile": ["Geist"],
+            "headline-sm": ["Geist"],
+            "label-mono": ["Geist"]
+          },
+          "fontSize": {
+            "title-sm": ["15px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "headline-xl": ["56px", { "lineHeight": "60px", "letterSpacing": "-0.035em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "21px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "label-tag": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "title-md": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "headline-lg": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "400" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "headline-xl-mobile": ["34px", { "lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "400" }],
+            "headline-sm": ["22px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .custom-selection-pill.active {
+      background-color: #E0F2FE;
+      color: #1D4ED8;
+      border-color: #93C5FD;
+    }
+  </style>
+</head>
+<body class="bg-canvas-base text-ink-primary min-h-screen selection:bg-sky-subtle selection:text-blue-deep antialiased flex flex-col font-body-md text-body-md">
+<!-- TOP APP BAR -->
+<header class="w-full bg-canvas-base border-b border-hairline-default sticky top-0 z-50">
+<div class="w-full px-space-lg md:px-margin-desktop py-space-sm flex items-center justify-between max-w-[1240px] mx-auto">
+<!-- Brand Logo -->
+<a class="text-title-md font-title-md font-medium tracking-tight text-ink-primary flex items-center gap-space-xs" href="#">
+<img alt="Kynetic AI Logo" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XVglQsvcN0rxlMza-aFgoGb2vAuinOUZaihknoI806tEIdDvV0ivGQiTB13SfHEiXPTpyHontHFE_p9i9xkyUvEyonRtILRXZdvDHshXWDvZgGDNIsrQprsExcppL6w0EW_mca5pdhyBDscVii2JWIK5CvKTZEDjg-4eku-DsuiK5gaNWsCnw3tMG-oHbXjc8fs3U-48soiEQr3tlX9AMXWzyWv1GAGZoV_7KrHz_Sspx7DhZt2omCnIql"/>
+</a>
+<!-- Desktop Navigation Cluster -->
+<nav class="hidden md:flex items-center gap-space-lg">
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Platform</a>
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Workload Planner</a>
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Architecture</a>
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Docs</a>
+</nav>
+<!-- Trailing Action -->
+<div class="flex items-center gap-space-md">
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Sign In</a>
+<div class="h-4 w-px bg-hairline-default"></div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-sky-subtle border border-sky-soft text-blue-deep text-label-tag font-label-tag">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-electric animate-pulse"></span>
+          Cohort 04
+        </span>
+</div>
+</div>
+</header>
+<!-- MAIN CANVAS -->
+<main class="flex-1 relative">
+<!-- Ambient Sky Radial Gradient for Hero Depth -->
+<div aria-hidden="true" class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1240px] h-[480px] pointer-events-none opacity-75 overflow-hidden z-0">
+<div class="w-[840px] h-[340px] mx-auto bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-subtle via-canvas-base/40 to-transparent blur-2xl"></div>
+</div>
+<div class="max-w-[1240px] mx-auto px-space-lg md:px-margin-desktop pt-space-xl pb-space-xl relative z-10">
+<!-- HERO CONTEXT -->
+<section class="max-w-3xl mb-space-xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-canvas-alternate border border-hairline-default mb-space-md">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-electric"></span>
+<span class="text-label-mono font-label-mono text-ink-body">PRIVATE ADMISSION // COHORT 04</span>
+</div>
+<h1 class="text-headline-lg md:text-headline-xl font-headline-xl tracking-tight text-ink-primary mb-space-md">
+          Architectural compute orchestration for high-scale AI engineering.
+        </h1>
+<p class="text-body-lg font-body-lg text-ink-body leading-relaxed mb-space-lg max-w-2xl">
+          We onboard engineering teams in phased cohorts to ensure dedicated compute concierge, tailor custom GPU broker topologies, and maintain 99.98% preemption immunity.
+        </p>
+<!-- Metric Telemetry Capsule Strip -->
+<div class="flex flex-wrap items-center gap-x-space-md gap-y-space-xs text-body-sm font-body-sm text-ink-muted border-l-2 border-sky-vibrant pl-space-md py-0.5">
+<div class="flex items-center gap-1.5">
+<span class="text-label-mono font-label-mono text-ink-body">Current batch:</span>
+<span class="text-ink-primary font-medium">Q2 2025</span>
+</div>
+<span class="text-hairline-strong">·</span>
+<div class="flex items-center gap-1.5">
+<span class="text-label-mono font-label-mono text-ink-body">Review latency:</span>
+<span class="text-ink-primary font-medium">&lt; 24h</span>
+</div>
+<span class="text-hairline-strong">·</span>
+<div class="flex items-center gap-1.5">
+<span class="text-label-mono font-label-mono text-ink-body">Allocation:</span>
+<span class="inline-flex items-center text-blue-deep font-medium">
+              84% filled
+            </span>
+</div>
+</div>
+</section>
+<!-- TWO-COLUMN WORKBENCH / APPLICATION LAYOUT -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: APPLICATION FORM (7 COLS) -->
+<section class="lg:col-span-7 bg-surface-elevated border border-hairline-default rounded-xl p-space-lg md:p-space-xl">
+<div class="flex items-center justify-between border-b border-hairline-subtle pb-space-md mb-space-lg">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-ink-primary">Early Access Specification</h2>
+<p class="text-body-sm font-body-sm text-ink-muted mt-0.5">Tell us about your cluster topography &amp; scaling constraints.</p>
+</div>
+<span class="px-2 py-1 bg-canvas-alternate border border-hairline-default rounded text-label-tag font-label-tag text-ink-body">STEP 1/1</span>
+</div>
+<form action="#" class="space-y-space-lg" method="POST" onsubmit="event.preventDefault();">
+<!-- Work Email -->
+<div>
+<label class="block text-label-mono font-label-mono text-ink-primary mb-1.5" for="work-email">
+                Work Email <span class="text-blue-electric">*</span>
+</label>
+<div class="relative">
+<input class="w-full h-10 px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary placeholder:text-ink-subtle focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm" id="work-email" placeholder="alex@frontier-research.ai" required="" type="email"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-ink-subtle">
+<span class="material-symbols-outlined text-[16px]">alternate_email</span>
+</div>
+</div>
+</div>
+<!-- Organization & Handle -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<div>
+<label class="block text-label-mono font-label-mono text-ink-primary mb-1.5" for="org-name">
+                  Organization / Entity <span class="text-blue-electric">*</span>
+</label>
+<input class="w-full h-10 px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary placeholder:text-ink-subtle focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm" id="org-name" placeholder="Synthetix Labs Inc." required="" type="text"/>
+</div>
+<div>
+<label class="block text-label-mono font-label-mono text-ink-primary mb-1.5" for="handle">
+                  GitHub / Hugging Face Handle
+                </label>
+<input class="w-full h-10 px-3.5 bg-surface-elevated border border-hairline-default rounded text-ink-primary placeholder:text-ink-subtle focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm" id="handle" placeholder="org-or-lead-eng" type="text"/>
+</div>
+</div>
+<!-- Current GPU Scale (Segmented control) -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-label-mono font-label-mono text-ink-primary">
+                  Current GPU Scale (Active Nodes)
+                </label>
+<span class="text-label-tag font-label-tag text-ink-muted">RESERVATION TIER</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+<label class="cursor-pointer">
+<input class="sr-only peer" name="gpu_scale" type="radio" value="&lt;16"/>
+<div class="h-10 flex items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
+                    &lt; 16 GPUs
+                  </div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="sr-only peer" name="gpu_scale" type="radio" value="16-64"/>
+<div class="h-10 flex items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
+                    16 – 64 GPUs
+                  </div>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="gpu_scale" type="radio" value="64-256"/>
+<div class="h-10 flex items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
+                    64 – 256 GPUs
+                  </div>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="gpu_scale" type="radio" value="256+"/>
+<div class="h-10 flex items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
+                    256+ Cluster
+                  </div>
+</label>
+</div>
+</div>
+<!-- Primary Workload Classification (Multi-select Pills) -->
+<div>
+<label class="block text-label-mono font-label-mono text-ink-primary mb-2">
+                Primary Workload Topology (Select all that apply)
+              </label>
+<div class="flex flex-wrap gap-2" id="workload-pill-group">
+<button class="workload-pill px-3 py-1.5 rounded-full text-body-sm font-body-sm border border-sky-ice bg-sky-subtle text-blue-deep transition-all" type="button">
+                  Distributed Pre-training
+                </button>
+<button class="workload-pill px-3 py-1.5 rounded-full text-body-sm font-body-sm border border-hairline-default bg-canvas-alternate text-ink-body hover:border-hairline-strong transition-all" type="button">
+                  Fine-Tuning / LoRA (7B–70B+)
+                </button>
+<button class="workload-pill px-3 py-1.5 rounded-full text-body-sm font-body-sm border border-sky-ice bg-sky-subtle text-blue-deep transition-all" type="button">
+                  High-Throughput Inference / vLLM
+                </button>
+<button class="workload-pill px-3 py-1.5 rounded-full text-body-sm font-body-sm border border-hairline-default bg-canvas-alternate text-ink-body hover:border-hairline-strong transition-all" type="button">
+                  Synthetic Data Generation
+                </button>
+<button class="workload-pill px-3 py-1.5 rounded-full text-body-sm font-body-sm border border-hairline-default bg-canvas-alternate text-ink-body hover:border-hairline-strong transition-all" type="button">
+                  Batch Reinforcement Learning (RLHF/DPO)
+                </button>
+</div>
+</div>
+<!-- Cloud Providers Checkbox Matrix -->
+<div>
+<label class="block text-label-mono font-label-mono text-ink-primary mb-2">
+                Current GPU Compute Providers In Use
+              </label>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+<label class="flex items-center gap-2 p-2.5 rounded border border-hairline-default bg-canvas-base hover:border-hairline-strong cursor-pointer transition-colors">
+<input checked="" class="w-4 h-4 text-blue-electric rounded border-hairline-default focus:ring-0" type="checkbox"/>
+<span class="text-body-sm font-body-sm text-ink-primary">Lambda Cloud</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded border border-hairline-default bg-canvas-base hover:border-hairline-strong cursor-pointer transition-colors">
+<input checked="" class="w-4 h-4 text-blue-electric rounded border-hairline-default focus:ring-0" type="checkbox"/>
+<span class="text-body-sm font-body-sm text-ink-primary">CoreWeave</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded border border-hairline-default bg-canvas-base hover:border-hairline-strong cursor-pointer transition-colors">
+<input class="w-4 h-4 text-blue-electric rounded border-hairline-default focus:ring-0" type="checkbox"/>
+<span class="text-body-sm font-body-sm text-ink-primary">RunPod</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded border border-hairline-default bg-canvas-base hover:border-hairline-strong cursor-pointer transition-colors">
+<input class="w-4 h-4 text-blue-electric rounded border-hairline-default focus:ring-0" type="checkbox"/>
+<span class="text-body-sm font-body-sm text-ink-primary">AWS (Trainium/p5)</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded border border-hairline-default bg-canvas-base hover:border-hairline-strong cursor-pointer transition-colors">
+<input class="w-4 h-4 text-blue-electric rounded border-hairline-default focus:ring-0" type="checkbox"/>
+<span class="text-body-sm font-body-sm text-ink-primary">Crusoe Energy</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded border border-hairline-default bg-canvas-base hover:border-hairline-strong cursor-pointer transition-colors">
+<input class="w-4 h-4 text-blue-electric rounded border-hairline-default focus:ring-0" type="checkbox"/>
+<span class="text-body-sm font-body-sm text-ink-primary">GCP (TPU/H100)</span>
+</label>
+</div>
+</div>
+<!-- Primary Bottleneck Dropdown -->
+<div>
+<label class="block text-label-mono font-label-mono text-ink-primary mb-1.5" for="bottleneck">
+                Largest Operational Bottleneck
+              </label>
+<div class="relative">
+<select class="w-full h-10 pl-3.5 pr-10 bg-surface-elevated border border-hairline-default rounded text-ink-primary focus:outline-none focus:border-blue-electric focus:ring-1 focus:ring-blue-electric text-body-sm font-body-sm appearance-none" id="bottleneck">
+<option selected="">Spot preemption &amp; lost checkpoints</option>
+<option>Fragmented provider billing &amp; quotes</option>
+<option>GPU availability / multi-week wait times</option>
+<option>High cross-region egress costs</option>
+<option>Lack of automated multi-cloud fallback</option>
+</select>
+<div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-ink-muted">
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Monthly Spend Ceiling -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="text-label-mono font-label-mono text-ink-primary">
+                  Target Monthly GPU Compute Spend
+                </label>
+<span class="text-label-tag font-label-tag text-ink-muted">ESTIMATED QUOTA</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<label class="cursor-pointer">
+<input class="sr-only peer" name="spend_tier" type="radio" value="tier1"/>
+<div class="h-10 flex flex-col items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
+                    $5k – $20k /mo
+                  </div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="sr-only peer" name="spend_tier" type="radio" value="tier2"/>
+<div class="h-10 flex flex-col items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
+                    $20k – $100k /mo
+                  </div>
+</label>
+<label class="cursor-pointer">
+<input class="sr-only peer" name="spend_tier" type="radio" value="tier3"/>
+<div class="h-10 flex flex-col items-center justify-center border border-hairline-default rounded text-body-sm font-body-sm text-ink-body peer-checked:bg-sky-subtle peer-checked:border-sky-ice peer-checked:text-blue-deep peer-checked:font-medium hover:border-hairline-strong transition-all">
+                    $100k+ Enterprise
+                  </div>
+</label>
+</div>
+</div>
+<!-- CTA Action -->
+<div class="pt-space-sm">
+<button class="w-full h-11 px-space-lg rounded-full bg-ink-primary text-surface-elevated text-label-mono font-label-mono hover:bg-blue-deep transition-all duration-150 flex items-center justify-center gap-2 group shadow-sm active:scale-[0.99]" type="submit">
+<span>Submit Early Access Application</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">north_east</span>
+</button>
+<div class="flex items-center justify-center gap-2 mt-3.5 text-label-tag font-label-tag text-ink-muted">
+<span class="material-symbols-outlined text-[14px] text-ink-subtle">verified_user</span>
+<span>Zero-data ingress. Weights and checkpoints remain in your VPC. SOC-2 compliant.</span>
+</div>
+</div>
+</form>
+</section>
+<!-- RIGHT COLUMN: COHORT ADVANTAGES & LIVE TELEMETRY (5 COLS) -->
+<aside class="lg:col-span-5 space-y-space-lg">
+<!-- Card 1: Cohort Inclusions -->
+<div class="bg-surface-elevated border border-hairline-default rounded-xl p-space-lg">
+<div class="flex items-center justify-between border-b border-hairline-subtle pb-space-sm mb-space-md">
+<h3 class="text-title-sm font-title-sm text-ink-primary">Cohort 04 Admissions Guarantee</h3>
+<span class="text-label-mono font-label-mono text-blue-deep bg-sky-subtle px-2 py-0.5 rounded">DIRECT ENG</span>
+</div>
+<ul class="space-y-space-md">
+<li class="flex items-start gap-3">
+<div class="w-6 h-6 rounded flex items-center justify-center bg-canvas-alternate text-ink-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[15px]">tune</span>
+</div>
+<div>
+<h4 class="text-title-sm font-title-sm text-ink-primary">White-glove Cluster Profiling</h4>
+<p class="text-body-sm font-body-sm text-ink-muted mt-0.5">Custom roofline model &amp; FLOPs estimation mapped to your exact model context lengths.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<div class="w-6 h-6 rounded flex items-center justify-center bg-canvas-alternate text-ink-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[15px]">currency_exchange</span>
+</div>
+<div>
+<h4 class="text-title-sm font-title-sm text-ink-primary">Zero-Markup Spot Arbitrage</h4>
+<p class="text-body-sm font-body-sm text-ink-muted mt-0.5">Direct broker pricing across 30+ verified providers. Guaranteed zero surcharge throughout the early batch.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<div class="w-6 h-6 rounded flex items-center justify-center bg-canvas-alternate text-ink-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[15px]">terminal</span>
+</div>
+<div>
+<h4 class="text-title-sm font-title-sm text-ink-primary">Dedicated Kernel Eng Slack</h4>
+<p class="text-body-sm font-body-sm text-ink-muted mt-0.5">Direct private bridge with Kynetic core systems engineers for distributed torch/Triton triage.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<div class="w-6 h-6 rounded flex items-center justify-center bg-canvas-alternate text-ink-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[15px]">fast_forward</span>
+</div>
+<div>
+<h4 class="text-title-sm font-title-sm text-ink-primary">Universal Checkpoint Fabric</h4>
+<p class="text-body-sm font-body-sm text-ink-muted mt-0.5">eBPF-accelerated continuous snapshotting with sub-18s recovery across alternative cloud nodes.</p>
+</div>
+</li>
+</ul>
+</div>
+<!-- Card 2: Live Broker & Telemetry Well -->
+<div class="bg-canvas-alternate border border-hairline-default rounded-xl p-space-lg">
+<div class="flex items-center justify-between pb-space-sm border-b border-hairline-default mb-space-md">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-healthy"></span>
+<span class="text-label-mono font-label-mono text-ink-primary">BROKER_TELEMETRY // LIVE</span>
+</div>
+<span class="text-label-mono font-label-mono text-ink-muted">POLL: 1.2s</span>
+</div>
+<!-- Terminal Rows -->
+<div class="space-y-space-sm font-label-mono text-label-mono">
+<div class="p-2.5 rounded bg-surface-elevated border border-hairline-subtle">
+<div class="flex justify-between items-center mb-1">
+<span class="text-ink-primary font-medium">US-East (Virginia)</span>
+<span class="text-blue-deep font-semibold">$2.14/hr</span>
+</div>
+<div class="flex justify-between items-center text-ink-muted">
+<span>H100 SXM5 · 8x Clustered</span>
+<span class="text-status-active">98.4% Available</span>
+</div>
+<!-- Mini Progress Bar -->
+<div class="w-full bg-hairline-subtle h-1 rounded-full mt-2 overflow-hidden">
+<div class="bg-blue-electric h-full w-[98.4%]"></div>
+</div>
+</div>
+<div class="p-2.5 rounded bg-surface-elevated border border-hairline-subtle">
+<div class="flex justify-between items-center mb-1">
+<span class="text-ink-primary font-medium">US-Central (Texas)</span>
+<span class="text-ink-primary font-semibold">$1.18/hr</span>
+</div>
+<div class="flex justify-between items-center text-ink-muted">
+<span>L40S Pool · NVLink Active</span>
+<span class="text-status-active">Ready</span>
+</div>
+<div class="w-full bg-hairline-subtle h-1 rounded-full mt-2 overflow-hidden">
+<div class="bg-sky-vibrant h-full w-[76%]"></div>
+</div>
+</div>
+<div class="p-2.5 rounded bg-surface-elevated border border-hairline-subtle">
+<div class="flex justify-between items-center mb-1">
+<span class="text-ink-primary font-medium">EU-West (Iceland)</span>
+<span class="text-blue-deep font-semibold">Reserved Batch</span>
+</div>
+<div class="flex justify-between items-center text-ink-muted">
+<span>GH200 Grace Hopper · 100% Geo</span>
+<span class="text-ink-primary">Low-Carbon</span>
+</div>
+<div class="w-full bg-hairline-subtle h-1 rounded-full mt-2 overflow-hidden">
+<div class="bg-blue-deep h-full w-[91%]"></div>
+</div>
+</div>
+</div>
+<!-- Footer indicator in terminal -->
+<div class="mt-space-md pt-2 border-t border-hairline-default flex items-center justify-between text-label-tag font-label-tag text-ink-muted">
+<span class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-electric animate-ping"></span>
+<span>GLOBAL SCHEDULER: NOMINAL</span>
+</span>
+<span>SYNCHRONIZED</span>
+</div>
+</div>
+<!-- Micro Quote / Attestation -->
+<div class="p-space-md rounded-lg border border-hairline-subtle bg-surface-elevated/60 text-ink-muted text-body-sm font-body-sm italic">
+            “Kynetic cut our checkpoint failure recovery latency from 45 minutes to 22 seconds across spot instances.”
+            <div class="mt-2 text-label-mono font-label-mono not-italic text-ink-primary font-medium flex items-center gap-1.5">
+<span>— Principal ML Systems Eng</span>
+<span class="text-ink-subtle">· Frontier Bio</span>
+</div>
+</div>
+</aside>
+</div>
+<!-- TRUST & SECURITY STRIP -->
+<section class="mt-space-xl pt-space-xl border-t border-hairline-default">
+<div class="text-center mb-space-lg">
+<span class="text-label-mono font-label-mono text-ink-muted">INFRASTRUCTURE GOVERNANCE</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<div class="flex items-start gap-3.5 p-space-md rounded-lg border border-hairline-subtle bg-surface-elevated">
+<span class="material-symbols-outlined text-blue-deep mt-0.5">lock</span>
+<div>
+<h4 class="text-title-sm font-title-sm text-ink-primary mb-1">Non-Intrusive Telemetry</h4>
+<p class="text-body-sm font-body-sm text-ink-muted">Zero model weight or dataset ingress. Orchestration is executed entirely through stateless control-plane sidecars.</p>
+</div>
+</div>
+<div class="flex items-start gap-3.5 p-space-md rounded-lg border border-hairline-subtle bg-surface-elevated">
+<span class="material-symbols-outlined text-blue-deep mt-0.5">shield</span>
+<div>
+<h4 class="text-title-sm font-title-sm text-ink-primary mb-1">SOC-2 Type II Certified</h4>
+<p class="text-body-sm font-body-sm text-ink-muted">Continuous audit logging, cryptographically signed binaries, and ephemeral token access policies by default.</p>
+</div>
+</div>
+<div class="flex items-start gap-3.5 p-space-md rounded-lg border border-hairline-subtle bg-surface-elevated">
+<span class="material-symbols-outlined text-blue-deep mt-0.5">lan</span>
+<div>
+<h4 class="text-title-sm font-title-sm text-ink-primary mb-1">Customer VPC Isolation</h4>
+<p class="text-body-sm font-body-sm text-ink-muted">Deploy natively within your dedicated VPCs across AWS, CoreWeave, GCP, and self-hosted high-density racks.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- EDITORIAL FOOTER (Shared Components Blueprint) -->
+<footer class="w-full bg-canvas-alternate border-t border-hairline-default">
+<div class="w-full px-space-lg md:px-margin-desktop py-space-xl max-w-[1240px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-space-lg">
+<!-- Left info -->
+<div>
+<div class="text-title-sm font-title-sm font-medium text-ink-primary mb-1">
+          Kynetic AI
+        </div>
+<p class="text-body-sm font-body-sm text-ink-muted">
+          © 2025 Kynetic AI Inc. High-performance compute infrastructure. All rights reserved.
+        </p>
+</div>
+<!-- Links -->
+<nav class="flex flex-wrap items-center gap-x-space-lg gap-y-2">
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Privacy Policy</a>
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Terms of Service</a>
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Security Architecture</a>
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Compliance (SOC2)</a>
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150 flex items-center gap-1.5" href="#">
+<span class="w-1.5 h-1.5 rounded-full bg-status-healthy"></span>
+          System Status
+        </a>
+</nav>
+</div>
+</footer>
+<!-- Micro-interactions Script -->
+<script>
+    // Handle workload classification pills toggle
+    document.querySelectorAll('.workload-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        const isSelected = pill.classList.contains('bg-sky-subtle');
+        if (isSelected) {
+          pill.classList.remove('bg-sky-subtle', 'border-sky-ice', 'text-blue-deep');
+          pill.classList.add('bg-canvas-alternate', 'border-hairline-default', 'text-ink-body');
+        } else {
+          pill.classList.add('bg-sky-subtle', 'border-sky-ice', 'text-blue-deep');
+          pill.classList.remove('bg-canvas-alternate', 'border-hairline-default', 'text-ink-body');
+        }
+      });
+    });
+  </script>
+</body></html>

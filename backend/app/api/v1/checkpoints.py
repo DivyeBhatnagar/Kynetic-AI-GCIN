@@ -28,12 +28,10 @@ from app.domain.checkpoints.schemas import (
 )
 from app.domain.checkpoints.verifier import CheckpointVerifier, compute_required_vram_gb
 from app.domain.checkpoints.transfer_estimator import TransferEstimator
-from app.adapters.providers.fake_provider import FakeProviderAdapter
 from app.adapters.providers.registry import ProviderRegistry
 
 
 router = APIRouter(prefix="/v1", tags=["Checkpoints & Resumption"])
-fake_adapter = FakeProviderAdapter()
 
 
 @router.post("/runs/{run_id}/checkpoints", response_model=CheckpointResponse, status_code=status.HTTP_201_CREATED)
@@ -249,8 +247,6 @@ async def verify_checkpoint(
             target_vram_gb = offer.gpu_memory_gb * offer.gpu_count
         else:
             sim_offers = await ProviderRegistry.list_all_active_offers()
-            if not sim_offers:
-                sim_offers = await fake_adapter.list_offers()
             sim_match = next((o for o in sim_offers if o.id == target_compute_offer_id), None)
             if sim_match:
                 target_vram_gb = sim_match.gpu_memory_gb * sim_match.gpu_count
@@ -374,8 +370,6 @@ async def resume_from_checkpoint(
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Target compute offer is not currently available")
     else:
         sim_offers = await ProviderRegistry.list_all_active_offers()
-        if not sim_offers:
-            sim_offers = await fake_adapter.list_offers()
         sim_match = next((o for o in sim_offers if o.id == payload.target_compute_offer_id), None)
         if not sim_match:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Target compute offer not found")

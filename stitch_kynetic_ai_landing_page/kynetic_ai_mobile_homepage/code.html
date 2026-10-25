@@ -1,0 +1,540 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Kynetic AI — Architectural Compute Intelligence</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error-container": "#ffdad6",
+            "surface-elevated": "#FFFFFF",
+            "on-tertiary-container": "#6a8e54",
+            "error": "#ba1a1a",
+            "on-secondary": "#ffffff",
+            "canvas-base": "#F8F7F3",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed": "#d9e7c8",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed-variant": "#2f4f1c",
+            "accent-olive": "#59664D",
+            "surface-dim": "#dbdad6",
+            "ink-muted": "#686861",
+            "surface-container-high": "#e9e8e4",
+            "surface-tint": "#5f5e5e",
+            "surface-container-low": "#f4f4f0",
+            "surface-container-lowest": "#ffffff",
+            "ink-primary": "#191919",
+            "surface-container": "#efeeea",
+            "on-primary-fixed": "#1c1b1b",
+            "outline-variant": "#c4c7c7",
+            "on-secondary-fixed": "#141f0b",
+            "ink-body": "#4E4E4A",
+            "background": "#faf9f5",
+            "tertiary": "#000000",
+            "primary-container": "#1c1b1b",
+            "surface-bright": "#faf9f5",
+            "on-secondary-container": "#5a674e",
+            "on-surface-variant": "#444748",
+            "accent-olive-deep": "#3E4736",
+            "on-background": "#1b1c1a",
+            "hairline-strong": "#C5C4BA",
+            "hairline-subtle": "#E8E7E0",
+            "primary-fixed-dim": "#c8c6c5",
+            "canvas-alternate": "#F0EFE9",
+            "status-active": "#65A30D",
+            "primary-fixed": "#e5e2e1",
+            "status-warning": "#B45309",
+            "surface-container-highest": "#e3e2df",
+            "inverse-on-surface": "#f2f1ed",
+            "on-tertiary-fixed": "#082100",
+            "tertiary-container": "#082100",
+            "hairline-default": "#DEDDD5",
+            "on-surface": "#1b1c1a",
+            "on-primary": "#ffffff",
+            "tertiary-fixed": "#c6eeab",
+            "secondary-fixed-dim": "#bdcbad",
+            "inverse-primary": "#c8c6c5",
+            "primary": "#000000",
+            "ink-subtle": "#9E9D95",
+            "tertiary-fixed-dim": "#abd291",
+            "on-error-container": "#93000a",
+            "surface": "#faf9f5",
+            "on-primary-fixed-variant": "#474746",
+            "surface-variant": "#e3e2df",
+            "inverse-surface": "#2f312e",
+            "status-critical": "#991B1B",
+            "secondary": "#55624a",
+            "outline": "#747878",
+            "on-secondary-fixed-variant": "#3e4b33",
+            "status-healthy": "#84A96C",
+            "secondary-container": "#d6e5c5",
+            "on-primary-container": "#858383"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "2.5rem",
+            "space-md": "1rem",
+            "margin-mobile": "1rem",
+            "space-xs": "0.5rem",
+            "margin": "2rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.75rem",
+            "gutter-lg": "2rem",
+            "gutter": "1.5rem",
+            "space-section": "6rem",
+            "space-xxl": "4rem",
+            "gutter-sm": "1rem",
+            "space-xxs": "0.25rem",
+            "margin-desktop": "3rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Geist", "sans-serif"],
+            "headline-md": ["Geist", "sans-serif"],
+            "headline-xl": ["Geist", "sans-serif"],
+            "label-mono": ["Geist", "monospace"],
+            "headline-lg-mobile": ["Geist", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "title-md": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "title-sm": ["Inter", "sans-serif"],
+            "label-tag": ["Inter", "sans-serif"],
+            "headline-xl-mobile": ["Geist", "sans-serif"],
+            "headline-lg": ["Geist", "sans-serif"],
+            "code": ["JetBrains Mono", "monospace"]
+          },
+          "fontSize": {
+            "headline-sm": ["22px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "headline-md": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "headline-xl": ["56px", { "lineHeight": "60px", "letterSpacing": "-0.035em", "fontWeight": "400" }],
+            "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "21px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "title-md": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "title-sm": ["15px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "label-tag": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["34px", { "lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "400" }],
+            "headline-lg": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .tnum { font-variant-numeric: tabular-nums; }
+    /* Hide scrollbar for clean horizontal code review */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-canvas-base text-ink-primary font-body-md antialiased selection:bg-canvas-alternate selection:text-ink-primary min-h-screen flex flex-col justify-between">
+<!-- 1. Top Navigation Bar (Mobile Optimized: 390px Viewport) -->
+<header class="sticky top-0 z-50 bg-canvas-base/95 backdrop-blur-sm border-b border-hairline-default">
+<div class="max-w-[420px] mx-auto px-4 h-14 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<img alt="Kynetic AI Logo" class="w-6 h-6 object-contain rounded-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1UiwzxNF7ZnOxtbpIJVeHCm7V-Aa3Yfzjsh3wo6g-fGVZBkkihdA-Cv7VYGRyrKxlj65jH8_yNWBfyUIeEy9lR4TLzSz1FCcOYs9h9vsf6Bo9yWzqgwGMEFzL06_iKcmYVUChPukCBB-ZAhbEMG2VxIaz1cJjaEgw5YxKmEJ2G7N6lFDjz7l9yd1cbeSh_SwGBWA3NwGSSyCmGSATNMWyFar2yDjSatRsIHWDTredtue45eCF2BoZCZJqw4">
+<span class="font-headline-sm text-title-md tracking-tight font-semibold text-ink-primary">Kynetic AI</span>
+</div>
+<div class="flex items-center gap-2.5">
+<a class="h-8 px-3 rounded-[9999px] bg-canvas-alternate border border-hairline-default text-ink-primary font-label-mono text-label-mono flex items-center gap-1 active:scale-95 transition-all" href="#workload-planner">
+<span class="">Early Access</span>
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+</a>
+<button aria-label="Open Navigation" class="w-8 h-8 rounded-lg border border-hairline-default flex items-center justify-center bg-surface-elevated text-ink-primary active:bg-canvas-alternate" id="mobile-menu-btn">
+<span class="material-symbols-outlined text-[18px]">menu</span>
+</button>
+</div>
+</div>
+<!-- Collapsible Mobile Sheet (Restrained) -->
+<div class="hidden border-b border-hairline-default bg-canvas-alternate px-4 py-3 space-y-2" id="mobile-drawer">
+<nav class="flex flex-col gap-2 font-body-sm text-ink-body">
+<a class="py-1 text-ink-primary font-medium" href="#platform">Platform</a>
+<a class="py-1 hover:text-ink-primary" href="#workload-planner">Workload Planner</a>
+<a class="py-1 hover:text-ink-primary" href="#architecture">Architecture</a>
+<a class="py-1 hover:text-ink-primary" href="#docs">Docs</a>
+</nav>
+</div>
+</header>
+<main class="w-full max-w-[420px] mx-auto px-4 pt-6 pb-16 flex-1 space-y-12">
+<!-- 2. Hero Section -->
+<section class="space-y-6 pt-2 relative"><!-- Soft atmospheric light sky-blue radial glow backdrop -->
+<div class="absolute inset-x-0 top-0 h-96 pointer-events-none -z-10" style="background: radial-gradient(80% 50% at 50% -10%, rgba(224, 242, 254, 0.7), transparent 70%);"></div>
+<!-- Eyebrow label with light blue system pulse indicator -->
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-[9999px] bg-sky-50 border border-sky-200">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+<span class="font-label-mono text-label-tag tracking-wider uppercase text-sky-900 font-semibold">Compute Intelligence, Reimagined</span>
+</div>
+<!-- Hero Headline & Copy -->
+<div class="space-y-3">
+<h1 class="font-headline-xl-mobile text-headline-xl-mobile text-ink-primary tracking-tight font-normal leading-[1.12]">
+          Your AI workloads. <br>
+<span class="font-medium text-ink-primary">Always on the right compute.</span>
+</h1>
+<p class="font-body-md text-body-md text-ink-body leading-relaxed">
+          Architectural workload routing across cloud, bare-metal, and private clusters. Zero synthetic markup, guaranteed thermal reliability, and automated spot salvage.
+        </p>
+</div>
+<!-- Action Stack -->
+<div class="space-y-2.5 pt-1">
+<button class="w-full h-11 rounded-[9999px] bg-ink-primary text-surface-elevated font-label-mono text-body-sm flex items-center justify-center gap-2 active:bg-blue-950 transition-colors shadow-none">
+<span class="">Get early access</span>
+<span class="material-symbols-outlined text-[16px]">north_east</span>
+</button>
+<a class="w-full h-11 rounded-[9999px] bg-transparent border border-hairline-default text-ink-primary font-label-mono text-body-sm flex items-center justify-center gap-1.5 active:bg-canvas-alternate transition-colors" href="#architecture">
+<span class="">Explore platform</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Micro Telemetry Ticker with light blue status dot -->
+<div class="pt-2 border-t border-hairline-subtle flex items-center justify-between text-ink-muted font-label-mono text-[11px]">
+<span class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+          Cluster Latency: <span class="text-ink-primary font-medium tnum">14.2ms</span>
+</span>
+<span class="tnum text-ink-muted">Active GPUs: 128,490</span>
+</div></section>
+<!-- 3. Mobile Workload Planner Preview Card -->
+<section class="space-y-3" id="workload-planner">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-title-md text-ink-primary">Workload Planner</h2>
+<span class="font-label-mono text-[11px] text-ink-muted uppercase">Preview Node</span>
+</div>
+<div class="rounded-xl border border-hairline-default bg-surface-elevated p-4 space-y-4">
+<!-- Input prompt pill -->
+<div class="rounded-lg bg-canvas-alternate border border-hairline-subtle p-2.5 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-ink-muted text-[18px] mt-0.5">terminal</span>
+<div class="space-y-0.5">
+<span class="font-label-mono text-[10px] uppercase text-ink-muted tracking-wider block">Job Spec Prompt</span>
+<p class="font-label-mono text-body-sm text-ink-primary font-medium">Fine-tune 7B model · &lt;8h deadline · Min cost</p>
+</div>
+</div>
+<!-- Constraint Badges (2x2 Grid) -->
+<div class="grid grid-cols-2 gap-2">
+<div class="p-2 rounded bg-canvas-base border border-hairline-subtle">
+<span class="font-label-mono text-[10px] text-ink-muted block uppercase">Max Budget</span>
+<span class="font-label-mono text-title-sm text-ink-primary font-medium tnum">$30.00 / run</span>
+</div>
+<div class="p-2 rounded bg-canvas-base border border-hairline-subtle">
+<span class="font-label-mono text-[10px] text-ink-muted block uppercase">Max SLA</span>
+<span class="font-label-mono text-title-sm text-ink-primary font-medium tnum">8h 00m</span>
+</div>
+<div class="p-2 rounded bg-canvas-base border border-hairline-subtle">
+<span class="font-label-mono text-[10px] text-ink-muted block uppercase">Memory Req</span>
+<span class="font-label-mono text-title-sm text-ink-primary font-medium tnum">≥320GB Total</span>
+</div>
+<div class="p-2 rounded bg-canvas-base border border-hairline-subtle">
+<span class="font-label-mono text-[10px] text-ink-muted block uppercase">Topology</span>
+<span class="font-label-mono text-title-sm text-ink-primary font-medium">NVLink Interconnect</span>
+</div>
+</div>
+<!-- Vertically Stacked GPU Candidate Cards -->
+<div class="space-y-2 pt-1">
+<span class="font-label-mono text-label-tag text-ink-muted uppercase tracking-wider block">Evaluated Compute Allocations</span>
+<!-- GPU Option B: Recommended -->
+<div class="rounded-lg border-2 border-sky-400 bg-sky-50/40 p-3 relative">
+<div class="flex items-center justify-between pb-1.5">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+<span class="font-headline-sm text-body-md font-semibold text-ink-primary">NVIDIA 8x L40S 48GB</span>
+</div>
+<span class="px-2 py-0.5 rounded-[9999px] bg-sky-100 border border-sky-200 text-sky-800 font-label-mono text-[10px] uppercase font-semibold">Recommended</span>
+</div>
+<div class="flex items-center justify-between text-body-sm pt-1 border-t border-sky-100 font-label-mono">
+<span class="text-ink-body">Cost: <strong class="text-ink-primary tnum font-semibold">$27.80</strong></span>
+<span class="text-ink-body">Est. Time: <strong class="text-ink-primary tnum font-semibold">7h 35m</strong></span>
+<span class="text-blue-600 text-[11px] font-medium">-14% under cap</span>
+</div>
+</div>
+<!-- GPU Option A -->
+<div class="rounded-lg border border-hairline-default bg-canvas-base p-3">
+<div class="flex items-center justify-between pb-1">
+<span class="font-headline-sm text-body-sm font-medium text-ink-primary">NVIDIA H100 SXM5 80GB</span>
+<span class="font-label-mono text-[11px] text-ink-muted">High Speed</span>
+</div>
+<div class="flex items-center justify-between text-body-sm pt-1 border-t border-hairline-subtle font-label-mono">
+<span class="text-ink-body">Cost: <strong class="text-ink-primary tnum">$32.40</strong></span>
+<span class="text-ink-body">Est. Time: <strong class="text-ink-primary tnum">5h 20m</strong></span>
+<span class="text-status-warning text-[11px]">+8% budget</span>
+</div>
+</div>
+<!-- GPU Option C -->
+<div class="rounded-lg border border-hairline-default bg-canvas-base p-3">
+<div class="flex items-center justify-between pb-1">
+<span class="font-headline-sm text-body-sm font-medium text-ink-primary">NVIDIA A100 80GB</span>
+<span class="font-label-mono text-[11px] text-ink-muted">Overprovisioned</span>
+</div>
+<div class="flex items-center justify-between text-body-sm pt-1 border-t border-hairline-subtle font-label-mono">
+<span class="text-ink-body">Cost: <strong class="text-ink-primary tnum">$41.20</strong></span>
+<span class="text-ink-body">Est. Time: <strong class="text-ink-primary tnum">4h 10m</strong></span>
+<span class="text-status-critical text-[11px]">+37% cost</span>
+</div>
+</div>
+</div>
+<!-- Simulation Disclaimer Badge -->
+<div class="rounded bg-canvas-alternate px-3 py-2 border border-hairline-subtle flex items-center gap-2">
+<span class="material-symbols-outlined text-[15px] text-ink-muted">info</span>
+<p class="font-label-mono text-[11px] text-ink-muted leading-tight">
+            Simulation based on real telemetry data from 4 tier-1 clouds and 9 sovereign clusters.
+          </p>
+</div>
+</div>
+</section>
+<!-- 4. Positioning Strip -->
+<section class="rounded-xl border border-hairline-default bg-canvas-alternate p-4 space-y-3">
+<div class="space-y-1">
+<span class="font-label-mono text-label-tag text-blue-600 uppercase tracking-wider block font-semibold">Unified Fabric</span>
+<h3 class="font-headline-sm text-body-lg font-medium text-ink-primary tracking-tight">
+          ONE INTELLIGENCE LAYER. MULTIPLE COMPUTE PROVIDERS.
+        </h3>
+</div>
+<p class="font-body-sm text-ink-body leading-relaxed">
+        Decouple model orchestration from single-cloud lock-in. Real-time arbitrage between hyperscaler reservations and on-demand GPU capacity.
+      </p>
+<!-- Stacked Capability Tags -->
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="px-2.5 py-1 rounded-lg bg-surface-elevated border border-hairline-default font-label-mono text-label-mono text-ink-primary">Zero Vendor Lock</span>
+<span class="px-2.5 py-1 rounded-lg bg-surface-elevated border border-hairline-default font-label-mono text-label-mono text-ink-primary">Thermal Throttling Guard</span>
+<span class="px-2.5 py-1 rounded-lg bg-surface-elevated border border-hairline-default font-label-mono text-label-mono text-ink-primary">Spot Preemption Recovery</span>
+<span class="px-2.5 py-1 rounded-lg bg-surface-elevated border border-hairline-default font-label-mono text-label-mono text-ink-primary">Automated Checkpointing</span>
+</div>
+</section>
+<!-- 5. Problem -> Solution 3-Part Cards -->
+<section class="space-y-3"><div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-title-md text-ink-primary">Infrastructure Reality</h2>
+<span class="font-label-mono text-[11px] text-ink-muted">Audit vs. Resolution</span>
+</div>
+<div class="space-y-3">
+<!-- Card 01 -->
+<div class="rounded-xl border border-hairline-default bg-surface-elevated p-4 space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-mono text-title-sm font-semibold text-blue-600">01</span>
+<span class="font-label-mono text-[10px] uppercase text-status-warning bg-canvas-alternate px-2 py-0.5 rounded">High Fragmentation</span>
+</div>
+<h4 class="font-headline-sm text-title-sm text-ink-primary font-medium">GPU Fragmentation &amp; Manual Triage</h4>
+<p class="font-body-sm text-ink-body">
+            ML engineers waste 18% of their engineering cycles manually provisioning nodes and matching CUDA versions across disparate provider consoles.
+          </p>
+<div class="pt-2 border-t border-hairline-subtle text-body-sm text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-blue-600">check_circle</span>
+<span class="">Single declarative API routes across all architectures.</span>
+</div>
+</div>
+<!-- Card 02 -->
+<div class="rounded-xl border border-hairline-default bg-surface-elevated p-4 space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-mono text-title-sm font-semibold text-blue-600">02</span>
+<span class="font-label-mono text-[10px] uppercase text-status-critical bg-canvas-alternate px-2 py-0.5 rounded">Uncontrolled Cost</span>
+</div>
+<h4 class="font-headline-sm text-title-sm text-ink-primary font-medium">Overprovisioning as Default Habit</h4>
+<p class="font-body-sm text-ink-body">
+            Teams default to top-tier SXM cards regardless of batch size or precision constraints, creating 40%+ idle GPU memory waste during training epochs.
+          </p>
+<div class="pt-2 border-t border-hairline-subtle text-body-sm text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-blue-600">check_circle</span>
+<span class="">Right-sized tensor core matching cuts spend by 34%.</span>
+</div>
+</div>
+<!-- Card 03 -->
+<div class="rounded-xl border border-hairline-default bg-surface-elevated p-4 space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-mono text-title-sm font-semibold text-blue-600">03</span>
+<span class="font-label-mono text-[10px] uppercase text-ink-muted bg-canvas-alternate px-2 py-0.5 rounded">Silent Degradation</span>
+</div>
+<h4 class="font-headline-sm text-title-sm text-ink-primary font-medium">Thermal Throttling &amp; Silent Drops</h4>
+<p class="font-body-sm text-ink-body">
+            Standard hypervisors fail to alert on node thermal degradation, causing silent throughput drops and stalled long-running distributed jobs.
+          </p>
+<div class="pt-2 border-t border-hairline-subtle text-body-sm text-ink-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-blue-600">check_circle</span>
+<span class="">Telemetry pre-empts thermal stalls with seamless migration.</span>
+</div>
+</div>
+</div></section>
+<!-- 6. 4-Step Vertical Process Flow -->
+<section class="space-y-4"><div class="space-y-1">
+<span class="font-label-mono text-label-tag text-blue-600 uppercase tracking-wider block font-semibold">Lifecycle</span>
+<h2 class="font-headline-sm text-title-md text-ink-primary">Autonomous Routing Pipeline</h2>
+</div>
+<div class="relative pl-6 space-y-6 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-hairline-strong">
+<!-- Step 01 -->
+<div class="relative space-y-1">
+<div class="absolute -left-[29px] top-0.5 w-[22px] h-[22px] rounded-full bg-surface-elevated border-2 border-ink-primary flex items-center justify-center font-label-mono text-[10px] font-bold text-ink-primary">
+            01
+          </div>
+<h4 class="font-headline-sm text-body-md font-semibold text-ink-primary">01 Describe</h4>
+<p class="font-body-sm text-ink-body">
+            Submit simple job parameters: target parameters, time constraints, memory bandwidth targets, or maximum budget.
+          </p>
+</div>
+<!-- Step 02 -->
+<div class="relative space-y-1">
+<div class="absolute -left-[29px] top-0.5 w-[22px] h-[22px] rounded-full bg-surface-elevated border border-hairline-strong flex items-center justify-center font-label-mono text-[10px] text-ink-muted">
+            02
+          </div>
+<h4 class="font-headline-sm text-body-md font-semibold text-ink-primary">02 Evaluate</h4>
+<p class="font-body-sm text-ink-body">
+            Kynetic’s simulator tests your kernel profile against hundreds of active cluster nodes in parallel within 800ms.
+          </p>
+</div>
+<!-- Step 03 -->
+<div class="relative space-y-1">
+<div class="absolute -left-[29px] top-0.5 w-[22px] h-[22px] rounded-full bg-surface-elevated border border-hairline-strong flex items-center justify-center font-label-mono text-[10px] text-ink-muted">
+            03
+          </div>
+<h4 class="font-headline-sm text-body-md font-semibold text-ink-primary">03 Plan</h4>
+<p class="font-body-sm text-ink-body">
+            Receive deterministic execution plans with cost, runtime, and thermal resilience guarantees prior to container launch.
+          </p>
+</div>
+<!-- Step 04 -->
+<div class="relative space-y-1">
+<div class="absolute -left-[29px] top-0.5 w-[22px] h-[22px] rounded-full bg-sky-50 border-2 border-blue-500 flex items-center justify-center font-label-mono text-[10px] font-bold text-blue-600">
+            04
+          </div>
+<h4 class="font-headline-sm text-body-md font-semibold text-ink-primary">04 Optimize</h4>
+<p class="font-body-sm text-ink-body">
+            Real-time live telemetry dynamically reallocates micro-batches if spot nodes receive eviction flags.
+          </p>
+</div>
+</div></section>
+<!-- 7. Compute Intelligence Cards with 'Roadmap' Badges -->
+<section class="space-y-3"><div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-title-md text-ink-primary">Core Intelligence</h2>
+<span class="font-label-mono text-[11px] text-ink-muted">Capabilities</span>
+</div>
+<div class="space-y-3">
+<!-- Intelligence Card A -->
+<div class="p-4 rounded-xl border border-hairline-default bg-surface-elevated space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-body-md font-semibold text-ink-primary">Dynamic Kernel Sharding</span>
+<span class="px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-subtle text-ink-muted font-label-mono text-[10px] uppercase">GA · v1.4</span>
+</div>
+<p class="font-body-sm text-ink-body">
+            Splits transformer attention matrices dynamically across mixed-spec nodes with zero manual CUDA adjustments.
+          </p>
+</div>
+<!-- Intelligence Card B (Roadmap) -->
+<div class="p-4 rounded-xl border border-hairline-default bg-surface-elevated space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-body-md font-semibold text-ink-primary">Sub-second Spot Salvage</span>
+<span class="px-2 py-0.5 rounded bg-sky-100 border border-sky-200 text-sky-800 font-label-mono text-[10px] uppercase font-semibold">Roadmap Q3</span>
+</div>
+<p class="font-body-sm text-ink-body">
+            Zero-downtime memory dump migration across providers upon receiving AWS/GCP 30-second reclaim notices.
+          </p>
+</div>
+<!-- Intelligence Card C (Roadmap) -->
+<div class="p-4 rounded-xl border border-hairline-default bg-surface-elevated space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-body-md font-semibold text-ink-primary">Thermal Degradation Shield</span>
+<span class="px-2 py-0.5 rounded bg-sky-100 border border-sky-200 text-sky-800 font-label-mono text-[10px] uppercase font-semibold">Roadmap Q4</span>
+</div>
+<p class="font-body-sm text-ink-body">
+            Continuous junction temperature monitoring that shifts load before clock frequencies step down under sustained batch stress.
+          </p>
+</div>
+</div></section>
+<!-- 8. Developer SDK Code Block -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-title-md text-ink-primary">Developer SDK</h2>
+<span class="font-label-mono text-[11px] text-ink-muted">python · pip install kynetic</span>
+</div>
+<div class="rounded-xl border border-hairline-strong bg-canvas-alternate p-3.5 space-y-2 overflow-hidden">
+<!-- Terminal Header -->
+<div class="flex items-center justify-between border-b border-hairline-default pb-2">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-hairline-strong"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-hairline-strong"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-hairline-strong"></span>
+</div>
+<span class="font-label-mono text-[11px] text-ink-muted">orchestration_job.py</span>
+</div>
+<!-- Code body with clean mobile horizontal scroll -->
+<pre class="font-code text-[12px] leading-5 text-ink-primary overflow-x-auto no-scrollbar py-1"><code><span class="text-ink-muted">import</span> <span class="text-blue-600 font-medium">kynetic</span> <span class="text-ink-muted">as</span> kn
+
+<span class="text-ink-muted"># 1. Initialize workload target</span>
+job = kn.Workload(
+    model=<span class="text-sky-700">"mistralai/Mistral-7B-v0.1"</span>,
+    task=<span class="text-sky-700">"fine_tune_lora"</span>,
+    max_budget_usd=<span class="text-blue-600 font-medium">30.00</span>,
+    max_duration_hours=<span class="text-blue-600 font-medium">8.0</span>
+)
+
+<span class="text-ink-muted"># 2. Compile optimal execution plan</span>
+plan = kn.planner.resolve(job)
+<span class="text-ink-muted">print(f"Assigned: {plan.gpu_sku} | Est: ${plan.cost}")</span>
+
+<span class="text-ink-muted"># 3. Autonomous dispatch with spot fallback</span>
+cluster = kn.dispatch(plan, spot_fallback=<span class="text-blue-600 font-medium">True</span>)
+cluster.stream_telemetry()</code></pre>
+</div>
+<p class="font-label-mono text-[11px] text-ink-muted">
+        ← Swipe code block horizontally to inspect full definition
+      </p>
+</section>
+<!-- 9. Compact Final CTA -->
+<section class="relative rounded-xl border border-sky-200/80 bg-surface-elevated p-5 text-center space-y-4 overflow-hidden" style="background: radial-gradient(circle at 50% 0%, rgba(224, 242, 254, 0.45), rgb(255, 255, 255) 75%);">
+<div class="space-y-1.5 relative z-10">
+<h3 class="font-headline-sm text-headline-sm text-ink-primary">Ready to orchestrate compute?</h3>
+<p class="font-body-sm text-ink-body">
+          Join high-scale ML engineering teams running production LLM pipelines on Kynetic.
+        </p>
+</div>
+<div class="space-y-2 relative z-10">
+<button class="w-full h-11 rounded-[9999px] bg-ink-primary text-surface-elevated font-label-mono text-body-sm flex items-center justify-center gap-2 active:bg-blue-950 transition-colors">
+<span class="">Request access key</span>
+<span class="material-symbols-outlined text-[16px]">key</span>
+</button>
+<span class="font-label-mono text-[11px] text-ink-muted block">Direct API credentials within 24 hours</span>
+</div>
+</section>
+</main>
+<!-- Clean Mobile Footer (Shared Components Compliant) -->
+<footer class="border-t border-hairline-default bg-canvas-base py-6 px-4">
+<div class="max-w-[420px] mx-auto space-y-4 text-center">
+<div class="flex items-center justify-center gap-2">
+<img alt="Kynetic AI Logo" class="w-4 h-4 object-contain rounded-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1UiwzxNF7ZnOxtbpIJVeHCm7V-Aa3Yfzjsh3wo6g-fGVZBkkihdA-Cv7VYGRyrKxlj65jH8_yNWBfyUIeEy9lR4TLzSz1FCcOYs9h9vsf6Bo9yWzqgwGMEFzL06_iKcmYVUChPukCBB-ZAhbEMG2VxIaz1cJjaEgw5YxKmEJ2G7N6lFDjz7l9yd1cbeSh_SwGBWA3NwGSSyCmGSATNMWyFar2yDjSatRsIHWDTredtue45eCF2BoZCZJqw4">
+<span class="font-headline-sm text-body-sm font-semibold text-ink-primary">Kynetic AI</span>
+</div>
+<div class="flex flex-wrap justify-center gap-x-4 gap-y-1.5 font-body-sm text-ink-muted text-[12px]">
+<a class="hover:text-ink-primary" href="#platform">Platform</a>
+<a class="hover:text-ink-primary" href="#workload-planner">Workload Planner</a>
+<a class="hover:text-ink-primary" href="#architecture">Architecture</a>
+<a class="hover:text-ink-primary" href="#docs">Docs</a>
+<a class="hover:text-ink-primary" href="#security">Security</a>
+</div>
+<p class="font-label-mono text-[11px] text-ink-muted leading-tight">
+        © 2025 Kynetic AI Inc. High-scale compute orchestration &amp; GPU optimization.
+      </p>
+</div>
+</footer>
+<!-- Micro Interaction Script -->
+<script>
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const drawer = document.getElementById('mobile-drawer');
+
+    if (menuBtn && drawer) {
+      menuBtn.addEventListener('click', () => {
+        drawer.classList.toggle('hidden');
+      });
+    }
+  </script>
+
+
+</body></html>

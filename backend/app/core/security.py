@@ -15,58 +15,11 @@ class Role(str, Enum):
     VIEWER = "VIEWER"
 
 
-# Permission matrices by role
-ROLE_PERMISSIONS: dict[Role, set[str]] = {
-    Role.OWNER: {
-        "org:read", "org:update", "org:delete",
-        "members:manage",
-        "projects:create", "projects:read", "projects:update", "projects:delete",
-        "workloads:create", "workloads:read", "workloads:update", "workloads:delete",
-        "plans:create", "plans:read", "plans:approve",
-        "runs:launch", "runs:read", "runs:cancel",
-        "providers:connect", "providers:read",
-        "ledger:read", "audit:read", "policies:manage"
-    },
-    Role.ADMIN: {
-        "org:read", "org:update",
-        "members:manage",
-        "projects:create", "projects:read", "projects:update",
-        "workloads:create", "workloads:read", "workloads:update",
-        "plans:create", "plans:read", "plans:approve",
-        "runs:launch", "runs:read", "runs:cancel",
-        "providers:connect", "providers:read",
-        "ledger:read", "audit:read", "policies:manage"
-    },
-    Role.DEVELOPER: {
-        "org:read",
-        "projects:read",
-        "workloads:create", "workloads:read", "workloads:update",
-        "plans:create", "plans:read",
-        "runs:launch", "runs:read", "runs:cancel",
-        "providers:read",
-        "ledger:read", "audit:read"
-    },
-    Role.VIEWER: {
-        "org:read",
-        "projects:read",
-        "workloads:read",
-        "plans:read",
-        "runs:read",
-        "providers:read",
-        "ledger:read"
-    }
-}
-
-
 class AuthContext(BaseModel):
     user_id: str
     email: str
     organization_id: str
     role: Role
-
-    def has_permission(self, permission: str) -> bool:
-        allowed = ROLE_PERMISSIONS.get(self.role, set())
-        return permission in allowed
 
 
 def generate_api_token(user_id: str, organization_id: str) -> str:

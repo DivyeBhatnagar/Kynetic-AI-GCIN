@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quickstart: Orchestrating your first training job - Kynetic AI Docs</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary": "#000000",
+            "inverse-surface": "#2f312e",
+            "ink-muted": "#686861",
+            "on-error": "#ffffff",
+            "on-surface-variant": "#444748",
+            "status-warning": "#F59E0B",
+            "sky-subtle": "#E0F2FE",
+            "on-primary-fixed": "#1c1b1b",
+            "surface-tint": "#5f5e5e",
+            "canvas-alternate": "#F0EFE9",
+            "on-secondary-fixed-variant": "#004395",
+            "surface-container-lowest": "#ffffff",
+            "on-surface": "#1b1c1a",
+            "secondary-fixed": "#d8e2ff",
+            "blue-deep": "#1D4ED8",
+            "tertiary-fixed": "#d4e3ff",
+            "on-primary-fixed-variant": "#474746",
+            "on-primary-container": "#858383",
+            "hairline-subtle": "#E8E7E0",
+            "hairline-default": "#DEDDD5",
+            "error": "#ba1a1a",
+            "surface-container-high": "#e9e8e4",
+            "tertiary-fixed-dim": "#a4c9ff",
+            "on-error-container": "#93000a",
+            "surface-container-low": "#f4f4f0",
+            "on-primary": "#ffffff",
+            "status-healthy": "#60A5FA",
+            "outline-variant": "#c4c7c7",
+            "on-tertiary-container": "#3c86d9",
+            "blue-electric": "#3B82F6",
+            "inverse-primary": "#c8c6c5",
+            "hairline-strong": "#C5C4BA",
+            "status-critical": "#EF4444",
+            "primary-fixed": "#e5e2e1",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#e3e2df",
+            "on-secondary-container": "#fefcff",
+            "on-background": "#1b1c1a",
+            "canvas-base": "#F8F7F3",
+            "primary-fixed-dim": "#c8c6c5",
+            "inverse-on-surface": "#f2f1ed",
+            "tertiary-container": "#001c39",
+            "secondary": "#0058be",
+            "surface-container": "#efeeea",
+            "sky-vibrant": "#60A5FA",
+            "secondary-container": "#2170e4",
+            "surface": "#faf9f5",
+            "on-tertiary-fixed-variant": "#004883",
+            "surface-dim": "#dbdad6",
+            "surface-elevated": "#FFFFFF",
+            "primary-container": "#1c1b1b",
+            "sky-ice": "#93C5FD",
+            "primary": "#000000",
+            "secondary-fixed-dim": "#adc6ff",
+            "surface-container-highest": "#e3e2df",
+            "ink-primary": "#191919",
+            "on-secondary-fixed": "#001a42",
+            "outline": "#747878",
+            "sky-soft": "#BAE6FD",
+            "surface-bright": "#faf9f5",
+            "ink-subtle": "#9E9D95",
+            "on-tertiary": "#ffffff",
+            "ink-body": "#4E4E4A",
+            "on-tertiary-fixed": "#001c39",
+            "status-active": "#3B82F6",
+            "background": "#faf9f5",
+            "error-container": "#ffdad6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter-sm": "1rem",
+            "space-xl": "2.5rem",
+            "margin": "2rem",
+            "margin-desktop": "3rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "gutter-lg": "2rem"
+          },
+          "fontFamily": {
+            "body-md": ["Inter"],
+            "headline-sm": ["Geist"],
+            "headline-xl": ["Geist"],
+            "title-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "body-lg": ["Inter"],
+            "title-sm": ["Inter"],
+            "headline-lg-mobile": ["Geist"],
+            "label-tag": ["Inter"],
+            "headline-xl-mobile": ["Geist"],
+            "headline-lg": ["Geist"],
+            "headline-md": ["Geist"],
+            "label-mono": ["Geist"]
+          },
+          "fontSize": {
+            "body-md": ["14px", { "lineHeight": "21px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-sm": ["22px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "headline-xl": ["56px", { "lineHeight": "60px", "letterSpacing": "-0.035em", "fontWeight": "400" }],
+            "title-md": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "body-lg": ["17px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "title-sm": ["15px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "label-tag": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["34px", { "lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "400" }],
+            "headline-lg": ["40px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "400" }],
+            "headline-md": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "label-mono": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-canvas-base text-ink-primary font-body-md antialiased min-h-screen flex flex-col selection:bg-sky-subtle selection:text-blue-deep">
+<!-- SHARED COMPONENT: TopNavBar -->
+<header class="w-full bg-canvas-base border-b border-hairline-default sticky top-0 z-50">
+<div class="w-full border-b border-hairline-default px-space-lg md:px-margin-desktop py-space-sm flex items-center justify-between max-w-[1240px] mx-auto">
+<div class="flex items-center gap-space-lg">
+<a class="text-title-md font-title-md font-medium tracking-tight text-ink-primary flex items-center gap-space-xs" href="#">
+<span class="w-2.5 h-2.5 bg-ink-primary rounded-full inline-block"></span>
+<span>Kynetic AI</span>
+</a>
+<div class="hidden md:flex items-center gap-space-md ml-space-md">
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Platform</a>
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Workload Planner</a>
+<a class="text-body-sm font-body-sm text-ink-muted hover:text-ink-primary transition-colors duration-150" href="#">Architecture</a>
+<!-- Active State: 'Docs' is matched directly -->
+<a class="text-body-sm font-body-sm text-ink-primary font-medium border-b-2 border-blue-electric pb-1" href="#">Docs</a>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="relative hidden sm:flex items-center">
+<input class="text-body-sm font-body-sm bg-surface-elevated border border-hairline-default text-ink-primary placeholder-ink-subtle px-3 py-1.5 rounded-lg w-56 focus:outline-none focus:border-blue-electric focus:ring-2 focus:ring-sky-ice/30 transition-all" placeholder="Search documentation... (⌘K)" type="text"/>
+<span class="absolute right-2.5 text-label-tag font-label-tag text-ink-muted bg-canvas-alternate px-1.5 py-0.5 rounded border border-hairline-subtle">/</span>
+</div>
+<a class="text-body-sm font-body-sm text-ink-primary hover:text-blue-electric px-3 py-1.5 transition-colors" href="#">Sign In</a>
+<a class="text-label-mono font-label-mono bg-ink-primary text-surface-elevated hover:bg-tertiary transition-all px-4 py-2 rounded-full tracking-wide" href="#">Get early access</a>
+</div>
+</div>
+</header>
+<!-- MAIN DOCUMENTATION CONTAINER (12-COLUMN ARCHITECTURAL GRID) -->
+<div class="w-full max-w-[1240px] mx-auto flex-1 flex flex-col md:flex-row px-space-md md:px-space-lg lg:px-margin-desktop py-space-lg gap-space-lg">
+<!-- LEFT SIDEBAR: Collapsible Architectural Nav -->
+<aside class="w-full md:w-64 lg:w-72 flex-shrink-0 md:border-r border-hairline-default md:pr-space-md self-start md:sticky md:top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm border-b border-hairline-subtle">
+<span class="text-label-tag font-label-tag uppercase tracking-wider text-ink-muted">Navigation Index</span>
+<span class="text-label-tag font-label-tag text-blue-deep bg-sky-subtle px-2 py-0.5 rounded-full border border-sky-soft">v2.4.0-stable</span>
+</div>
+<nav class="space-y-space-md text-body-sm font-body-sm">
+<!-- Section 1 -->
+<div>
+<div class="flex items-center justify-between text-ink-primary font-medium py-1">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-ink-muted" data-icon="terminal">terminal</span>
+              Getting Started
+            </span>
+<span class="material-symbols-outlined text-[16px] text-ink-subtle cursor-pointer" data-icon="expand_more">expand_more</span>
+</div>
+<div class="mt-1 ml-4 pl-2 border-l border-hairline-default space-y-1">
+<a class="block py-1 text-blue-electric font-medium bg-sky-subtle/50 -ml-[9px] pl-2 rounded-r border-l-2 border-blue-electric" href="#">Quickstart (5 min)</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Installation</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Authentication</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Core Concepts</a>
+</div>
+</div>
+<!-- Section 2 -->
+<div>
+<div class="flex items-center justify-between text-ink-primary font-medium py-1">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-ink-muted" data-icon="memory">memory</span>
+              Compute Planning
+            </span>
+<span class="material-symbols-outlined text-[16px] text-ink-subtle cursor-pointer" data-icon="expand_more">expand_more</span>
+</div>
+<div class="mt-1 ml-4 pl-2 border-l border-hairline-default space-y-1">
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Defining Workloads</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Budget &amp; SLA Constraints</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Provider Selection</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors flex items-center justify-between" href="#">
+              Digital Twin Simulator
+              <span class="text-[9px] font-mono uppercase bg-canvas-alternate px-1 py-0.5 rounded text-ink-muted border border-hairline-subtle">BETA</span>
+</a>
+</div>
+</div>
+<!-- Section 3 -->
+<div>
+<div class="flex items-center justify-between text-ink-primary font-medium py-1">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-ink-muted" data-icon="code">code</span>
+              SDK Reference
+            </span>
+<span class="material-symbols-outlined text-[16px] text-ink-subtle cursor-pointer" data-icon="expand_more">expand_more</span>
+</div>
+<div class="mt-1 ml-4 pl-2 border-l border-hairline-default space-y-1">
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Python Client (<code class="text-[12px] font-mono text-ink-primary">kynetic-py</code>)</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">CLI Reference (<code class="text-[12px] font-mono text-ink-primary">kn</code>)</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">REST API</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Webhooks</a>
+</div>
+</div>
+<!-- Section 4 -->
+<div>
+<div class="flex items-center justify-between text-ink-primary font-medium py-1">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-ink-muted" data-icon="hub">hub</span>
+              Advanced Orchestration
+            </span>
+<span class="material-symbols-outlined text-[16px] text-ink-subtle cursor-pointer" data-icon="expand_more">expand_more</span>
+</div>
+<div class="mt-1 ml-4 pl-2 border-l border-hairline-default space-y-1">
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Spot Preemption Recovery</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Checkpoint &amp; Resume</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Multi-Cluster Slurm Integration</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Kubernetes Operator</a>
+</div>
+</div>
+<!-- Section 5 -->
+<div>
+<div class="flex items-center justify-between text-ink-primary font-medium py-1">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-ink-muted" data-icon="dns">dns</span>
+              Providers &amp; Hardware
+            </span>
+<span class="material-symbols-outlined text-[16px] text-ink-subtle cursor-pointer" data-icon="expand_more">expand_more</span>
+</div>
+<div class="mt-1 ml-4 pl-2 border-l border-hairline-default space-y-1">
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">H100 SXM5 / PCIe</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">L40S Cluster Topologies</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">A100 High-Bandwidth</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">B200 / GB200 Preview</a>
+<a class="block py-1 text-ink-muted hover:text-ink-primary transition-colors" href="#">Provider Benchmarks</a>
+</div>
+</div>
+</nav>
+<!-- Thermal Status Card -->
+<div class="mt-space-lg p-space-sm bg-surface-elevated border border-hairline-default rounded-lg">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-label-tag font-label-tag text-ink-muted">TELEMETRY MONITOR</span>
+<span class="w-2 h-2 rounded-full bg-status-healthy"></span>
+</div>
+<div class="text-[12px] font-mono text-ink-body flex justify-between">
+<span>Global Spot Liquidity</span>
+<span class="text-blue-electric font-semibold">94.2%</span>
+</div>
+<div class="w-full bg-hairline-subtle h-1 rounded-full mt-1.5 overflow-hidden">
+<div class="bg-blue-electric h-full w-[94.2%]"></div>
+</div>
+</div>
+</aside>
+<!-- CENTER MAIN CONTENT AREA -->
+<main class="flex-1 min-w-0 md:px-space-md">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-body-sm font-body-sm text-ink-muted mb-space-sm">
+<a class="hover:text-ink-primary transition-colors" href="#">Docs</a>
+<span class="text-hairline-strong">/</span>
+<a class="hover:text-ink-primary transition-colors" href="#">Quickstart</a>
+<span class="text-hairline-strong">/</span>
+<span class="text-ink-primary font-medium">Python Client SDK</span>
+</nav>
+<!-- Page Header with Atmospheric Wash -->
+<div class="p-space-lg rounded-xl bg-gradient-to-b from-sky-subtle/50 via-canvas-base to-canvas-base border border-hairline-default mb-space-lg">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-sky-subtle border border-sky-soft text-blue-deep text-label-tag font-label-tag mb-space-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-electric animate-pulse"></span>
+          GETTING STARTED • STEP 01
+        </div>
+<h1 class="text-headline-md md:text-headline-lg font-headline-md md:font-headline-lg text-ink-primary tracking-tight mt-1 mb-space-xs">
+          Quickstart: Orchestrating your first training job
+        </h1>
+<p class="text-body-lg font-body-lg text-ink-body max-w-2xl leading-relaxed">
+          Install the Kynetic SDK, inspect real-time compute options with zero cloud lock-in, and dispatch a fault-tolerant training run.
+        </p>
+</div>
+<!-- Section: Prerequisites -->
+<section class="mb-space-lg" id="prerequisites">
+<h2 class="text-title-md font-title-md text-ink-primary font-semibold mb-space-xs flex items-center gap-2">
+<span class="w-1.5 h-4 bg-blue-electric rounded"></span>
+          1. Prerequisites
+        </h2>
+<p class="text-body-md font-body-md text-ink-body mb-space-sm">
+          Before initiating execution, verify that your environment satisfies hardware isolation and network protocol parameters:
+        </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+<div class="p-space-sm bg-surface-elevated border border-hairline-default rounded-lg">
+<span class="text-label-mono font-label-mono text-ink-muted uppercase block mb-1">Runtime Version</span>
+<span class="text-body-md font-body-md font-medium text-ink-primary">Python 3.10+ or Linux x86_64</span>
+</div>
+<div class="p-space-sm bg-surface-elevated border border-hairline-default rounded-lg">
+<span class="text-label-mono font-label-mono text-ink-muted uppercase block mb-1">Credential Binding</span>
+<span class="text-body-md font-body-md font-medium text-ink-primary">KYNETIC_API_KEY exported to env</span>
+</div>
+</div>
+</section>
+<!-- Section: Installation -->
+<section class="mb-space-lg" id="installation">
+<h2 class="text-title-md font-title-md text-ink-primary font-semibold mb-space-xs flex items-center gap-2">
+<span class="w-1.5 h-4 bg-blue-electric rounded"></span>
+          2. Installation
+        </h2>
+<p class="text-body-md font-body-md text-ink-body mb-space-sm">
+          Deploy the unified orchestration client into your virtual environment:
+        </p>
+<!-- Recessed Terminal Block -->
+<div class="bg-canvas-alternate border border-hairline-default rounded-lg overflow-hidden">
+<div class="px-space-md py-2 bg-hairline-subtle/60 border-b border-hairline-default flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-hairline-strong"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-hairline-strong"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-hairline-strong"></span>
+<span class="text-label-mono font-label-mono text-ink-muted text-xs ml-2">bash ~ zsh</span>
+</div>
+<button class="text-label-mono font-label-mono text-xs text-ink-muted hover:text-ink-primary flex items-center gap-1 transition-colors" onclick="navigator.clipboard.writeText('pip install kynetic')">
+<span class="material-symbols-outlined text-[14px]" data-icon="content_copy">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+<div class="p-space-md font-mono text-body-sm text-ink-primary">
+<span class="text-ink-subtle select-none">$ </span>pip install kynetic
+          </div>
+</div>
+</section>
+<!-- Section: Interactive Code Execution Block -->
+<section class="mb-space-lg" id="initialize-client">
+<div class="flex items-center justify-between mb-space-xs">
+<h2 class="text-title-md font-title-md text-ink-primary font-semibold flex items-center gap-2">
+<span class="w-1.5 h-4 bg-blue-electric rounded"></span>
+            3. Initialize Client &amp; Define Constraints
+          </h2>
+</div>
+<p class="text-body-md font-body-md text-ink-body mb-space-sm">
+          Switch between native environments to view the orchestration pipeline contract:
+        </p>
+<!-- Code Block Container with Tab Switcher -->
+<div class="bg-canvas-alternate border border-hairline-default rounded-lg overflow-hidden">
+<!-- Code Tabs -->
+<div class="flex items-center justify-between border-b border-hairline-default px-space-md bg-canvas-base">
+<div class="flex gap-space-md">
+<button class="py-2.5 text-label-mono font-label-mono border-b-2 border-blue-electric text-ink-primary font-medium text-xs">Python SDK</button>
+<button class="py-2.5 text-label-mono font-label-mono border-b-2 border-transparent text-ink-muted hover:text-ink-primary text-xs transition-colors">CLI (kn)</button>
+<button class="py-2.5 text-label-mono font-label-mono border-b-2 border-transparent text-ink-muted hover:text-ink-primary text-xs transition-colors">cURL REST</button>
+</div>
+<button class="text-label-mono font-label-mono text-xs text-ink-muted hover:text-ink-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="copy_all">copy_all</span>
+              Copy script
+            </button>
+</div>
+<!-- Code Well -->
+<div class="p-space-md font-mono text-body-sm leading-relaxed overflow-x-auto text-ink-primary bg-surface-elevated">
+<pre><span class="text-ink-subtle"># Import the universal orchestrator</span>
+<span class="text-blue-deep font-semibold">import</span> kynetic <span class="text-blue-deep font-semibold">as</span> kn
+
+<span class="text-ink-subtle"># 1. Establish secure session</span>
+client = kn.Client()
+
+<span class="text-ink-subtle"># 2. Declare workload envelope with hard SLA constraints</span>
+workload = client.workloads.plan(
+    model=<span class="text-blue-electric">"llama-3-8b"</span>,
+    training_dataset=<span class="text-blue-electric">"s3://internal-weights/curated-tokens-v2"</span>,
+    constraints=kn.Constraints(
+        max_budget_usd=<span class="text-status-warning font-semibold">40.00</span>,
+        deadline_hours=<span class="text-status-warning font-semibold">6.0</span>,
+        allow_preemptible_spot=<span class="text-blue-deep font-semibold">True</span>,
+        checkpoint_sync_interval=<span class="text-status-warning font-semibold">300</span>, <span class="text-ink-subtle"># 5 min automated push</span>
+        topology_requirement=<span class="text-blue-electric">"sxm5_nvlink"</span>
+    )
+)
+
+<span class="text-ink-subtle"># 3. Simulate and dry-run candidate market rankings</span>
+simulation = workload.simulate()
+<span class="text-blue-deep font-semibold">print</span>(f<span class="text-blue-electric">"Optimal provider chosen: {simulation.best_candidate.provider_name}"</span>)
+<span class="text-blue-deep font-semibold">print</span>(f<span class="text-blue-electric">"Estimated effective cost: ${simulation.best_candidate.projected_cost:.2f}"</span>)
+
+<span class="text-ink-subtle"># 4. Dispatch workload with self-healing recovery</span>
+run = workload.dispatch(auto_resume=<span class="text-blue-deep font-semibold">True</span>)
+run.stream_telemetry()</pre>
+</div>
+</div>
+</section>
+<!-- Section: Visual Parameter Specifications Table -->
+<section class="mb-space-lg" id="dry-run-simulation">
+<h2 class="text-title-md font-title-md text-ink-primary font-semibold mb-space-xs flex items-center gap-2">
+<span class="w-1.5 h-4 bg-blue-electric rounded"></span>
+          4. Workload Constraint Parameters
+        </h2>
+<p class="text-body-md font-body-md text-ink-body mb-space-sm">
+          Technical specifications passed to the autonomous allocation engine:
+        </p>
+<!-- Technical Spec Table -->
+<div class="border border-hairline-default rounded-lg overflow-x-auto bg-surface-elevated">
+<table class="w-full text-left border-collapse text-body-sm font-body-sm">
+<thead>
+<tr class="border-b border-hairline-default bg-canvas-alternate text-ink-muted text-label-tag font-label-tag">
+<th class="py-2.5 px-4 font-semibold uppercase">Parameter</th>
+<th class="py-2.5 px-4 font-semibold uppercase">Type</th>
+<th class="py-2.5 px-4 font-semibold uppercase">Default</th>
+<th class="py-2.5 px-4 font-semibold uppercase">Architectural Behavior</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-hairline-subtle">
+<tr class="hover:bg-sky-subtle/30 transition-colors">
+<td class="py-3 px-4 font-mono font-medium text-ink-primary">max_budget_usd</td>
+<td class="py-3 px-4 font-mono text-xs text-blue-deep">float</td>
+<td class="py-3 px-4 font-mono text-xs text-ink-muted">None</td>
+<td class="py-3 px-4 text-ink-body">Hard budget clamp. Cluster is cleanly terminated after graceful checkpoint push if reached.</td>
+</tr>
+<tr class="hover:bg-sky-subtle/30 transition-colors">
+<td class="py-3 px-4 font-mono font-medium text-ink-primary">checkpoint_sync_interval</td>
+<td class="py-3 px-4 font-mono text-xs text-blue-deep">int (sec)</td>
+<td class="py-3 px-4 font-mono text-xs text-ink-muted">300</td>
+<td class="py-3 px-4 text-ink-body">Zero-overhead delta synchronization frequency into encrypted blob storage.</td>
+</tr>
+<tr class="hover:bg-sky-subtle/30 transition-colors">
+<td class="py-3 px-4 font-mono font-medium text-ink-primary">allow_preemptible_spot</td>
+<td class="py-3 px-4 font-mono text-xs text-blue-deep">boolean</td>
+<td class="py-3 px-4 font-mono text-xs text-ink-muted">True</td>
+<td class="py-3 px-4 text-ink-body">Enables cross-datacenter spot arbitrage with 30-second preemption notice absorption.</td>
+</tr>
+<tr class="hover:bg-sky-subtle/30 transition-colors">
+<td class="py-3 px-4 font-mono font-medium text-ink-primary">topology_requirement</td>
+<td class="py-3 px-4 font-mono text-xs text-blue-deep">string</td>
+<td class="py-3 px-4 font-mono text-xs text-ink-muted">"sxm5_nvlink"</td>
+<td class="py-3 px-4 text-ink-body">Mandates inter-GPU interconnect bandwidth (minimum 900 GB/s bidirectional NVLink).</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Section: Troubleshooting Callout -->
+<section class="mb-space-xl" id="error-handling">
+<div class="p-space-md bg-canvas-base border border-sky-ice/70 rounded-xl relative overflow-hidden">
+<div class="absolute -right-12 -top-12 w-32 h-32 bg-sky-subtle rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-blue-electric text-[24px] mt-0.5" data-icon="lightbulb">lightbulb</span>
+<div>
+<h4 class="text-title-sm font-title-sm font-semibold text-ink-primary mb-1">
+                Troubleshooting &amp; Operational Best Practice
+              </h4>
+<p class="text-body-sm font-body-sm text-ink-body leading-relaxed mb-space-xs">
+                When operating with spot clusters in low-liquidity geo-regions (e.g. <code class="font-mono text-xs text-ink-primary bg-hairline-subtle px-1 rounded">eu-central-1</code>), initialize with fallback topology constraints. If preemption rates exceed 2 events per hour, the Kynetic supervisor seamlessly transitions the state to an on-demand node within 4.2 seconds without loss of loss-curve telemetry.
+              </p>
+<div class="flex items-center gap-space-sm">
+<a class="text-label-mono font-label-mono text-blue-deep hover:underline text-xs flex items-center gap-1" href="#">
+                  Read Checkpoint Protocol Architecture
+                  <span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Page Pagination -->
+<div class="border-t border-hairline-default pt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-md mb-space-xl">
+<a class="w-full sm:w-auto p-space-sm border border-hairline-default rounded-lg hover:border-sky-ice hover:bg-sky-subtle/20 transition-all flex items-center gap-space-sm group" href="#">
+<span class="material-symbols-outlined text-ink-muted group-hover:text-blue-electric transition-colors" data-icon="arrow_back">arrow_back</span>
+<div class="text-left">
+<span class="text-label-tag font-label-tag text-ink-muted block uppercase">Previous Section</span>
+<span class="text-body-sm font-body-sm font-medium text-ink-primary">Architecture Overview</span>
+</div>
+</a>
+<a class="w-full sm:w-auto p-space-sm border border-hairline-default rounded-lg hover:border-sky-ice hover:bg-sky-subtle/20 transition-all flex items-center justify-end gap-space-sm text-right group" href="#">
+<div>
+<span class="text-label-tag font-label-tag text-ink-muted block uppercase">Next Section</span>
+<span class="text-body-sm font-body-sm font-medium text-ink-primary">Configuring Spot Arbitrage</span>
+</div>
+<span class="material-symbols-outlined text-ink-muted group-hover:text-blue-electric transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</main>
+<!-- RIGHT COLUMN: Table of Contents -->
+<aside class="hidden lg:block w-56 flex-shrink-0 self-start sticky top-20 text-body-sm font-body-sm border-l border-hairline-default pl-space-md">
+<span class="text-label-tag font-label-tag text-ink-muted uppercase tracking-wider block mb-space-sm">On This Page</span>
+<ul class="space-y-2 text-ink-muted">
+<li>
+<a class="hover:text-ink-primary transition-colors block text-xs py-0.5" href="#prerequisites">1. Prerequisites</a>
+</li>
+<li>
+<a class="hover:text-ink-primary transition-colors block text-xs py-0.5" href="#installation">2. Installation</a>
+</li>
+<li>
+<a class="text-blue-deep font-medium block text-xs py-0.5 border-l-2 border-blue-electric -ml-[17px] pl-[15px]" href="#initialize-client">3. Initialize Client</a>
+</li>
+<li>
+<a class="hover:text-ink-primary transition-colors block text-xs py-0.5" href="#dry-run-simulation">4. Dry-run Simulation</a>
+</li>
+<li>
+<a class="hover:text-ink-primary transition-colors block text-xs py-0.5" href="#error-handling">5. Error Handling &amp; Limits</a>
+</li>
+</ul>
+<!-- Community / Support Box -->
+<div class="mt-space-lg pt-space-md border-t border-hairline-subtle">
+<span class="text-label-tag font-label-tag text-ink-muted uppercase tracking-wider block mb-2">Need Assistance?</span>
+<div class="space-y-2">
+<a class="text-xs text-ink-body hover:text-blue-deep flex items-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[15px]" data-icon="forum">forum</span>
+            Discord Developer Guild
+          </a>
+<a class="text-xs text-ink-body hover:text-blue-deep flex items-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[15px]" data-icon="bug_report">bug_report</span>
+            File an Issue
+          </a>
+<a class="text-xs text-ink-body hover:text-blue-deep flex items-center gap-1.5 transition-colors" href="#">
+<span class="material-symbols-outlined text-[15px]" data-icon="edit">edit</span>
+            Edit on GitHub
+          </a>
+</div>
+</div>
+</aside>
+</div>
+<!-- SHARED COMPONENT: Footer -->
+<footer class="w-full bg-canvas-alternate border-t border-hairline-default mt-auto">
+<div class="w-full border-t border-hairline-default px-space-lg md:px-margin-desktop py-space-xl max-w-[1240px] mx-auto">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md pb-space-lg border-b border-hairline-subtle">
+<div>
+<div class="text-title-sm font-title-sm font-medium text-ink-primary flex items-center gap-2 mb-1">
+<span class="w-2 h-2 bg-ink-primary rounded-full inline-block"></span>
+<span>Kynetic AI</span>
+</div>
+<p class="text-body-sm font-body-sm text-ink-muted">© 2025 Kynetic AI Inc. High-performance compute infrastructure. All rights reserved.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-healthy"></span>
+<span class="text-label-tag font-label-tag text-ink-primary uppercase tracking-wider">All Systems Operational</span>
+</div>
+</div>
+<div class="pt-space-md flex flex-wrap items-center justify-between gap-space-md">
+<div class="flex flex-wrap items-center gap-x-space-lg gap-y-2 text-body-sm font-body-sm text-ink-muted">
+<a class="hover:text-blue-electric transition-colors duration-150" href="#">Privacy Policy</a>
+<a class="hover:text-blue-electric transition-colors duration-150" href="#">Terms of Service</a>
+<a class="hover:text-blue-electric transition-colors duration-150" href="#">Security Architecture</a>
+<a class="hover:text-blue-electric transition-colors duration-150" href="#">Compliance (SOC2)</a>
+<a class="hover:text-blue-electric transition-colors duration-150" href="#">System Status</a>
+</div>
+<div class="text-label-tag font-label-tag text-ink-subtle">
+          CALCULATED LATENCY: 14MS • US-EAST / EU-CENTRAL
+        </div>
+</div>
+</div>
+</footer>
+</body></html>

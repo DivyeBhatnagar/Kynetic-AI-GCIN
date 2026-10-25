@@ -16,12 +16,13 @@ from app.ports.provider_adapter import (
 from app.domain.common import Currency, SourceType
 from app.adapters.providers.base import (
     BaseHttpProviderClient,
+    BaseInMemoryProviderAdapter,
     ProviderApiError,
     ProviderAuthError
 )
 
 
-class AWSAdapter:
+class AWSAdapter(BaseInMemoryProviderAdapter):
     """
     Production integration adapter for AWS EC2 GPU instances.
     Supports p5 (H100), p4de (A100), and g5 (A10G) instance families
@@ -37,6 +38,7 @@ class AWSAdapter:
         default_region: str = "us-east-1",
         base_url: str = "https://ec2.us-east-1.amazonaws.com"
     ):
+        super().__init__()
         self.access_key_id = access_key_id or "mock-aws-key-id"
         self.secret_access_key = secret_access_key or "mock-aws-secret"
         self.default_region = default_region
@@ -44,8 +46,6 @@ class AWSAdapter:
             base_url=base_url,
             default_headers={"X-Amz-Security-Token": "mock-session-token"}
         )
-        self._in_memory_resources: dict[str, ProviderResource] = {}
-        self._idempotency_table: dict[str, str] = {}
 
     async def validate_credentials(self) -> bool:
         """Verifies AWS STS credentials."""
@@ -151,9 +151,9 @@ class AWSAdapter:
         return LaunchValidation(is_valid=len(errors) == 0, errors=errors, warnings=warnings)
 
     async def create_resource(self, request: LaunchRequest, idempotency_key: str) -> ProviderResource:
-        if idempotency_key in self._idempotency_table:
-            existing_id = self._idempotency_table[idempotency_key]
-            return self._in_memory_resources[existing_id]
+        existing = self._get_existing(idempotency_key)
+        if existing:
+            return existing
 
         instance_id = f"i-{uuid.uuid4().hex[:17]}"
         now = datetime.now(timezone.utc)
@@ -169,62 +169,8 @@ class AWSAdapter:
                 "idempotency_key": idempotency_key
             }
         )
-        self._in_memory_resources[instance_id] = res
-        self._idempotency_table[idempotency_key] = instance_id
+        self._save_resource(idempotency_key, res)
         return res
-
-    async def get_resource(self, provider_resource_id: str) -> ProviderResource:
-        if provider_resource_id in self._in_memory_resources:
-            return self._in_memory_resources[provider_resource_id]
-        now = datetime.now(timezone.utc)
-        return ProviderResource(
-            provider_resource_id=provider_resource_id,
-            status="RUNNING",
-            region_key="us-east-1",
-            created_at=now - timedelta(minutes=20),
-            metadata={"provider": "aws"}
-        )
-
-    async def stop_resource(self, provider_resource_id: str) -> ProviderActionResult:
-        if provider_resource_id in self._in_memory_resources:
-            res = self._in_memory_resources[provider_resource_id]
-            self._in_memory_resources[provider_resource_id] = res.model_copy(update={"status": "STOPPED"})
-        return ProviderActionResult(
-            success=True,
-            action="STOP",
-            message=f"AWS EC2 instance {provider_resource_id} successfully stopped",
-            provider_resource_id=provider_resource_id
-        )
-
-    async def terminate_resource(self, provider_resource_id: str, idempotency_key: str) -> ProviderActionResult:
-        if provider_resource_id in self._in_memory_resources:
-            res = self._in_memory_resources[provider_resource_id]
-            self._in_memory_resources[provider_resource_id] = res.model_copy(update={"status": "TERMINATED"})
-        return ProviderActionResult(
-            success=True,
-            action="TERMINATE",
-            message=f"AWS EC2 instance {provider_resource_id} successfully terminated",
-            provider_resource_id=provider_resource_id
-        )
-
-    async def get_usage(self, provider_resource_id: str) -> list[UsageObservationInfo]:
-        now = datetime.now(timezone.utc)
-        return [
-            UsageObservationInfo(
-                metric_name="run_duration_seconds",
-                value=Decimal("7200.00"),
-                unit="SECONDS",
-                period_start=now - timedelta(hours=2),
-                period_end=now
-            ),
-            UsageObservationInfo(
-                metric_name="gpu_utilization_avg",
-                value=Decimal("91.20"),
-                unit="PERCENT",
-                period_start=now - timedelta(hours=2),
-                period_end=now
-            )
-        ]
 
     async def get_logs(self, provider_resource_id: str, tail: int = 100) -> list[str]:
         return [
