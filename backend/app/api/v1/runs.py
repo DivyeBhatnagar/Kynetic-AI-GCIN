@@ -1,7 +1,7 @@
 from typing import Annotated, Any
 from datetime import datetime, timezone, timedelta
 from decimal import Decimal
-from fastapi import APIRouter, Depends, Header, Response, status
+from fastapi import APIRouter, Depends, Header, Response, status, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -209,6 +209,67 @@ async def launch_run_from_plan(
     await db.flush()
 
     return await get_run(run_id=run.id, auth=auth, db=db)
+
+
+@router.get("/v1/runs", response_model=list[RunResponse])
+async def list_runs(
+    auth: Annotated[AuthContext, Depends(get_current_auth)],
+    project_id: str | None = Query(None, description="Filter runs by project ID"),
+    status: str | None = Query(None, description="Filter runs by status"),
+    limit: int = Query(50, ge=1, le=200, description="Max items to return"),
+    offset: int = Query(0, ge=0, description="Items to skip"),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Lists runs scoped to the authenticated tenant organization with pagination.
+    Utilizes composite indexes on (organization_id, status, created_at) and (organization_id, created_at).
+    """
+    stmt = (
+        select(RunModel)
+        .where(RunModel.organization_id == auth.organization_id)
+        .order_by(RunModel.created_at.desc())
+    )
+    if project_id:
+        stmt = stmt.where(RunModel.project_id == project_id)
+    if status:
+        stmt = stmt.where(RunModel.status == status)
+
+    stmt = stmt.offset(offset).limit(limit)
+    result = await db.execute(stmt)
+    runs = result.scalars().all()
+
+    response_list = []
+    for run in runs:
+        # Load state events for each run
+        evt_stmt = select(RunStateEventModel).where(RunStateEventModel.run_id == run.id).order_by(RunStateEventModel.created_at.asc())
+        evt_res = await db.execute(evt_stmt)
+        events = evt_res.scalars().all()
+        response_list.append(
+            RunResponse(
+                id=run.id,
+                organization_id=run.organization_id,
+                project_id=run.project_id,
+                plan_id=run.plan_id,
+                compute_offer_id=run.compute_offer_id,
+                status=run.status,
+                idempotency_key=run.idempotency_key,
+                provider_resource_id=run.provider_resource_id,
+                started_at=run.started_at,
+                ended_at=run.ended_at,
+                error_summary=run.error_summary,
+                state_events=[
+                    RunStateEventResponse(
+                        from_state=e.from_state,
+                        to_state=e.to_state,
+                        reason_code=e.reason_code,
+                        created_at=e.created_at
+                    )
+                    for e in events
+                ],
+                created_at=run.created_at
+            )
+        )
+    return response_list
 
 
 @router.get("/v1/runs/{run_id}", response_model=RunResponse)
