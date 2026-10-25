@@ -14,6 +14,7 @@ from app.adapters.persistence.models import (
     PlanCandidateModel
 )
 from app.adapters.providers.fake_provider import FakeProviderAdapter
+from app.adapters.providers.registry import ProviderRegistry
 from app.domain.workloads.manifest import WorkloadManifest
 from app.domain.planning.candidate_evaluator import CandidateEvaluator, CandidateEvaluation
 from app.core.security import AuthContext, Role
@@ -95,13 +96,15 @@ async def create_execution_plan(
     allowed_regions = policy.allowed_regions if policy else None
     max_job_cost = policy.max_job_cost if policy else None
 
-    # 3. Fetch candidate offers from provider layer
-    offers = await fake_adapter.list_offers()
+    # 3. Fetch candidate offers across all live and simulated providers
+    offers = await ProviderRegistry.list_all_active_offers()
+    if not offers:
+        offers = await fake_adapter.list_offers()
     candidates_raw = [
         {
             "id": o.id,
             "provider_key": o.provider_key,
-            "provider_name": fake_adapter.provider_name,
+            "provider_name": o.provider_key.capitalize(),
             "region_key": o.region_key,
             "gpu_model": o.gpu_model,
             "gpu_count": o.gpu_count,

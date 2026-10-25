@@ -20,6 +20,7 @@ from app.adapters.persistence.models import (
 from app.core.security import AuthContext
 from app.api.deps import get_current_auth
 from app.adapters.providers.fake_provider import FakeProviderAdapter
+from app.adapters.providers.registry import ProviderRegistry
 from app.domain.checkpoints.transfer_estimator import TransferEstimator
 from app.domain.arbitrage.schemas import (
     ArbitrageScanRequest,
@@ -104,14 +105,18 @@ async def scan_arbitrage_opportunities(
         current_price = current_offer.price_per_hour
         source_provider = current_offer.provider_id
     else:
-        sim_offers = await fake_adapter.list_offers()
-        curr_sim = next((o for o in sim_offers if o.id == run.compute_offer_id), None)
+        all_offers = await ProviderRegistry.list_all_active_offers()
+        if not all_offers:
+            all_offers = await fake_adapter.list_offers()
+        curr_sim = next((o for o in all_offers if o.id == run.compute_offer_id), None)
         if curr_sim:
             current_price = curr_sim.price_per_hour
             source_provider = curr_sim.provider_key
 
-    # 6. Fetch candidate alternative offers (simulated provider market & DB catalog)
-    sim_offers = await fake_adapter.list_offers()
+    # 6. Fetch candidate alternative offers across all registered providers & DB catalog
+    all_offers = await ProviderRegistry.list_all_active_offers()
+    if not all_offers:
+        all_offers = await fake_adapter.list_offers()
     candidates: list[dict[str, Any]] = [
         {
             "id": o.id,
@@ -119,10 +124,10 @@ async def scan_arbitrage_opportunities(
             "price": o.price_per_hour,
             "gpu_model": o.gpu_model,
             "vram_gb": o.gpu_memory_gb * o.gpu_count,
-            "is_spot": True if "spot" in o.id.lower() else False,
-            "preemption_risk": Decimal("0.150") if "spot" in o.id.lower() else Decimal("0.020")
+            "is_spot": True if ("spot" in o.id.lower() or "rtx" in o.id.lower()) else False,
+            "preemption_risk": Decimal("0.150") if ("spot" in o.id.lower() or "rtx" in o.id.lower()) else Decimal("0.020")
         }
-        for o in sim_offers
+        for o in all_offers
         if o.id != run.compute_offer_id
     ]
 

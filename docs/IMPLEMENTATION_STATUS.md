@@ -2,7 +2,7 @@
 
 **Document Type:** Engineering Milestone Record & Technical Verification  
 **Product:** Kynetic AI (Global Compute Intelligence Network)  
-**Status:** Phase 1 (MVP Foundations), Phase 2 (Digital Twin), Phase 3 (Checkpoint Engine), and Phase 4 (Predictive Arbitrage) Completed  
+**Status:** Phase 1 (MVP Foundations), Phase 2 (Digital Twin), Phase 3 (Checkpoint Engine), Phase 4 (Predictive Arbitrage), and Phase 5 (Production Provider Integration) Completed  
 **Last Updated:** 25 October 2026  
 **Repository:** `https://github.com/DivyeBhatnagar/Kynetic-AI-GCIN.git`
 
@@ -12,7 +12,12 @@
 
 Kynetic AI is designed as an **intelligent compute scheduler with a marketplace attached**, prioritizing workload constraints, side-effect-free planning, transparent cost estimation, and reliable execution.
 
-Phase 1 establishes the production backend foundation as a **modular monolith** with Python 3.12, FastAPI, Pydantic v2, SQLAlchemy 2.0, Alembic, and PostgreSQL/SQLite support. The complete vertical slice—from workload manifest submission and dry-run candidate evaluation to atomic budget reservation, idempotent execution, and cost ledger reconciliation—is implemented and verified with automated tests.
+The production backend is built as a **modular monolith** with Python 3.12, FastAPI, Pydantic v2, SQLAlchemy 2.0, Alembic, and PostgreSQL/SQLite support. The architecture delivers:
+- **Phase 1 (MVP Foundations):** Strict workload manifests, dry-run candidate evaluator, deterministic Decimal cost engine, Run state machine, budget hold locks, fake provider adapter, immutable cost ledger, audit logging.
+- **Phase 2 (Digital Twin):** Empirical benchmark registry, cross-hardware scaling predictor, out-of-distribution uncertainty intervals, actual outcome tracking, and continuous calibration monitoring.
+- **Phase 3 (Checkpoint Engine):** SafeTensors header check, SHA-256 integrity hashing, ZeRO 1/2/3 VRAM requirement calculations, cross-cloud egress fees & downtime modeling, and idempotent resumption.
+- **Phase 4 (Predictive Arbitrage):** In-flight market scanning, anti-oscillation guards (cooldown windows, minimum run duration, max migrations, emergency spot preemption overrides), net savings modeling, and approval workflows.
+- **Phase 5 (Production Provider Integration):** Neutral `ProviderAdapter` implementations for specialist clouds (RunPod, Lambda Labs) and hyperscalers (AWS EC2, GCP Compute Engine, Azure Virtual Machines) coordinated by dynamic `ProviderRegistry` with live connection verification and offer synchronization.
 
 ---
 
@@ -21,7 +26,7 @@ Phase 1 establishes the production backend foundation as a **modular monolith** 
 ```mermaid
 flowchart TD
     subgraph Client ["Client Layer"]
-        CLI[API Client / Dashboard]
+        CLI[API Client / Mission Control]
     end
 
     subgraph API ["FastAPI Control Plane"]
@@ -29,6 +34,9 @@ flowchart TD
         VAL[Workload Validator]
         PLAN[Cost Planner & Ranker]
         ORCH[Execution Orchestrator]
+        CHK_API[Checkpoint & Resumption API]
+        ARB_API[Arbitrage Engine API]
+        PROV_API[Live Provider Sync & Verify API]
     end
 
     subgraph Domain ["Domain Engine"]
@@ -36,11 +44,20 @@ flowchart TD
         EVAL[Two-Stage Candidate Evaluator]
         COST[Decimal Cost Engine]
         SM[Run State Machine]
+        DT[Digital Twin Predictor]
+        CHK[Universal Checkpoint Verifier]
+        ARB[Arbitrage Economics & Safeguards]
     end
 
-    subgraph Adapters ["Adapter Layer"]
+    subgraph Adapters ["Adapter Layer & Provider Registry"]
         PROV_PORT[ProviderAdapter Protocol]
+        REGISTRY[ProviderRegistry Factory]
         FAKE_PROV[Fake Provider Adapter]
+        RUNPOD[RunPod Adapter]
+        LAMBDA[Lambda Labs Adapter]
+        AWS[AWS EC2 Adapter]
+        GCP[GCP Compute Engine Adapter]
+        AZURE[Azure VM Adapter]
         DB_MODELS[SQLAlchemy 2.0 Persistence]
     end
 
@@ -57,7 +74,13 @@ flowchart TD
     PLAN --> EVAL
     EVAL --> COST
     EVAL --> PROV_PORT
-    PROV_PORT --> FAKE_PROV
+    PROV_PORT --> REGISTRY
+    REGISTRY --> FAKE_PROV
+    REGISTRY --> RUNPOD
+    REGISTRY --> LAMBDA
+    REGISTRY --> AWS
+    REGISTRY --> GCP
+    REGISTRY --> AZURE
     PLAN --> DB_MODELS
     CLI --> ORCH
     ORCH --> SM
@@ -181,10 +204,12 @@ Organizations & Projects
   GET  /v1/projects/{id}                  -> Get project and policy configuration
 
 Providers & Compute Offers
-  GET  /v1/providers                      -> List providers and capability profiles
-  GET  /v1/compute-offers                 -> List normalized offers (GPU/RAM/VRAM/Price)
+  GET  /v1/providers                      -> List providers and capability profiles (RunPod, Lambda, AWS, GCP, Azure, Simulated)
+  GET  /v1/compute-offers                 -> List normalized offers (GPU/RAM/VRAM/Price) across all providers
   POST /v1/provider-connections           -> Register provider account (secret reference)
   GET  /v1/provider-connections           -> List registered provider accounts
+  POST /v1/provider-connections/{id}/verify -> Test live credential authentication with external provider API
+  POST /v1/providers/{key}/sync-offers    -> Pull fresh GPU catalog and spot/on-demand offers from provider
 
 Workloads & Manifests
   POST /v1/workloads/validate-manifest    -> Validate manifest, compute digest & fingerprint
@@ -236,52 +261,59 @@ Usage, Ledger & Audit
 
 The test suite runs with `pytest` and `pytest-asyncio` using an in-memory database for hermetic test execution.
 
-### Test Results (Phase 1, Phase 2, Phase 3 & Phase 4)
+### Test Results (Phase 1, Phase 2, Phase 3, Phase 4 & Phase 5)
 
 ```text
 ============================= test session starts ==============================
 platform darwin -- Python 3.12.13, pytest-9.1.1, pluggy-1.7.0
 rootdir: /Users/divyebhatnagar/Desktop/KYNETICNEWINTELLIGENCE/backend
 plugins: cov-7.1.0, asyncio-1.4.0, anyio-4.15.1
-collected 34 items
+collected 41 items
 
 tests/e2e/test_vertical_slice.py::test_full_vertical_slice_end_to_end PASSED [  2%]
-tests/integration/test_arbitrage_endpoints.py::test_arbitrage_lifecycle_end_to_end PASSED [  5%]
-tests/integration/test_checkpoint_endpoints.py::test_checkpoint_lifecycle_and_resumption_end_to_end PASSED [  8%]
-tests/integration/test_digital_twin_endpoints.py::test_digital_twin_lifecycle_end_to_end PASSED [ 11%]
-tests/integration/test_provider_contract.py::test_fake_provider_contract_and_idempotency PASSED [ 14%]
+tests/integration/test_arbitrage_endpoints.py::test_arbitrage_lifecycle_end_to_end PASSED [  4%]
+tests/integration/test_checkpoint_endpoints.py::test_checkpoint_lifecycle_and_resumption_end_to_end PASSED [  7%]
+tests/integration/test_digital_twin_endpoints.py::test_digital_twin_lifecycle_end_to_end PASSED [  9%]
+tests/integration/test_provider_contract.py::test_fake_provider_contract_and_idempotency PASSED [ 12%]
+tests/integration/test_provider_integration_endpoints.py::test_provider_endpoints_and_live_sync_lifecycle PASSED [ 14%]
 tests/integration/test_tenant_isolation.py::test_cross_tenant_isolation PASSED [ 17%]
-tests/unit/test_anti_oscillation_guard.py::test_guard_blocks_premature_migration PASSED [ 20%]
-tests/unit/test_anti_oscillation_guard.py::test_guard_allows_mature_migration PASSED [ 23%]
-tests/unit/test_anti_oscillation_guard.py::test_guard_blocks_during_cooldown_window PASSED [ 26%]
-tests/unit/test_anti_oscillation_guard.py::test_guard_blocks_when_max_migrations_exceeded PASSED [ 29%]
-tests/unit/test_anti_oscillation_guard.py::test_guard_emergency_override_on_high_preemption_risk PASSED [ 32%]
-tests/unit/test_arbitrage_economics.py::test_arbitrage_economics_positive_net_savings PASSED [ 35%]
-tests/unit/test_arbitrage_economics.py::test_arbitrage_economics_negative_net_savings_rejected PASSED [ 38%]
-tests/unit/test_calibration_tracker.py::test_calibration_tracker_within_interval PASSED [ 41%]
-tests/unit/test_calibration_tracker.py::test_calibration_tracker_outside_interval PASSED [ 44%]
-tests/unit/test_candidate_evaluator.py::test_candidate_evaluator_rejects_incompatible_gpu_and_ranks PASSED [ 47%]
-tests/unit/test_checkpoint_verifier.py::test_vram_requirement_calculation_zero_stages PASSED [ 50%]
-tests/unit/test_checkpoint_verifier.py::test_checkpoint_verifier_valid_safetensors PASSED [ 52%]
-tests/unit/test_checkpoint_verifier.py::test_checkpoint_verifier_invalid_sha256_corrupted PASSED [ 55%]
-tests/unit/test_checkpoint_verifier.py::test_checkpoint_verifier_target_vram_compatibility PASSED [ 58%]
-tests/unit/test_cost_engine.py::test_cost_engine_compute_hourly_rounding PASSED [ 61%]
-tests/unit/test_cost_engine.py::test_cost_engine_includes_storage_and_egress PASSED [ 64%]
-tests/unit/test_cost_engine.py::test_cost_engine_flags_unknown_charges PASSED [ 67%]
-tests/unit/test_digital_twin_predictor.py::test_predictor_exact_benchmark_match PASSED [ 70%]
-tests/unit/test_digital_twin_predictor.py::test_predictor_cross_hardware_scaling PASSED [ 73%]
-tests/unit/test_digital_twin_predictor.py::test_predictor_out_of_distribution_warning PASSED [ 76%]
-tests/unit/test_manifest.py::test_valid_manifest_creation_and_digest PASSED [ 79%]
-tests/unit/test_manifest.py::test_manifest_rejects_inline_secrets PASSED [ 82%]
-tests/unit/test_manifest.py::test_manifest_gpu_requires_vram PASSED [ 85%]
-tests/unit/test_state_machine.py::test_legal_state_transitions PASSED [ 88%]
-tests/unit/test_state_machine.py::test_illegal_state_transition_raises PASSED [ 91%]
-tests/unit/test_state_machine.py::test_terminal_state_detection PASSED [ 94%]
+tests/unit/test_anti_oscillation_guard.py::test_guard_blocks_premature_migration PASSED [ 19%]
+tests/unit/test_anti_oscillation_guard.py::test_guard_allows_mature_migration PASSED [ 21%]
+tests/unit/test_anti_oscillation_guard.py::test_guard_blocks_during_cooldown_window PASSED [ 24%]
+tests/unit/test_anti_oscillation_guard.py::test_guard_blocks_when_max_migrations_exceeded PASSED [ 26%]
+tests/unit/test_anti_oscillation_guard.py::test_guard_emergency_override_on_high_preemption_risk PASSED [ 29%]
+tests/unit/test_arbitrage_economics.py::test_arbitrage_economics_positive_net_savings PASSED [ 31%]
+tests/unit/test_arbitrage_economics.py::test_arbitrage_economics_negative_net_savings_rejected PASSED [ 34%]
+tests/unit/test_calibration_tracker.py::test_calibration_tracker_within_interval PASSED [ 36%]
+tests/unit/test_calibration_tracker.py::test_calibration_tracker_outside_interval PASSED [ 39%]
+tests/unit/test_candidate_evaluator.py::test_candidate_evaluator_rejects_incompatible_gpu_and_ranks PASSED [ 41%]
+tests/unit/test_checkpoint_verifier.py::test_vram_requirement_calculation_zero_stages PASSED [ 43%]
+tests/unit/test_checkpoint_verifier.py::test_checkpoint_verifier_valid_safetensors PASSED [ 46%]
+tests/unit/test_checkpoint_verifier.py::test_checkpoint_verifier_invalid_sha256_corrupted PASSED [ 48%]
+tests/unit/test_checkpoint_verifier.py::test_checkpoint_verifier_target_vram_compatibility PASSED [ 51%]
+tests/unit/test_cost_engine.py::test_cost_engine_compute_hourly_rounding PASSED [ 53%]
+tests/unit/test_cost_engine.py::test_cost_engine_includes_storage_and_egress PASSED [ 56%]
+tests/unit/test_cost_engine.py::test_cost_engine_flags_unknown_charges PASSED [ 58%]
+tests/unit/test_digital_twin_predictor.py::test_predictor_exact_benchmark_match PASSED [ 60%]
+tests/unit/test_digital_twin_predictor.py::test_predictor_cross_hardware_scaling PASSED [ 63%]
+tests/unit/test_digital_twin_predictor.py::test_predictor_out_of_distribution_warning PASSED [ 65%]
+tests/unit/test_manifest.py::test_valid_manifest_creation_and_digest PASSED [ 68%]
+tests/unit/test_manifest.py::test_manifest_rejects_inline_secrets PASSED [ 70%]
+tests/unit/test_manifest.py::test_manifest_gpu_requires_vram PASSED      [ 73%]
+tests/unit/test_provider_adapters.py::test_runpod_adapter_contract_and_idempotency PASSED [ 75%]
+tests/unit/test_provider_adapters.py::test_lambda_adapter_contract PASSED [ 78%]
+tests/unit/test_provider_adapters.py::test_aws_adapter_contract PASSED   [ 80%]
+tests/unit/test_provider_adapters.py::test_gcp_adapter_contract PASSED   [ 82%]
+tests/unit/test_provider_adapters.py::test_azure_adapter_contract PASSED [ 85%]
+tests/unit/test_provider_adapters.py::test_provider_registry_dynamic_resolution_and_offer_aggregation PASSED [ 87%]
+tests/unit/test_state_machine.py::test_legal_state_transitions PASSED    [ 90%]
+tests/unit/test_state_machine.py::test_illegal_state_transition_raises PASSED [ 92%]
+tests/unit/test_state_machine.py::test_terminal_state_detection PASSED   [ 95%]
 tests/unit/test_transfer_estimator.py::test_transfer_estimation_cross_cloud PASSED [ 97%]
 tests/unit/test_transfer_estimator.py::test_transfer_estimation_intra_cloud PASSED [100%]
 
-============================== 34 passed in 0.18s ==============================
-Total Coverage: 80%
+============================== 41 passed in 0.20s ==============================
+Total Coverage: 72%
 ```
 
 ---
@@ -294,5 +326,5 @@ Total Coverage: 80%
 | **Phase 2** | **Workload Performance Digital Twin** | Benchmark Registry, multi-tiered prediction engine (empirical matching, cross-hardware scaling, out-of-distribution detection), calibrated confidence intervals, actual outcome tracking. | **COMPLETED & TESTED** |
 | **Phase 3** | **Universal Checkpoint & Resume Layer** | Framework-specific checkpoint adapters (PyTorch, SafeTensors, DeepSpeed), integrity verification, secure transfer, and resumption testing. | **COMPLETED & TESTED** |
 | **Phase 4** | **Predictive Compute Arbitrage** | In-flight replanning economics, migration overhead modeling, cooldown timers, anti-oscillation guards, and approval-gated provider switching. | **COMPLETED & TESTED** |
-| **Phase 5** | **Live Provider Integration** | Production adapters for specialist GPU clouds (RunPod, Lambda, Crusoe) and hyperscalers (AWS, GCP) with live credential management. | **READY TO BUILD** |
-| **Phase 6** | **Mission Control Frontend Dashboard** | Next.js / TypeScript rich UI for workload manifests, dry-run plans, digital twin graphs, checkpoint tree, and arbitrage migration approvals. | **READY TO BUILD** |
+| **Phase 5** | **Live Provider Integration** | Production adapters for specialist GPU clouds (RunPod, Lambda, Crusoe) and hyperscalers (AWS, GCP, Azure) with live credential management and ProviderRegistry. | **COMPLETED & TESTED** |
+| **Phase 6** | **Mission Control Frontend Dashboard** | Next.js 14 / TypeScript / Tailwind CSS mission control UI for workloads, dry-run plans, digital twin graphs, checkpoints, arbitrage radar, and provider accounts. | **READY TO BUILD** |

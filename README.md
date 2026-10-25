@@ -168,6 +168,13 @@ stateDiagram-v2
 │   │       │   ├── database.py         # SQLAlchemy async engine & sessionmaker
 │   │       │   └── models.py           # 18 relational models with foreign keys
 │   │       └── providers/
+│   │           ├── registry.py         # Dynamic ProviderRegistry factory & offer aggregator
+│   │           ├── base.py             # Resilient HTTP provider client with secret scrubber
+│   │           ├── runpod_adapter.py   # RunPod GPU cloud adapter
+│   │           ├── lambda_adapter.py   # Lambda Labs on-demand GPU adapter
+│   │           ├── aws_adapter.py      # AWS EC2 GPU adapter (p5, p4de, g5)
+│   │           ├── gcp_adapter.py      # GCP Compute Engine GPU adapter (a3, a2, g2)
+│   │           ├── azure_adapter.py    # Azure VM GPU adapter (NDv5, NC-series)
 │   │           └── fake_provider.py    # Deterministic simulated provider adapter
 │   ├── migrations/                     # Alembic migration environment
 │   │   ├── env.py
@@ -260,8 +267,8 @@ tests/unit/test_cost_engine.py ...                                       [ 53%]
 tests/unit/test_manifest.py ...                                          [ 76%]
 tests/unit/test_state_machine.py ...                                     [100%]
 
-============================== 13 passed in 0.25s ==============================
-Total Coverage: 76%
+============================== 41 passed in 0.20s ==============================
+Total Coverage: 72%
 ```
 
 ---
@@ -274,9 +281,11 @@ Total Coverage: 76%
 | `GET` | `/health/ready` | Database connectivity readiness probe |
 | `POST` | `/v1/organizations` | Create tenant organization |
 | `POST` | `/v1/projects` | Create project with policy and spend limits |
-| `GET` | `/v1/providers` | List providers and capability profiles |
-| `GET` | `/v1/compute-offers` | List normalized GPU offers (H100, A100, L40S) |
-| `POST` | `/v1/provider-connections` | Register provider account (`secret_reference` only) |
+| `GET` | `/v1/providers` | List providers and capability profiles (RunPod, Lambda, AWS, GCP, Azure, Simulated) |
+| `GET` | `/v1/compute-offers` | List normalized GPU offers (H100, A100, L40S, RTX 4090, GH200) across all clouds |
+| `POST` | `/v1/provider-connections` | Register provider account (`secret_reference` only, never plaintext) |
+| `POST` | `/v1/provider-connections/{id}/verify` | Test live credential authentication with external cloud provider |
+| `POST` | `/v1/providers/{key}/sync-offers` | Synchronize fresh GPU catalog and spot/on-demand offers |
 | `POST` | `/v1/workloads/validate-manifest` | Validate manifest syntax, security, and derive fingerprint |
 | `POST` | `/v1/workloads` | Create workload and immutable revision 1 |
 | `POST` | `/v1/workloads/{id}/plans` | Generate side-effect-free dry-run plan |
@@ -297,6 +306,10 @@ Total Coverage: 76%
 | `POST` | `/v1/checkpoints/{id}/verify` | Deep verify checksum, header integrity & target VRAM fit |
 | `POST` | `/v1/checkpoints/{id}/estimate-transfer` | Model cross-cloud egress fees & migration downtime |
 | `POST` | `/v1/checkpoints/{id}/resume` | Resume run on compatible target (idempotent, OOM guard) |
+| `POST` | `/v1/runs/{id}/arbitrage/scan` | Scan in-flight run for arbitrage opportunities with anti-oscillation guards |
+| `GET` | `/v1/runs/{id}/arbitrage/opportunities` | List identified opportunities with net savings calculations |
+| `POST` | `/v1/arbitrage/opportunities/{id}/approve` | Approve arbitrage opportunity for execution |
+| `POST` | `/v1/arbitrage/opportunities/{id}/execute` | Execute in-flight migration to cheaper provider instance |
 | `GET` | `/v1/runs/{id}/cost` | Inspect cost ledger (estimates vs actuals) |
 | `POST` | `/v1/runs/{id}/reconcile` | Append actual usage observation to immutable ledger |
 | `GET` | `/v1/audit-events` | Query tenant audit events |

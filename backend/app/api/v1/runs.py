@@ -15,11 +15,22 @@ from app.adapters.persistence.models import (
     WorkloadRevisionModel
 )
 from app.adapters.providers.fake_provider import FakeProviderAdapter
+from app.adapters.providers.registry import ProviderRegistry
 from app.ports.provider_adapter import LaunchRequest
 from app.domain.execution.state_machine import RunStateMachine, RunState
 from app.core.security import AuthContext
 from app.core.config import settings
 from app.api.deps import get_current_auth, verify_tenant_access
+
+
+def resolve_provider_key(offer_id: str | None) -> str:
+    if not offer_id:
+        return "kynetic-simulated-cloud"
+    lower = offer_id.lower()
+    for key in ("runpod", "lambda", "aws", "gcp", "azure"):
+        if key in lower:
+            return key
+    return "kynetic-simulated-cloud"
 from app.core.errors import (
     EntityNotFoundError,
     AuthorizationError,
@@ -156,13 +167,15 @@ async def launch_run_from_plan(
     await db.flush()
 
     # 7. Provision compute resource through adapter
+    target_prov = resolve_provider_key(run.compute_offer_id)
+    adapter = ProviderRegistry.get_adapter(target_prov)
     launch_req = LaunchRequest(
         run_id=run.id,
         compute_offer_id=run.compute_offer_id,
         image_uri="kynetic-batch-image:1.0",
         command=["python", "run.py"]
     )
-    provider_resource = await fake_adapter.create_resource(
+    provider_resource = await adapter.create_resource(
         request=launch_req,
         idempotency_key=idempotency_key
     )
@@ -271,7 +284,9 @@ async def cancel_run(
 
     # Stop provider resource safely
     if run.provider_resource_id:
-        await fake_adapter.stop_resource(run.provider_resource_id)
+        target_prov = resolve_provider_key(run.compute_offer_id)
+        adapter = ProviderRegistry.get_adapter(target_prov)
+        await adapter.stop_resource(run.provider_resource_id)
 
     # Transition CANCEL_REQUESTED -> CANCELED
     RunStateMachine.validate_transition(RunState.CANCEL_REQUESTED, RunState.CANCELED)
@@ -309,7 +324,9 @@ async def get_run_logs(
 
     lines: list[str] = []
     if run.provider_resource_id:
-        lines = await fake_adapter.get_logs(run.provider_resource_id, tail=tail)
+        target_prov = resolve_provider_key(run.compute_offer_id)
+        adapter = ProviderRegistry.get_adapter(target_prov)
+        lines = await adapter.get_logs(run.provider_resource_id, tail=tail)
     else:
         lines = ["No active provider resource assigned to this run."]
 
