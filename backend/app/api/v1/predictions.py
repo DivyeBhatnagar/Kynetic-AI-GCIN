@@ -179,6 +179,8 @@ async def predict_workload_performance(
 async def list_prediction_history(
     workload_id: str,
     auth: Annotated[AuthContext, Depends(get_current_auth)],
+    limit: int = Query(50, ge=1, le=200, description="Max items to return"),
+    offset: int = Query(0, ge=0, description="Items to skip"),
     db: AsyncSession = Depends(get_db)
 ):
     stmt = select(WorkloadModel).where(WorkloadModel.id == workload_id)
@@ -192,6 +194,8 @@ async def list_prediction_history(
         select(PredictionModel)
         .where(PredictionModel.organization_id == auth.organization_id)
         .order_by(PredictionModel.created_at.desc())
+        .offset(offset)
+        .limit(limit)
     )
     pred_res = await db.execute(pred_stmt)
     predictions = pred_res.scalars().all()

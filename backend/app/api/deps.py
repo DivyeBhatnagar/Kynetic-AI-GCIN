@@ -15,6 +15,7 @@ async def get_current_auth(
     request: Request,
     authorization: str | None = Header(None),
     x_org_id: str | None = Header(None),
+    x_organization_id: str | None = Header(None),
     x_user_role: str | None = Header(None),
 ) -> AuthContext:
     """
@@ -34,14 +35,15 @@ async def get_current_auth(
             )
 
     # In development/test mode, allow authenticated headers if authorization header is absent
-    if x_org_id:
+    org_id = x_org_id or x_organization_id
+    if org_id:
         role = Role.DEVELOPER
         if x_user_role and x_user_role in Role.__members__:
             role = Role(x_user_role)
         return AuthContext(
             user_id="dev-user-001",
             email="dev@kynetic.ai",
-            organization_id=x_org_id,
+            organization_id=org_id,
             role=role
         )
 

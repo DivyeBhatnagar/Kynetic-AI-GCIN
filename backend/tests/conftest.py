@@ -1,17 +1,33 @@
 import pytest
 import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
+from sqlalchemy.pool import StaticPool
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from app.adapters.persistence.database import Base, get_db
+from app.core.cache import cache_service
 from app.main import app
 
-# In-memory SQLite async engine for test isolation
+# In-memory SQLite async engine with StaticPool for test isolation
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def reset_cache_state():
+    await cache_service.clear_local_cache()
+    cache_service.reset_metrics()
+    yield
+    await cache_service.clear_local_cache()
+    cache_service.reset_metrics()
 
 
 @pytest_asyncio.fixture(scope="session")
 async def test_engine():
-    engine = create_async_engine(TEST_DATABASE_URL, echo=False)
+    engine = create_async_engine(
+        TEST_DATABASE_URL,
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+        echo=False
+    )
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield engine

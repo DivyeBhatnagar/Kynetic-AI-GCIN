@@ -1,5 +1,5 @@
 from typing import Annotated, Any
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -132,6 +132,8 @@ async def create_workload(
 async def list_workloads(
     auth: Annotated[AuthContext, Depends(get_current_auth)],
     project_id: str | None = None,
+    limit: int = Query(50, ge=1, le=200, description="Max items to return"),
+    offset: int = Query(0, ge=0, description="Items to skip"),
     db: AsyncSession = Depends(get_db)
 ):
     stmt = (
@@ -142,6 +144,7 @@ async def list_workloads(
     if project_id:
         stmt = stmt.where(WorkloadModel.project_id == project_id)
 
+    stmt = stmt.offset(offset).limit(limit)
     result = await db.execute(stmt)
     workloads = result.scalars().all()
     return [

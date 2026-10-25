@@ -235,6 +235,8 @@ async def scan_arbitrage_opportunities(
 async def list_run_arbitrage_opportunities(
     run_id: str,
     auth: Annotated[AuthContext, Depends(get_current_auth)],
+    limit: int = Query(50, ge=1, le=200, description="Max items to return"),
+    offset: int = Query(0, ge=0, description="Items to skip"),
     db: AsyncSession = Depends(get_db)
 ):
     """
@@ -252,6 +254,8 @@ async def list_run_arbitrage_opportunities(
         select(ArbitrageOpportunityModel)
         .where(ArbitrageOpportunityModel.run_id == run_id)
         .order_by(ArbitrageOpportunityModel.created_at.desc())
+        .offset(offset)
+        .limit(limit)
     )
     res = await db.execute(stmt)
     opps = res.scalars().all()

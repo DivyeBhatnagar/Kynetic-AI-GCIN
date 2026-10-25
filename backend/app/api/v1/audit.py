@@ -30,12 +30,14 @@ async def list_audit_events(
     auth: Annotated[AuthContext, Depends(get_current_auth)],
     action: str | None = Query(None),
     limit: int = Query(default=50, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     db: AsyncSession = Depends(get_db)
 ):
     stmt = (
         select(AuditEventModel)
         .where(AuditEventModel.organization_id == auth.organization_id)
         .order_by(AuditEventModel.created_at.desc())
+        .offset(offset)
         .limit(limit)
     )
     if action:

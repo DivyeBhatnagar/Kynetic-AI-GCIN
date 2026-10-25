@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Annotated, Any
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -135,6 +135,8 @@ async def register_checkpoint(
 async def list_run_checkpoints(
     run_id: str,
     auth: Annotated[AuthContext, Depends(get_current_auth)],
+    limit: int = Query(50, ge=1, le=200, description="Max items to return"),
+    offset: int = Query(0, ge=0, description="Items to skip"),
     db: AsyncSession = Depends(get_db)
 ):
     """
@@ -148,7 +150,13 @@ async def list_run_checkpoints(
     if run.organization_id != auth.organization_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied")
 
-    stmt = select(CheckpointModel).where(CheckpointModel.run_id == run_id).order_by(CheckpointModel.step_number.desc())
+    stmt = (
+        select(CheckpointModel)
+        .where(CheckpointModel.run_id == run_id)
+        .order_by(CheckpointModel.step_number.desc())
+        .offset(offset)
+        .limit(limit)
+    )
     res = await db.execute(stmt)
     checkpoints = res.scalars().all()
 

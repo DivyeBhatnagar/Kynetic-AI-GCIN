@@ -1,0 +1,124 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kynetic-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-kynetic_dev}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-kynetic_dev}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: kynetic-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "volatile-lru"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Controlled deployment step: runs migrations once before application replicas boot
+  migration:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kynetic-migration
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      DATABASE_SYNC_URL: postgresql://postgres:postgres@postgres:5432/kynetic_dev
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/kynetic_dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend-1:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kynetic-backend-1
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      INSTANCE_ID: backend-replica-1
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/kynetic_dev
+      DATABASE_SYNC_URL: postgresql://postgres:postgres@postgres:5432/kynetic_dev
+      REDIS_URL: redis://redis:6379/0
+      REDIS_ENABLED: "true"
+      DB_POOL_SIZE: 15
+      DB_MAX_OVERFLOW: 10
+      RATE_LIMIT_ENABLED: "true"
+      RATE_LIMIT_REQUESTS_PER_MINUTE: 120
+      RATE_LIMIT_BURST: 30
+      ENABLE_BILLABLE_EXECUTION: "false"
+      DEFAULT_PROVIDER_MODE: simulated
+      LOG_LEVEL: INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+
+  backend-2:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kynetic-backend-2
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      INSTANCE_ID: backend-replica-2
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/kynetic_dev
+      DATABASE_SYNC_URL: postgresql://postgres:postgres@postgres:5432/kynetic_dev
+      REDIS_URL: redis://redis:6379/0
+      REDIS_ENABLED: "true"
+      DB_POOL_SIZE: 15
+      DB_MAX_OVERFLOW: 10
+      RATE_LIMIT_ENABLED: "true"
+      RATE_LIMIT_REQUESTS_PER_MINUTE: 120
+      RATE_LIMIT_BURST: 30
+      ENABLE_BILLABLE_EXECUTION: "false"
+      DEFAULT_PROVIDER_MODE: simulated
+      LOG_LEVEL: INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+
+  # Load Balancer & Reverse Proxy distributing requests across backend replicas
+  lb:
+    image: nginx:alpine
+    container_name: kynetic-lb
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend-1
+      - backend-2
+
+volumes:
+  postgres_data:
+  redis_data:

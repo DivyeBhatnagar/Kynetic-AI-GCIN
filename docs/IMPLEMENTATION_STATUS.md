@@ -360,3 +360,53 @@ The client interface has been implemented in [`frontend/`](../frontend) as a hig
 - **Type Checking & Bundling:** `tsc -b && vite build` passes with zero errors in ~390ms.
 - **Bundle Output:** `dist/index.html` (1.20 kB), `dist/assets/index.css` (43.89 kB), `dist/assets/index.js` (533.59 kB).
 
+---
+
+## 8. Phase 7: Backend Performance, Scalability & Testing Implementation (Completed)
+
+Delivered production-grade database indexing, centralized Redis caching, multi-instance horizontal scaling readiness, and an automated testing and benchmarking suite.
+
+### 8.1 Database Indexing & Query Optimization
+- **19 Versioned Composite Indexes:** Added via migration `3d7450407dd4_add_performance_and_composite_indexes.py` targeting common multi-column filters, joins, foreign keys, and sorting operations:
+  - `compute_offers`: `(provider_id, region_id)` and `(gpu_model, gpu_memory_gb)`
+  - `price_observations`: `(compute_offer_id, observed_at)` and `(compute_offer_id, freshness_status)`
+  - `workloads`: `(organization_id, project_id, created_at)` and `(organization_id, status)`
+  - `plans`: `(organization_id, status, created_at)` and `(project_id, created_at)`
+  - `plan_candidates`: `(plan_id, rank)` and `(plan_id, eligibility_status)`
+  - `budget_reservations`: `(organization_id, status, expires_at)`
+  - `runs`: `(organization_id, status, created_at)` and `(project_id, created_at)`
+  - `run_state_events`: `(run_id, created_at)`
+  - `cost_ledger_entries`: `(organization_id, run_id, effective_at)`
+  - `audit_events`: `(organization_id, action, created_at)`
+  - `predictions`: `(organization_id, workload_revision_id, created_at)`
+  - `checkpoints`: `(run_id, is_verified, step_number)`
+  - `arbitrage_opportunities`: `(organization_id, status, created_at)`
+- **Standardized Pagination:** Added `limit` (max 200) and `offset` query parameters across list endpoints (`/v1/workloads`, `/v1/runs`, `/v1/projects`, `/v1/compute-offers`, `/v1/checkpoints`, `/v1/audit-events`, `/v1/predictions`) preventing unbounded in-memory table scans.
+- **Query Plan Verification:** Validated `EXPLAIN QUERY PLAN` execution on indexed workload searches.
+
+### 8.2 Centralized Redis Caching Architecture
+- **Cache-Aside Service (`app/core/cache.py`):** Central async cache service with configurable Redis connection pool and bounded in-memory TTL fallback.
+- **Graceful Degradation:** If Redis times out, is unconfigured, or suffers connection loss, the API automatically falls back to in-memory caching or authoritative queries without crashing or hanging requests.
+- **Tenant Isolation:** Enforced strict cache key namespacing (`kynetic:v1:org:{org_id}:*`) ensuring cross-tenant data can never leak.
+- **Cache Invalidation:** Live provider sync operations (`/v1/providers/{key}/sync-offers`) safely invalidate `kynetic:v1:offers:*` using non-blocking Redis `SCAN`.
+- **Zero Sensitive Data:** Passwords, tokens, and credentials are never stored in cache.
+
+### 8.3 Multi-Instance Horizontal Scaling & Load Balancing
+- **Stateless Replicas:** Business state persists strictly in PostgreSQL; coordination uses shared Redis or database idempotency locks.
+- **Deep Health Probes:**
+  - `/health/live`: Process liveness, instance ID, and uptime.
+  - `/health/ready`: Deep readiness verifying database connectivity and cache health. Returns HTTP 503 if required dependencies are down.
+  - `/health/metrics`: Telemetry reporting cache hit ratios, database pool parameters, and rate limiting status.
+- **FastAPI Lifespan Management:** Replaced legacy event handlers with modern `lifespan` context for graceful startup and shutdown.
+- **Rate Limiting Middleware:** Sliding-window rate limiter protecting control plane routes from resource starvation with standard HTTP 429 and `Retry-After` headers.
+- **Reverse Proxy Cluster:** Provided `docker-compose.yml` with dual FastAPI replicas (`backend-1`, `backend-2`), Redis 7, and Nginx reverse proxy load balancer (`nginx/nginx.conf`).
+
+### 8.4 Automated Testing & Empirical Benchmarks
+- **Test Suite Expansion:** Expanded from 41 tests to **66 passing tests** with **74% total test coverage**.
+- **Measured Performance Benchmarks (`tests/load/run_benchmarks.py`):**
+  - **Health Liveness Probe:** 2,549.9 RPS, p50: 4.15ms, p95: 17.25ms, p99: 17.72ms (0 errors)
+  - **Provider Catalog (Warm Cache):** 2,101.9 RPS, p50: 6.44ms, p95: 22.77ms, p99: 23.07ms (99.5% cache hit ratio)
+  - **Compute Offers (Warm Cache):** 1,925.2 RPS, p50: 8.98ms, p95: 9.56ms, p99: 9.70ms (99.5% cache hit ratio)
+  - **Indexed DB Workload Listing:** 1,133.6 RPS, p50: 7.62ms, p95: 19.02ms, p99: 23.59ms (0 errors)
+- **CI Workflow:** Implemented `.github/workflows/ci.yml` verifying Python 3.12 dependencies, database migrations (upgrade and downgrade reversibility), Pytest coverage, benchmarks, and container build.
+

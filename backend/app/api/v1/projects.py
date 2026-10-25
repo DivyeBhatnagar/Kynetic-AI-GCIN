@@ -1,6 +1,6 @@
 from typing import Annotated
 from decimal import Decimal
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -91,12 +91,16 @@ async def create_project(
 @router.get("", response_model=list[ProjectResponse])
 async def list_projects(
     auth: Annotated[AuthContext, Depends(get_current_auth)],
+    limit: int = Query(50, ge=1, le=200, description="Max items to return"),
+    offset: int = Query(0, ge=0, description="Items to skip"),
     db: AsyncSession = Depends(get_db)
 ):
     stmt = (
         select(ProjectModel)
         .where(ProjectModel.organization_id == auth.organization_id)
         .order_by(ProjectModel.created_at.desc())
+        .offset(offset)
+        .limit(limit)
     )
     result = await db.execute(stmt)
     projects = result.scalars().all()
