@@ -6,6 +6,7 @@ from sqlalchemy import (
     String,
     Text,
     Integer,
+    BigInteger,
     Numeric,
     Boolean,
     DateTime,
@@ -298,6 +299,8 @@ class RunModel(Base):
     status: Mapped[str] = mapped_column(String(30), default="PROVISIONING", nullable=False, index=True)
     idempotency_key: Mapped[str] = mapped_column(String(128), nullable=False)
     provider_resource_id: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    resumed_from_checkpoint_id: Mapped[str | None] = mapped_column(String(36), nullable=True, index=True)
+    resumed_from_run_id: Mapped[str | None] = mapped_column(String(36), nullable=True, index=True)
     started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     ended_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     exit_code: Mapped[int | None] = mapped_column(Integer, nullable=True)
@@ -440,4 +443,43 @@ class PredictionOutcomeModel(Base):
     cost_error_percent: Mapped[Decimal] = mapped_column(Numeric(6, 2), nullable=False)
     within_confidence_interval: Mapped[bool] = mapped_column(Boolean, nullable=False)
     measured_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+
+class CheckpointModel(Base):
+    __tablename__ = "checkpoints"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    run_id: Mapped[str] = mapped_column(String(36), ForeignKey("runs.id", ondelete="CASCADE"), nullable=False, index=True)
+    project_id: Mapped[str] = mapped_column(String(36), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True)
+    step_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    epoch: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    format: Mapped[str] = mapped_column(String(30), default="safetensors", nullable=False)  # safetensors, pytorch, deepspeed
+    storage_uri: Mapped[str] = mapped_column(String(512), nullable=False)
+    size_bytes: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    sha256_digest: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
+    framework_metadata_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict, nullable=False)
+    is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    verification_status: Mapped[str] = mapped_column(String(30), default="PENDING", nullable=False)  # PENDING, VERIFIED, CORRUPTED, FAILED
+    verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+    verification_logs = relationship("CheckpointVerificationLogModel", back_populates="checkpoint", cascade="all, delete-orphan")
+
+    __table_args__ = (
+        Index("ix_checkpoints_run_step", "run_id", "step_number"),
+    )
+
+
+class CheckpointVerificationLogModel(Base):
+    __tablename__ = "checkpoint_verification_logs"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    checkpoint_id: Mapped[str] = mapped_column(String(36), ForeignKey("checkpoints.id", ondelete="CASCADE"), nullable=False, index=True)
+    verification_step: Mapped[str] = mapped_column(String(50), nullable=False)  # header_check, digest_match, vram_fit
+    status: Mapped[str] = mapped_column(String(30), nullable=False)  # PASSED, FAILED
+    details_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+    checkpoint = relationship("CheckpointModel", back_populates="verification_logs")
+
 

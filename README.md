@@ -280,13 +280,25 @@ Total Coverage: 76%
 | `POST` | `/v1/workloads/{id}/plans` | Generate side-effect-free dry-run plan |
 | `GET` | `/v1/plans/{id}` | Inspect plan, candidate ranks, and explanations |
 | `POST` | `/v1/plans/{id}/approve` | Approve plan requiring administrative review |
+| `POST` | `/v1/benchmarks` | Ingest empirical benchmark observation into Digital Twin registry |
+| `GET` | `/v1/benchmarks` | Query empirical benchmarks by workload fingerprint or GPU model |
+| `POST` | `/v1/workloads/{id}/predict` | Predict runtime and cost with calibrated uncertainty intervals |
+| `GET` | `/v1/workloads/{id}/prediction-history` | Audit prediction log for a workload |
+| `POST` | `/v1/predictions/{id}/outcome` | Ingest actual run telemetry and track error % & interval coverage |
 | `POST` | `/v1/plans/{id}/launch` | Launch run from plan (enforces `Idempotency-Key` and budget hold) |
 | `GET` | `/v1/runs/{id}` | Retrieve run lifecycle status and append-only state events |
 | `POST` | `/v1/runs/{id}/cancel` | Gracefully cancel run and release compute resources |
 | `GET` | `/v1/runs/{id}/logs` | Stream container logs from provider |
+| `POST` | `/v1/runs/{id}/checkpoints` | Register saved checkpoint (SHA-256 digest, URI, size) |
+| `GET` | `/v1/runs/{id}/checkpoints` | List checkpoints for a run ordered by step desc |
+| `GET` | `/v1/checkpoints/{id}` | Inspect checkpoint details and verification status |
+| `POST` | `/v1/checkpoints/{id}/verify` | Deep verify checksum, header integrity & target VRAM fit |
+| `POST` | `/v1/checkpoints/{id}/estimate-transfer` | Model cross-cloud egress fees & migration downtime |
+| `POST` | `/v1/checkpoints/{id}/resume` | Resume run on compatible target (idempotent, OOM guard) |
 | `GET` | `/v1/runs/{id}/cost` | Inspect cost ledger (estimates vs actuals) |
 | `POST` | `/v1/runs/{id}/reconcile` | Append actual usage observation to immutable ledger |
 | `GET` | `/v1/audit-events` | Query tenant audit events |
+
 
 ---
 
