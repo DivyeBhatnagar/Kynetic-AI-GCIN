@@ -12,6 +12,9 @@ import { MobileHomePage } from './pages/MobileHomePage';
 import { DashboardPage } from './pages/DashboardPage';
 import { RecommendationsPage } from './pages/RecommendationsPage';
 import { ProvidersPage } from './pages/ProvidersPage';
+import { SignInPage } from './pages/SignInPage';
+import { SignUpPage } from './pages/SignUpPage';
+import { LegalPage } from './pages/LegalPage';
 
 // Scroll to top on navigation helper
 const ScrollToTop: React.FC = () => {
@@ -130,6 +133,114 @@ export const App: React.FC = () => {
               </>
             }
           />
+
+          {/* Sign In Page */}
+          <Route
+            path="/signin"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <SignInPage />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+          <Route path="/login" element={<Navigate to="/signin" replace />} />
+
+          {/* Sign Up Page */}
+          <Route
+            path="/signup"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <SignUpPage />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+          {/* Legal & Governance Pages */}
+          <Route
+            path="/privacy-policy"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <LegalPage initialTab="privacy" />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+          <Route path="/privacy" element={<Navigate to="/privacy-policy" replace />} />
+
+          <Route
+            path="/terms"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <LegalPage initialTab="terms" />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+          <Route path="/terms-and-conditions" element={<Navigate to="/terms" replace />} />
+
+          <Route
+            path="/cookie-policy"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <LegalPage initialTab="cookies" />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+
+          <Route
+            path="/refund-policy"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <LegalPage initialTab="refund" />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+
+          <Route
+            path="/cookie-consent"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <LegalPage initialTab="consent" />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+          <Route path="/consent" element={<Navigate to="/cookie-consent" replace />} />
+
+          <Route
+            path="/user-data-collection"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <LegalPage initialTab="data-collection" />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+          <Route path="/data-collection" element={<Navigate to="/user-data-collection" replace />} />
+          <Route path="/what-user-data-you-collect" element={<Navigate to="/user-data-collection" replace />} />
+
+          <Route
+            path="/third-party-embeds"
+            element={
+              <>
+                <Navbar onOpenEarlyAccess={() => setIsEarlyAccessOpen(true)} />
+                <LegalPage initialTab="third-party" />
+                <Footer variant="editorial" />
+              </>
+            }
+          />
+          <Route path="/third-party" element={<Navigate to="/third-party-embeds" replace />} />
 
           {/* Dedicated Mobile Viewport Experience */}
           <Route

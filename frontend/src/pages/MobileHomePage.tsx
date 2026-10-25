@@ -559,8 +559,20 @@ export const MobileHomePage: React.FC<MobileHomePageProps> = ({ onOpenEarlyAcces
               src="/assets/Kynetic%20AI%20Logo.png"
             />
           </div>
-          <p>© 2025 Kynetic AI Inc. Monastic Brutalist Infrastructure.</p>
-          <div className="flex justify-center gap-4 text-ink-body font-label-mono text-[11px]">
+          <p>© 2026 Kynetic AI • Made in India 🇮🇳. Autonomous Compute Intelligence.</p>
+          <div className="flex flex-wrap justify-center gap-3 text-ink-body font-label-mono text-[11px]">
+            <Link to="/privacy-policy" className="hover:underline">
+              Privacy
+            </Link>
+            <Link to="/terms" className="hover:underline">
+              Terms
+            </Link>
+            <Link to="/cookie-policy" className="hover:underline">
+              Cookies
+            </Link>
+            <Link to="/refund-policy" className="hover:underline">
+              Refunds
+            </Link>
             <Link to="/docs" className="hover:underline">
               Docs
             </Link>

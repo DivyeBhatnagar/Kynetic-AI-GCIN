@@ -1,15 +1,268 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SupportedCloudsStrip } from '../components/SupportedCloudsStrip';
+import { ComputeTopologyMesh } from '../components/ComputeTopologyMesh';
+import {
+  DigitalTwinDiagram,
+  ArbitrageDiagram,
+  CheckpointDiagram,
+} from '../components/FeatureArchitectureDiagrams';
 
 interface HomePageProps {
   onOpenEarlyAccess: () => void;
 }
 
+type WorkloadPresetKey = 'llama-7b' | 'deepseek-moe' | 'flux-latent';
+
+interface WorkloadPreset {
+  id: WorkloadPresetKey;
+  label: string;
+  badge: string;
+  prompt: string;
+  constraints: { icon: string; label: string }[];
+  defaultPlanId: number;
+  recommendation: {
+    headline: string;
+    details: string;
+    metrics: { label: string; value: string; positive?: boolean }[];
+  };
+  options: {
+    id: number;
+    num: string;
+    name: string;
+    provider: string;
+    cost: string;
+    runtime: string;
+    memory: string;
+    status: string;
+    isRec: boolean;
+  }[];
+}
+
+const WORKLOAD_PRESETS: Record<WorkloadPresetKey, WorkloadPreset> = {
+  'llama-7b': {
+    id: 'llama-7b',
+    label: 'Llama-3-7B Fine-tune',
+    badge: '8h Deadline · $50 Budget',
+    prompt: 'Fine-tune a 7B parameter model. Finish within 8 hours. Minimize total cost.',
+    constraints: [
+      { icon: 'payments', label: 'Budget: $50' },
+      { icon: 'schedule', label: 'Deadline: 8 hours' },
+      { icon: 'memory', label: 'GPU memory: 24 GB+' },
+      { icon: 'dns', label: 'Region: Preferred low-latency' },
+    ],
+    defaultPlanId: 2,
+    recommendation: {
+      headline: 'Option 02 (NVIDIA 8x L40S 48GB) selected for optimal memory roofline efficiency.',
+      details:
+        'LoRA gradient accumulation is strictly memory-bandwidth bounded (42 FLOPs/byte). The 8x L40S cluster pools 384 GB VRAM with 6.8 TB/s aggregate bandwidth, saving $4.60 beneath budget with a 25-minute buffer. Single H100 leaves 63% tensor cores idle.',
+      metrics: [
+        { label: 'Budget Surplus', value: '+$4.60 (9.2%)', positive: true },
+        { label: 'Time Buffer', value: '25m safety margin', positive: true },
+        { label: 'Compute Fit', value: '98.4% Roofline Match', positive: true },
+      ],
+    },
+    options: [
+      {
+        id: 1,
+        num: '01',
+        name: 'NVIDIA H100 SXM5 80GB',
+        provider: 'CoreWeave Cluster Node · Direct InfiniBand',
+        cost: '$32.40',
+        runtime: '5h 20m',
+        memory: '80 GB',
+        status: 'Compatible',
+        isRec: false,
+      },
+      {
+        id: 2,
+        num: '02',
+        name: 'NVIDIA 8x L40S 48GB',
+        provider: 'RunPod Secure Cloud · PCIe Gen4 Mesh',
+        cost: '$27.80',
+        runtime: '7h 35m',
+        memory: '384 GB',
+        status: 'Best Tradeoff',
+        isRec: true,
+      },
+      {
+        id: 3,
+        num: '03',
+        name: 'NVIDIA A100 80GB PCIe',
+        provider: 'Lambda Cloud · Dedicated On-Demand',
+        cost: '$41.20',
+        runtime: '4h 10m',
+        memory: '80 GB',
+        status: 'Compatible',
+        isRec: false,
+      },
+      {
+        id: 4,
+        num: '04',
+        name: 'NVIDIA GH200 Grace Hopper',
+        provider: 'Crusoe Cloud · Geothermal Zero-Carbon',
+        cost: '$36.50',
+        runtime: '4h 45m',
+        memory: '576 GB',
+        status: 'Overprovisioned',
+        isRec: false,
+      },
+    ],
+  },
+  'deepseek-moe': {
+    id: 'deepseek-moe',
+    label: 'DeepSeek-R1-671B MoE Sharding',
+    badge: '48h SLA · $600 Budget',
+    prompt:
+      'Deploy distributed FP8 checkpoint across multi-host cluster. 671B MoE activation with 37B active parameters.',
+    constraints: [
+      { icon: 'payments', label: 'Budget: $600' },
+      { icon: 'schedule', label: 'Deadline: 48 hours' },
+      { icon: 'memory', label: 'Aggregate VRAM: 600 GB+' },
+      { icon: 'lan', label: 'Fabric: 3.2 Tbps InfiniBand NDR' },
+    ],
+    defaultPlanId: 1,
+    recommendation: {
+      headline: 'Option 01 (8x NVIDIA H100 SXM5 80GB) selected for high-speed all-to-all NVLink interconnect.',
+      details:
+        'MoE token dispatch requires 900 GB/s inter-GPU bandwidth during dynamic routing. PCIe-based alternatives incur 4.2x latency overhead. H100 SXM5 completes execution in 22h 10m ($488.40) with zero OOM risk.',
+      metrics: [
+        { label: 'Cost Reserve', value: '$111.60 under cap', positive: true },
+        { label: 'SLA Margin', value: '25h 50m early', positive: true },
+        { label: 'Fabric Saturation', value: '88.2% NDR Utilized', positive: true },
+      ],
+    },
+    options: [
+      {
+        id: 1,
+        num: '01',
+        name: '8x NVIDIA H100 SXM5 80GB',
+        provider: 'CoreWeave Supercluster · 3.2 Tbps Quantum-2 IB',
+        cost: '$488.40',
+        runtime: '22h 10m',
+        memory: '640 GB',
+        status: 'Recommended',
+        isRec: true,
+      },
+      {
+        id: 2,
+        num: '02',
+        name: '8x NVIDIA GH200 NVL4',
+        provider: 'Crusoe Cloud · Coherent LPDDR5X + HBM3',
+        cost: '$540.00',
+        runtime: '19h 40m',
+        memory: '3,840 GB',
+        status: 'Highest Perf',
+        isRec: false,
+      },
+      {
+        id: 3,
+        num: '03',
+        name: '16x NVIDIA A100 80GB SXM4',
+        provider: 'Lambda Cloud · 2x Node InfiniBand HDR',
+        cost: '$582.00',
+        runtime: '41h 15m',
+        memory: '1,280 GB',
+        status: 'Near Deadline',
+        isRec: false,
+      },
+      {
+        id: 4,
+        num: '04',
+        name: '32x NVIDIA L40S 48GB',
+        provider: 'RunPod · Distributed RoCE v2',
+        cost: '$620.00',
+        runtime: '58h 00m',
+        memory: '1,536 GB',
+        status: 'SLA Breach',
+        isRec: false,
+      },
+    ],
+  },
+  'flux-latent': {
+    id: 'flux-latent',
+    label: 'Flux.1 Diffusion Batch Synthesis',
+    badge: '2h SLA · High-Throughput Batch',
+    prompt:
+      'Batch generate 50,000 diffusion steps with 16-channel VAE latent decoding. Latency-tolerant pipeline.',
+    constraints: [
+      { icon: 'payments', label: 'Budget: $20' },
+      { icon: 'schedule', label: 'Deadline: 2 hours' },
+      { icon: 'memory', label: 'GPU memory: 24 GB' },
+      { icon: 'speed', label: 'Target: 120 img/min' },
+    ],
+    defaultPlanId: 2,
+    recommendation: {
+      headline: 'Option 02 (4x NVIDIA RTX 4090 24GB) selected for maximum FP16 TFLOPS per dollar.',
+      details:
+        'Flux.1 DiT transformer blocks operate at 110 FLOPs/byte, saturating Ada Tensor cores without enterprise fabric requirements. Spot arbitrage secures $6.15 total cost (-68% vs enterprise A100).',
+      metrics: [
+        { label: 'Total Savings', value: '-68.5% Arbitrage', positive: true },
+        { label: 'Job Runtime', value: '1h 14m (46m buffer)', positive: true },
+        { label: 'Throughput', value: '142 img/min sustained', positive: true },
+      ],
+    },
+    options: [
+      {
+        id: 1,
+        num: '01',
+        name: 'NVIDIA H100 NVL 94GB',
+        provider: 'CoreWeave Dedicated Batch Node',
+        cost: '$18.40',
+        runtime: '0h 42m',
+        memory: '94 GB',
+        status: 'Overkill',
+        isRec: false,
+      },
+      {
+        id: 2,
+        num: '02',
+        name: '4x NVIDIA RTX 4090 24GB',
+        provider: 'RunPod Community Spot · Local NVMe',
+        cost: '$6.15',
+        runtime: '1h 14m',
+        memory: '96 GB',
+        status: 'Max Efficiency',
+        isRec: true,
+      },
+      {
+        id: 3,
+        num: '03',
+        name: '2x NVIDIA L40S 48GB',
+        provider: 'Lambda Cloud Dedicated',
+        cost: '$11.80',
+        runtime: '0h 58m',
+        memory: '96 GB',
+        status: 'Compatible',
+        isRec: false,
+      },
+      {
+        id: 4,
+        num: '04',
+        name: 'NVIDIA A10G 24GB (Spot)',
+        provider: 'AWS EC2 g5.12xlarge',
+        cost: '$14.20',
+        runtime: '1h 48m',
+        memory: '96 GB',
+        status: 'Compatible',
+        isRec: false,
+      },
+    ],
+  },
+};
+
 export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
-  const [selectedPlan, setSelectedPlan] = useState<number>(2); // Option B selected by default
+  const [selectedPresetKey, setSelectedPresetKey] = useState<WorkloadPresetKey>('llama-7b');
+  const [selectedPlan, setSelectedPlan] = useState<number>(2);
   const [emailInput, setEmailInput] = useState('');
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+
+  const currentPreset = WORKLOAD_PRESETS[selectedPresetKey];
+
+  const handlePresetChange = (key: WorkloadPresetKey) => {
+    setSelectedPresetKey(key);
+    setSelectedPlan(WORKLOAD_PRESETS[key].defaultPlanId);
+  };
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,28 +338,102 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
               </span>
               <span className="text-hairline-strong font-label-mono text-label-mono">|</span>
               <span className="font-label-mono text-label-mono text-ink-muted">
-                v2.4 Kernel Optimizer
+                v2.4 Kernel Optimizer &amp; Roofline Twin
               </span>
             </div>
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-canvas-base border border-hairline-default">
               <span className="w-2 h-2 rounded-full bg-status-active"></span>
               <span className="font-label-mono text-label-mono text-ink-body">
-                DEMO SIMULATION
+                AUTONOMOUS ROUTING ENGINE
               </span>
             </div>
           </div>
 
+          {/* Compute Topology Mesh Visualization */}
+          <div className="border-b border-hairline-default">
+            <ComputeTopologyMesh />
+          </div>
+
           <div className="p-6 md:p-8">
+            {/* 4-Stage Autonomous Intelligence Flow Pipeline */}
+            <div className="mb-6 border border-hairline-default rounded-md bg-canvas-base p-3.5">
+              <div className="flex items-center justify-between mb-2.5">
+                <span className="font-label-mono text-[11px] text-ink-muted uppercase tracking-wider font-semibold">
+                  INTELLIGENCE PIPELINE FLOW
+                </span>
+                <span className="font-label-mono text-[11px] text-status-healthy flex items-center gap-1.5 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-status-healthy animate-pulse"></span>
+                  Multi-Provider Telemetry Active
+                </span>
+              </div>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 text-left">
+                <div className="p-2.5 rounded bg-surface-elevated border border-hairline-default">
+                  <div className="font-label-mono text-[10px] text-accent-olive font-semibold">STAGE 01</div>
+                  <div className="font-headline-sm text-xs text-ink-primary font-medium">Intent Ingestion</div>
+                  <div className="font-label-mono text-[10px] text-ink-muted">Tokens, Batch &amp; Memory Floor</div>
+                </div>
+                <div className="p-2.5 rounded bg-surface-elevated border border-hairline-default">
+                  <div className="font-label-mono text-[10px] text-accent-olive font-semibold">STAGE 02</div>
+                  <div className="font-headline-sm text-xs text-ink-primary font-medium">Roofline Twin</div>
+                  <div className="font-label-mono text-[10px] text-ink-muted">Bandwidth vs Compute Bounds</div>
+                </div>
+                <div className="p-2.5 rounded bg-surface-elevated border border-hairline-default">
+                  <div className="font-label-mono text-[10px] text-accent-olive font-semibold">STAGE 03</div>
+                  <div className="font-headline-sm text-xs text-ink-primary font-medium">Arbitrage Sweep</div>
+                  <div className="font-label-mono text-[10px] text-ink-muted">Egress &amp; Spot Crossover Delta</div>
+                </div>
+                <div className="p-2.5 rounded bg-canvas-alternate border border-accent-olive">
+                  <div className="font-label-mono text-[10px] text-accent-olive font-bold">STAGE 04</div>
+                  <div className="font-headline-sm text-xs text-ink-primary font-semibold">Autonomous Dispatch</div>
+                  <div className="font-label-mono text-[10px] text-ink-body font-medium">Checkpoint Verified Target</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Workload Presets Switcher */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <label className="block font-label-mono text-label-mono text-ink-muted uppercase tracking-wider">
+                  Select Workload Simulation Preset:
+                </label>
+                <span className="font-label-mono text-[11px] text-ink-subtle">
+                  Click to inspect live routing
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {(['llama-7b', 'deepseek-moe', 'flux-latent'] as WorkloadPresetKey[]).map((key) => {
+                  const preset = WORKLOAD_PRESETS[key];
+                  const isActive = selectedPresetKey === key;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => handlePresetChange(key)}
+                      className={`text-left p-3 rounded border transition-all text-xs ${
+                        isActive
+                          ? 'bg-canvas-alternate border-accent-olive ring-1 ring-accent-olive text-ink-primary'
+                          : 'bg-canvas-base border-hairline-default text-ink-muted hover:border-hairline-strong hover:text-ink-primary'
+                      }`}
+                    >
+                      <div className="font-headline-sm font-medium text-ink-primary">{preset.label}</div>
+                      <div className="font-label-mono text-[11px] text-accent-olive font-medium mt-0.5">
+                        {preset.badge}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* User Input Prompt Box */}
             <div className="mb-6">
               <label className="block font-label-mono text-label-mono text-ink-muted uppercase tracking-wider mb-2">
-                Target Workload Specification
+                Parsed Natural Language Intent
               </label>
               <div className="flex items-center justify-between p-4 bg-canvas-base border border-hairline-default rounded-md text-ink-primary font-headline-sm text-title-md">
                 <div className="flex items-center gap-3">
                   <span className="material-symbols-outlined text-accent-olive">terminal</span>
                   <span className="font-body-md text-body-md text-ink-primary font-medium">
-                    Fine-tune a 7B parameter model. Finish within 8 hours. Minimize total cost.
+                    {currentPreset.prompt}
                   </span>
                 </div>
                 <span className="font-label-mono text-label-mono text-ink-muted bg-canvas-alternate px-2 py-1 rounded border border-hairline-subtle hidden sm:inline-block">
@@ -120,22 +447,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
               <span className="font-label-mono text-label-mono text-ink-muted mr-1">
                 Constraints:
               </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-canvas-alternate border border-hairline-default rounded text-ink-body font-label-mono text-label-mono">
-                <span className="material-symbols-outlined text-sm text-ink-muted">payments</span>
-                Budget: $50
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-canvas-alternate border border-hairline-default rounded text-ink-body font-label-mono text-label-mono">
-                <span className="material-symbols-outlined text-sm text-ink-muted">schedule</span>
-                Deadline: 8 hours
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-canvas-alternate border border-hairline-default rounded text-ink-body font-label-mono text-label-mono">
-                <span className="material-symbols-outlined text-sm text-ink-muted">memory</span>
-                GPU memory: 24 GB+
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-canvas-alternate border border-hairline-default rounded text-ink-body font-label-mono text-label-mono">
-                <span className="material-symbols-outlined text-sm text-ink-muted">dns</span>
-                Region: Preferred region
-              </span>
+              {currentPreset.constraints.map((c, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-canvas-alternate border border-hairline-default rounded text-ink-body font-label-mono text-label-mono"
+                >
+                  <span className="material-symbols-outlined text-sm text-ink-muted">{c.icon}</span>
+                  {c.label}
+                </span>
+              ))}
             </div>
 
             {/* Comparison Table Structure */}
@@ -148,116 +468,130 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
                 <div className="col-span-2 text-right">Status</div>
               </div>
 
-              {/* Option A */}
-              <div
-                onClick={() => setSelectedPlan(1)}
-                className={`grid grid-cols-12 px-5 py-4 items-center border-b border-hairline-subtle transition-colors cursor-pointer ${
-                  selectedPlan === 1 ? 'bg-canvas-base border-l-4 border-l-ink-primary' : 'hover:bg-canvas-base'
-                }`}
-              >
-                <div className="col-span-5 flex items-center gap-3">
-                  <span className="font-label-mono text-label-mono text-ink-subtle">01</span>
-                  <div>
-                    <div className="font-headline-sm text-title-sm text-ink-primary font-medium">
-                      NVIDIA H100 SXM5 80GB
-                    </div>
-                    <div className="font-body-sm text-body-sm text-ink-muted">
-                      CoreWeave Cluster Node · Direct InfiniBand
-                    </div>
-                  </div>
-                </div>
-                <div className="col-span-2 text-right font-headline-sm text-title-sm text-ink-primary font-medium">
-                  $32.40
-                </div>
-                <div className="col-span-2 text-right font-body-md text-body-md text-ink-body">
-                  5h 20m
-                </div>
-                <div className="col-span-1 text-center font-label-mono text-label-mono text-ink-muted">
-                  80 GB
-                </div>
-                <div className="col-span-2 text-right">
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-canvas-alternate border border-hairline-default text-ink-body font-label-mono text-label-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-status-healthy"></span>
-                    Compatible
-                  </span>
-                </div>
-              </div>
-
-              {/* Option B (RECOMMENDED) */}
-              <div
-                onClick={() => setSelectedPlan(2)}
-                className={`grid grid-cols-12 px-5 py-4 items-center border-y-2 border-accent-olive bg-[#FAF9F5] relative transition-colors cursor-pointer ${
-                  selectedPlan === 2 ? 'ring-1 ring-accent-olive shadow-sm' : ''
-                }`}
-              >
-                <div className="col-span-5 flex items-center gap-3">
-                  <span className="font-label-mono text-label-mono text-accent-olive font-bold">
-                    02
-                  </span>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-headline-sm text-title-sm text-ink-primary font-semibold">
-                        NVIDIA 8x L40S 48GB
+              {currentPreset.options.map((opt) => {
+                const isSelected = selectedPlan === opt.id;
+                return (
+                  <div
+                    key={opt.id}
+                    onClick={() => setSelectedPlan(opt.id)}
+                    className={`grid grid-cols-12 px-5 py-4 items-center border-b border-hairline-subtle transition-colors cursor-pointer ${
+                      opt.isRec
+                        ? 'border-y-2 border-accent-olive bg-[#FAF9F5] relative ' +
+                          (isSelected ? 'ring-1 ring-accent-olive shadow-sm' : '')
+                        : isSelected
+                        ? 'bg-canvas-base border-l-4 border-l-ink-primary'
+                        : 'hover:bg-canvas-base'
+                    }`}
+                  >
+                    <div className="col-span-5 flex items-center gap-3">
+                      <span
+                        className={`font-label-mono text-label-mono ${
+                          opt.isRec ? 'text-accent-olive font-bold' : 'text-ink-subtle'
+                        }`}
+                      >
+                        {opt.num}
                       </span>
-                      <span className="px-2 py-0.5 rounded-full bg-accent-olive text-canvas-base font-label-mono text-label-mono font-medium text-[10px]">
-                        RECOMMENDED
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`font-headline-sm text-title-sm text-ink-primary ${
+                              opt.isRec ? 'font-semibold' : 'font-medium'
+                            }`}
+                          >
+                            {opt.name}
+                          </span>
+                          {opt.isRec && (
+                            <span className="px-2 py-0.5 rounded-full bg-accent-olive text-canvas-base font-label-mono text-label-mono font-medium text-[10px]">
+                              RECOMMENDED
+                            </span>
+                          )}
+                        </div>
+                        <div
+                          className={`font-body-sm text-body-sm ${
+                            opt.isRec ? 'text-accent-olive font-medium' : 'text-ink-muted'
+                          }`}
+                        >
+                          {opt.provider}
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`col-span-2 text-right font-headline-sm text-title-sm text-ink-primary ${
+                        opt.isRec ? 'font-semibold' : 'font-medium'
+                      }`}
+                    >
+                      {opt.cost}
+                    </div>
+                    <div
+                      className={`col-span-2 text-right font-body-md text-body-md ${
+                        opt.isRec ? 'text-ink-primary font-medium' : 'text-ink-body'
+                      }`}
+                    >
+                      {opt.runtime}
+                    </div>
+                    <div className="col-span-1 text-center font-label-mono text-label-mono text-ink-muted">
+                      {opt.memory}
+                    </div>
+                    <div className="col-span-2 text-right">
+                      <span
+                        className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border font-label-mono text-label-mono ${
+                          opt.isRec
+                            ? 'bg-canvas-alternate border-accent-olive text-ink-primary font-medium'
+                            : 'bg-canvas-alternate border-hairline-default text-ink-body'
+                        }`}
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            opt.isRec
+                              ? 'bg-status-active'
+                              : opt.status === 'SLA Breach'
+                              ? 'bg-red-500'
+                              : 'bg-status-healthy'
+                          }`}
+                        ></span>
+                        {opt.status}
                       </span>
                     </div>
-                    <div className="font-body-sm text-body-sm text-accent-olive font-medium">
-                      Optimal balance: $4.60 under budget · 25m safety margin
-                    </div>
                   </div>
-                </div>
-                <div className="col-span-2 text-right font-headline-sm text-title-sm text-ink-primary font-semibold">
-                  $27.80
-                </div>
-                <div className="col-span-2 text-right font-body-md text-body-md text-ink-primary font-medium">
-                  7h 35m
-                </div>
-                <div className="col-span-1 text-center font-label-mono text-label-mono text-ink-muted">
-                  384 GB
-                </div>
-                <div className="col-span-2 text-right">
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-canvas-alternate border border-accent-olive text-ink-primary font-label-mono text-label-mono font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-status-active"></span>
-                    Best Tradeoff
-                  </span>
-                </div>
-              </div>
+                );
+              })}
+            </div>
 
-              {/* Option C */}
-              <div
-                onClick={() => setSelectedPlan(3)}
-                className={`grid grid-cols-12 px-5 py-4 items-center transition-colors cursor-pointer ${
-                  selectedPlan === 3 ? 'bg-canvas-base border-l-4 border-l-ink-primary' : 'hover:bg-canvas-base'
-                }`}
-              >
-                <div className="col-span-5 flex items-center gap-3">
-                  <span className="font-label-mono text-label-mono text-ink-subtle">03</span>
-                  <div>
-                    <div className="font-headline-sm text-title-sm text-ink-primary font-medium">
-                      NVIDIA A100 80GB PCIe
-                    </div>
-                    <div className="font-body-sm text-body-sm text-ink-muted">
-                      Lambda Cloud · Dedicated On-Demand
-                    </div>
-                  </div>
-                </div>
-                <div className="col-span-2 text-right font-headline-sm text-title-sm text-ink-primary font-medium">
-                  $41.20
-                </div>
-                <div className="col-span-2 text-right font-body-md text-body-md text-ink-body">
-                  4h 10m
-                </div>
-                <div className="col-span-1 text-center font-label-mono text-label-mono text-ink-muted">
-                  80 GB
-                </div>
-                <div className="col-span-2 text-right">
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-canvas-alternate border border-hairline-default text-ink-body font-label-mono text-label-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-status-healthy"></span>
-                    Compatible
+            {/* Recommendation Rationale Callout Card */}
+            <div className="mt-4 p-5 rounded-lg border border-hairline-default bg-[#FAF9F5] flex flex-col md:flex-row gap-5 items-start md:items-center justify-between">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="w-2 h-2 rounded-full bg-status-healthy"></span>
+                  <span className="font-label-mono text-label-mono font-bold text-accent-olive uppercase tracking-wider">
+                    RECOMMENDATION RATIONALE
+                  </span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-subtle font-label-mono text-ink-muted">
+                    Deterministic Math
                   </span>
                 </div>
+                <div className="font-headline-sm text-body-md text-ink-primary font-semibold mb-1">
+                  {currentPreset.recommendation.headline}
+                </div>
+                <p className="font-body-sm text-body-sm text-ink-muted leading-relaxed">
+                  {currentPreset.recommendation.details}
+                </p>
+              </div>
+              <div className="flex sm:flex-row md:flex-col gap-2 shrink-0 w-full md:w-auto">
+                {currentPreset.recommendation.metrics.map((m, idx) => (
+                  <div
+                    key={idx}
+                    className="flex-1 md:flex-initial px-3 py-1.5 rounded bg-surface-elevated border border-hairline-default font-label-mono text-label-mono flex items-center justify-between gap-4"
+                  >
+                    <span className="text-ink-muted text-[11px]">{m.label}</span>
+                    <span
+                      className={`font-semibold text-[11px] ${
+                        m.positive ? 'text-accent-olive' : 'text-ink-primary'
+                      }`}
+                    >
+                      {m.value}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -265,10 +599,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
             <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between text-ink-muted font-label-mono text-label-mono gap-2">
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-sm text-ink-subtle">info</span>
-                Estimated costs calculated via benchmark telemetry. Illustrative demo data — not
-                live broker quotes.
+                Calculated via eBPF hardware profiling &amp; dynamic spot arbitrage engine.
               </span>
-              <span className="text-ink-subtle">Execution Engine 2.14.0</span>
+              <span className="text-ink-subtle">Kynetic Routing Engine v2.14.0 · 20Hz Telemetry</span>
             </div>
           </div>
         </div>
@@ -548,17 +881,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-8">
-              <div className="w-10 h-10 rounded bg-canvas-alternate border border-hairline-default flex items-center justify-center mb-6">
-                <span className="material-symbols-outlined text-ink-primary">model_training</span>
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between hover:border-hairline-strong transition-colors">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-9 h-9 rounded bg-canvas-alternate border border-hairline-default flex items-center justify-center">
+                    <span className="material-symbols-outlined text-ink-primary text-lg">model_training</span>
+                  </div>
+                  <span className="font-label-mono text-[11px] text-accent-olive font-semibold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default">
+                    CORE 01
+                  </span>
+                </div>
+                <h3 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                  Workload Performance Digital Twin
+                </h3>
+                <p className="font-body-sm text-body-sm text-ink-muted leading-relaxed mb-4">
+                  Predict runtime, cost, and memory saturation before launch. Built using actual
+                  execution curves across thousands of foundation models.
+                </p>
+
+                {/* Bespoke Interactive Diagram */}
+                <div className="mb-4">
+                  <DigitalTwinDiagram />
+                </div>
               </div>
-              <h3 className="font-headline-sm text-title-md text-ink-primary font-medium mb-3">
-                Workload Performance Digital Twin
-              </h3>
-              <p className="font-body-md text-body-md text-ink-muted leading-relaxed mb-6">
-                Predict runtime, cost, and memory saturation before launch. Built using actual
-                execution curves across thousands of foundation models.
-              </p>
+
               <ul className="space-y-2 border-t border-hairline-subtle pt-4 font-label-mono text-label-mono text-ink-body">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-status-healthy"></span>
@@ -572,17 +918,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
             </div>
 
             {/* Card 2 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-8">
-              <div className="w-10 h-10 rounded bg-canvas-alternate border border-hairline-default flex items-center justify-center mb-6">
-                <span className="material-symbols-outlined text-ink-primary">balance</span>
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between hover:border-hairline-strong transition-colors">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-9 h-9 rounded bg-canvas-alternate border border-hairline-default flex items-center justify-center">
+                    <span className="material-symbols-outlined text-ink-primary text-lg">balance</span>
+                  </div>
+                  <span className="font-label-mono text-[11px] text-accent-olive font-semibold px-2 py-0.5 rounded bg-canvas-alternate border border-hairline-default">
+                    CORE 02
+                  </span>
+                </div>
+                <h3 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                  Predictive Compute Arbitrage
+                </h3>
+                <p className="font-body-sm text-body-sm text-ink-muted leading-relaxed mb-4">
+                  Compare remaining workload cost against migration penalties in real time. Never
+                  leave money on the table when secondary market spot prices dive.
+                </p>
+
+                {/* Bespoke Interactive Diagram */}
+                <div className="mb-4">
+                  <ArbitrageDiagram />
+                </div>
               </div>
-              <h3 className="font-headline-sm text-title-md text-ink-primary font-medium mb-3">
-                Predictive Compute Arbitrage
-              </h3>
-              <p className="font-body-md text-body-md text-ink-muted leading-relaxed mb-6">
-                Compare remaining workload cost against migration penalties in real time. Never
-                leave money on the table when secondary market spot prices dive.
-              </p>
+
               <ul className="space-y-2 border-t border-hairline-subtle pt-4 font-label-mono text-label-mono text-ink-body">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-status-healthy"></span>
@@ -596,24 +955,32 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEarlyAccess }) => {
             </div>
 
             {/* Card 3 */}
-            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-8 relative">
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-10 h-10 rounded bg-canvas-alternate border border-hairline-default flex items-center justify-center">
-                  <span className="material-symbols-outlined text-ink-primary">
-                    history_toggle_off
+            <div className="bg-surface-elevated border border-hairline-default rounded-lg p-6 flex flex-col justify-between relative hover:border-hairline-strong transition-colors">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-9 h-9 rounded bg-canvas-alternate border border-hairline-default flex items-center justify-center">
+                    <span className="material-symbols-outlined text-ink-primary text-lg">
+                      history_toggle_off
+                    </span>
+                  </div>
+                  <span className="font-label-mono text-label-mono px-2 py-0.5 rounded bg-canvas-alternate text-ink-muted border border-hairline-default">
+                    Roadmap
                   </span>
                 </div>
-                <span className="font-label-mono text-label-mono px-2 py-0.5 rounded bg-canvas-alternate text-ink-muted border border-hairline-default">
-                  Roadmap
-                </span>
+                <h3 className="font-headline-sm text-title-md text-ink-primary font-medium mb-2">
+                  Checkpoint &amp; Resume
+                </h3>
+                <p className="font-body-sm text-body-sm text-ink-muted leading-relaxed mb-4">
+                  Seamlessly capture state across divergent hardware platforms without code alteration.
+                  Moving an in-flight PyTorch session from Lambda to RunPod effortlessly.
+                </p>
+
+                {/* Bespoke Interactive Diagram */}
+                <div className="mb-4">
+                  <CheckpointDiagram />
+                </div>
               </div>
-              <h3 className="font-headline-sm text-title-md text-ink-primary font-medium mb-3">
-                Checkpoint &amp; Resume
-              </h3>
-              <p className="font-body-md text-body-md text-ink-muted leading-relaxed mb-6">
-                Seamlessly capture state across divergent hardware platforms without code alteration.
-                Moving an in-flight PyTorch session from Lambda to RunPod effortlessly.
-              </p>
+
               <ul className="space-y-2 border-t border-hairline-subtle pt-4 font-label-mono text-label-mono text-ink-body">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-ink-subtle"></span>

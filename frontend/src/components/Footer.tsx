@@ -31,29 +31,57 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
               <span className="text-ink-muted">H100 POOL LATENCY: 1.2ms</span>
               <span className="text-hairline-strong hidden sm:inline">|</span>
               <span className="text-ink-muted">ACTIVE BROKER NODES: 8,419</span>
+              <span className="text-hairline-strong hidden sm:inline">|</span>
+              <span className="text-ink-primary font-medium inline-flex items-center gap-1">
+                <span>🇮🇳</span> MADE IN INDIA
+              </span>
             </div>
           </div>
-          {/* Bottom Row: Copyright & Editorial Links */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between pt-6 gap-4">
-            <p className="font-body-sm text-body-sm text-ink-muted">
-              © 2025 Kynetic AI Inc. High-performance compute infrastructure. All rights reserved.
-            </p>
+
+          {/* Legal and Compliance Links Grid */}
+          <div className="py-6 border-b border-hairline-subtle">
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-body-sm font-body-sm">
-              <Link to="/docs" className="text-ink-muted hover:text-accent-olive transition-colors">
+              <Link to="/privacy-policy" className="text-ink-muted hover:text-accent-olive transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/docs" className="text-ink-muted hover:text-accent-olive transition-colors">
-                Terms of Service
+              <Link to="/terms" className="text-ink-muted hover:text-accent-olive transition-colors">
+                Terms &amp; Cond.
               </Link>
-              <Link to="/architecture" className="text-ink-primary underline underline-offset-4">
+              <Link to="/cookie-policy" className="text-ink-muted hover:text-accent-olive transition-colors">
+                Cookie Policy
+              </Link>
+              <Link to="/refund-policy" className="text-ink-muted hover:text-accent-olive transition-colors">
+                Refund Policy
+              </Link>
+              <Link to="/cookie-consent" className="text-ink-muted hover:text-accent-olive transition-colors">
+                Cookie + Form Consent
+              </Link>
+              <Link to="/user-data-collection" className="text-ink-muted hover:text-accent-olive transition-colors">
+                What User Data You Collect
+              </Link>
+              <Link to="/third-party-embeds" className="text-ink-muted hover:text-accent-olive transition-colors">
+                Third Party Embeds
+              </Link>
+              <Link to="/architecture" className="text-ink-primary font-medium underline underline-offset-4">
                 Security Architecture
               </Link>
-              <Link to="/architecture" className="text-ink-muted hover:text-accent-olive transition-colors">
-                Compliance (SOC2)
-              </Link>
-              <Link to="/workload-planner" className="text-ink-muted hover:text-accent-olive transition-colors">
-                System Status
-              </Link>
+            </div>
+          </div>
+
+          {/* Bottom Row: Copyright & India Tag */}
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between pt-6 gap-4">
+            <p className="font-body-sm text-body-sm text-ink-muted flex flex-wrap items-center gap-2">
+              <span>© 2026 Kynetic AI.</span>
+              <span>High-performance compute infrastructure. All rights reserved.</span>
+              <span className="text-hairline-strong">•</span>
+              <span className="inline-flex items-center gap-1 font-medium text-ink-primary">
+                <span>🇮🇳</span> Made in India
+              </span>
+            </p>
+            <div className="flex items-center gap-4 text-xs font-label-mono text-ink-subtle">
+              <span>DPDP ACT 2023 COMPLIANT</span>
+              <span>•</span>
+              <span>SOC2 TYPE II CONTROLS</span>
             </div>
           </div>
         </div>
@@ -64,9 +92,9 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
   return (
     <footer className="border-t border-hairline-default bg-canvas-base">
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-8 mb-14">
           {/* Brand Wordmark Col */}
-          <div className="md:col-span-2">
+          <div className="sm:col-span-2 md:col-span-2">
             <Link to="/" className="inline-block mb-4 group" aria-label="Kynetic AI Home">
               <img
                 alt="Kynetic AI"
@@ -75,11 +103,16 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
               />
             </Link>
             <p className="font-body-sm text-body-sm text-ink-muted max-w-xs leading-relaxed">
-              High-scale compute orchestration &amp; GPU optimization. Autonomous intelligence across distributed providers.
+              High-scale compute orchestration &amp; GPU optimization. Autonomous intelligence across distributed bare-metal and cloud providers.
             </p>
+            <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded bg-surface-elevated border border-hairline-default text-xs font-label-mono text-ink-primary">
+              <span className="text-sm">🇮🇳</span>
+              <span className="font-medium">Made in India</span>
+              <span className="text-ink-subtle">• Global Compute Grid</span>
+            </div>
           </div>
 
-          {/* Nav Col 1 */}
+          {/* Nav Col 1: Product */}
           <div>
             <h4 className="font-label-mono text-label-mono uppercase tracking-wider text-ink-primary font-semibold mb-3">
               Product
@@ -113,7 +146,7 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
             </ul>
           </div>
 
-          {/* Nav Col 2 */}
+          {/* Nav Col 2: Resources */}
           <div>
             <h4 className="font-label-mono text-label-mono uppercase tracking-wider text-ink-primary font-semibold mb-3">
               Resources
@@ -142,12 +175,66 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
             </ul>
           </div>
 
-          {/* Nav Col 3 */}
+          {/* Nav Col 3: Legal & Governance (ALL 7 REQUESTED PAGES) */}
+          <div>
+            <h4 className="font-label-mono text-label-mono uppercase tracking-wider text-ink-primary font-semibold mb-3">
+              Legal &amp; Trust
+            </h4>
+            <ul className="space-y-2 text-body-sm font-body-sm text-ink-muted">
+              <li>
+                <Link to="/privacy-policy" className="hover:text-ink-primary transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms" className="hover:text-ink-primary transition-colors">
+                  Terms &amp; Cond.
+                </Link>
+              </li>
+              <li>
+                <Link to="/cookie-policy" className="hover:text-ink-primary transition-colors">
+                  Cookie Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/refund-policy" className="hover:text-ink-primary transition-colors">
+                  Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/cookie-consent" className="hover:text-ink-primary transition-colors">
+                  Cookie + Form Consent
+                </Link>
+              </li>
+              <li>
+                <Link to="/user-data-collection" className="hover:text-ink-primary transition-colors">
+                  What User Data You Collect
+                </Link>
+              </li>
+              <li>
+                <Link to="/third-party-embeds" className="hover:text-ink-primary transition-colors">
+                  Third Party Embeds
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Nav Col 4: Company */}
           <div>
             <h4 className="font-label-mono text-label-mono uppercase tracking-wider text-ink-primary font-semibold mb-3">
               Company
             </h4>
             <ul className="space-y-2 text-body-sm font-body-sm text-ink-muted">
+              <li>
+                <Link to="/signin" className="hover:text-ink-primary transition-colors">
+                  Console Sign In
+                </Link>
+              </li>
+              <li>
+                <Link to="/signup" className="hover:text-ink-primary transition-colors">
+                  Create Account
+                </Link>
+              </li>
               <li>
                 <Link to="/early-access" className="hover:text-ink-primary transition-colors">
                   Request Access
@@ -159,13 +246,8 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
                 </Link>
               </li>
               <li>
-                <Link to="/mobile" className="hover:text-ink-primary transition-colors">
-                  Mobile Preview
-                </Link>
-              </li>
-              <li>
-                <Link to="/early-access" className="hover:text-ink-primary transition-colors">
-                  Contact
+                <Link to="/docs" className="hover:text-ink-primary transition-colors">
+                  Documentation
                 </Link>
               </li>
             </ul>
@@ -174,8 +256,13 @@ export const Footer: React.FC<FooterProps> = ({ variant = 'olive' }) => {
 
         {/* Bottom Hairline Row */}
         <div className="pt-8 border-t border-hairline-default flex flex-col md:flex-row justify-between items-center text-ink-muted text-body-sm font-body-sm gap-4">
-          <div>
-            © 2025 Kynetic AI Inc. High-scale compute orchestration &amp; GPU optimization.
+          <div className="flex flex-wrap items-center gap-2">
+            <span>© 2026 Kynetic AI.</span>
+            <span>High-scale compute orchestration &amp; GPU optimization.</span>
+            <span className="text-hairline-strong">•</span>
+            <span className="inline-flex items-center gap-1.5 font-medium text-ink-primary">
+              <span>🇮🇳</span> Made in India
+            </span>
           </div>
           <div className="flex flex-wrap items-center gap-6 font-label-mono text-label-mono text-ink-subtle">
             <span>REGION: US-EAST-1</span>

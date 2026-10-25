@@ -48,3 +48,40 @@ body {
 .halo-olive {
   background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(217, 231, 200, 0.35), transparent 70%);
 }
+
+@keyframes dataPulse {
+  from {
+    stroke-dashoffset: 48;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-data-flow {
+  stroke-dasharray: 6 6;
+  animation: dataPulse 2.4s linear infinite;
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.97);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-data-flow,
+  .animate-pulse-subtle {
+    animation: none !important;
+  }
+}
+

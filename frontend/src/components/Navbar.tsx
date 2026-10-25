@@ -81,7 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
         {/* Right CTAs */}
         <div className="flex items-center gap-4">
           <Link
-            to="/early-access"
+            to="/signin"
             className="text-ink-muted hover:text-ink-primary text-body-sm font-body-sm font-medium transition-colors hidden sm:inline-block"
           >
             Sign In
@@ -184,13 +184,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEarlyAccess }) => {
               <span>Docs</span>
               {currentPath === '/docs' && <span className="text-xs text-accent-olive">●</span>}
             </Link>
-            <Link
-              to="/mobile"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1 hover:text-ink-primary flex items-center justify-between text-ink-muted"
-            >
-              <span>Mobile Layout View</span>
-            </Link>
+            <div className="pt-2 mt-2 border-t border-hairline-subtle flex flex-col gap-2">
+              <Link
+                to="/signin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1 text-ink-primary font-medium flex items-center justify-between"
+              >
+                <span>Sign In</span>
+                <span className="material-symbols-outlined text-sm">login</span>
+              </Link>
+              <Link
+                to="/signup"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1 text-accent-olive font-semibold flex items-center justify-between"
+              >
+                <span>Create Account</span>
+                <span className="material-symbols-outlined text-sm">arrow_outward</span>
+              </Link>
+            </div>
           </nav>
         </div>
       )}
