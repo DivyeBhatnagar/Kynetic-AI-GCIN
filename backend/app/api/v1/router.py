@@ -1,0 +1,23 @@
+from fastapi import APIRouter
+from app.api.v1.health import router as health_router
+from app.api.v1.organizations import router as orgs_router
+from app.api.v1.projects import router as projects_router
+from app.api.v1.providers import router as providers_router
+from app.api.v1.workloads import router as workloads_router
+from app.api.v1.planning import router as planning_router
+from app.api.v1.runs import router as runs_router
+from app.api.v1.ledger import router as ledger_router
+from app.api.v1.audit import router as audit_router
+
+api_v1_router = APIRouter()
+
+# Health endpoints mounted at root and v1
+api_v1_router.include_router(health_router)
+api_v1_router.include_router(orgs_router)
+api_v1_router.include_router(projects_router)
+api_v1_router.include_router(providers_router)
+api_v1_router.include_router(workloads_router)
+api_v1_router.include_router(planning_router)
+api_v1_router.include_router(runs_router)
+api_v1_router.include_router(ledger_router)
+api_v1_router.include_router(audit_router)
