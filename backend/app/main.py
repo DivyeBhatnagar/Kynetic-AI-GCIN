@@ -13,6 +13,7 @@ from app.core.rate_limit import rate_limiting_middleware
 from app.adapters.persistence.database import engine
 from app.api.v1.router import api_v1_router
 from app.api.v1.health import router as root_health_router
+from app.domain.worker.scheduler import background_worker
 
 # Initialize structured logging
 setup_logging(log_level=settings.LOG_LEVEL)
@@ -22,13 +23,15 @@ setup_logging(log_level=settings.LOG_LEVEL)
 async def lifespan(app: FastAPI):
     """
     Manages startup and shutdown lifecycle for horizontal scaling readiness.
-    Initializes shared caches and cleans up database/cache connections.
+    Initializes shared caches, background worker, and cleans up connections.
     """
     # 1. Startup phase
     await cache_service.initialize()
+    background_worker.start()
     yield
 
     # 2. Shutdown phase
+    await background_worker.stop()
     await cache_service.close()
     await engine.dispose()
 

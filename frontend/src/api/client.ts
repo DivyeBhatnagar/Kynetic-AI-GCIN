@@ -23,7 +23,8 @@ import type {
   ApiKeyCreatedResponse,
   CreateApiKeyRequest,
   RegisterRequest,
-  LoginRequest
+  LoginRequest,
+  TelemetryEvent
 } from './types';
 
 export class ApiError extends Error {
@@ -334,6 +335,33 @@ class KyneticApiClient {
     await this.request<void>(`/api-keys/${id}`, {
       method: 'DELETE'
     });
+  }
+
+  // --- Real-Time SSE Telemetry ---
+  public streamRunTelemetry(
+    runId: string,
+    onEvent: (data: TelemetryEvent) => void,
+    onError?: (err: Event) => void
+  ): () => void {
+    const url = `${this.baseUrl}/runs/${runId}/stream`;
+    const eventSource = new EventSource(url);
+
+    eventSource.addEventListener('telemetry', (event: MessageEvent) => {
+      try {
+        const parsed = JSON.parse(event.data) as TelemetryEvent;
+        onEvent(parsed);
+      } catch (e) {
+        console.warn('Failed to parse telemetry event', e);
+      }
+    });
+
+    if (onError) {
+      eventSource.onerror = onError;
+    }
+
+    return () => {
+      eventSource.close();
+    };
   }
 }
 

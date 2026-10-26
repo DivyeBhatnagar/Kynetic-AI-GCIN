@@ -337,3 +337,17 @@ export interface LoginRequest {
   email: string;
   password: string;
 }
+
+export interface TelemetryEvent {
+  run_id: string;
+  timestamp: string;
+  status: string;
+  step: number;
+  sm_utilization_pct: number;
+  vram_used_gb: number;
+  vram_total_gb: number;
+  power_draw_watts: number;
+  temperature_c: number;
+  nvlink_bandwidth_gb_s: number;
+  accrued_cost_usd: string;
+}

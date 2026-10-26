@@ -447,12 +447,70 @@ Delivered production-grade database indexing, centralized Redis caching, multi-i
  
 ---
  
- ## 10. Phase B: Production Auth & Developer API Key System (In Progress)
- 
- Currently executing Phase B:
- 1. Standard cryptographic password hashing (`hashlib.pbkdf2_hmac`) & RFC 7519 HMAC-SHA256 JWT tokens.
- 2. Headless API keys architecture with `api_keys` table and `kyn_live_...` prefix hashing.
- 3. Auth endpoints: `POST /v1/auth/register`, `POST /v1/auth/login`, `POST /v1/auth/refresh`, `GET /v1/auth/me`.
- 4. Developer API key endpoints: `POST /v1/api-keys`, `GET /v1/api-keys`, `DELETE /v1/api-keys/{id}`.
- 5. Unified auth dependency validating Bearer JWT and `X-API-Key`.
+## 10. Phase B: Production Auth & Developer API Key System (Completed & Verified)
+
+Implemented a unified, enterprise multi-tenant authentication and programmatic access key management system.
+
+### 10.1 Cryptographic Core & Token Engine (`backend/app/core/security.py`)
+- **Password Hashing:** Implemented PBKDF2-HMAC-SHA256 with 100,000 iterations and 16-byte random salt, fully compliant with OWASP password storage guidelines.
+- **RFC 7519 JWT Engine:** Stateless HS256 token creation and validation with customizable access token and refresh token lifetimes (`AUTH_ACCESS_TOKEN_EXPIRE_MINUTES`, `AUTH_REFRESH_TOKEN_EXPIRE_DAYS`).
+- **Developer API Key Architecture:** Generates secure `kyn_live_<32-byte-hex>` keys, persisting SHA-256 digests and key prefixes (`kyn_live_xxxx...`) for non-reversible storage and fast lookup.
+
+### 10.2 Database Architecture & Migrations
+- Added `ApiKeyModel` mapping to the `api_keys` table with cascade delete on organization, hashed secret storage, label, and last-used timestamp tracking.
+
+### 10.3 API Endpoints & Unified Dependency
+- **Auth Routes (`backend/app/api/v1/auth.py`):**
+  - `POST /v1/auth/register`: Provision user, initial organization, and default project with JWT generation.
+  - `POST /v1/auth/login`: Authenticate email/password credentials with organization resolution.
+  - `POST /v1/auth/refresh`: Issue fresh access token using a valid refresh token.
+  - `GET /v1/auth/me`: Retrieve caller identity, organization context, and permission roles.
+- **API Key Management (`backend/app/api/v1/api_keys.py`):**
+  - `POST /v1/api-keys`: Issue headless developer key (plaintext key exposed once upon creation).
+  - `GET /v1/api-keys`: List organization keys with redacted fingerprints and activity metadata.
+  - `DELETE /v1/api-keys/{id}`: Revoke developer access key.
+- **Unified Dependency (`backend/app/api/deps.py`):**
+  - `get_current_auth`: Accepts either `Authorization: Bearer <JWT>` or `X-API-Key: kyn_live_...` with transparent context extraction.
+
+### 10.4 Automated Testing
+- `backend/tests/integration/test_auth_endpoints.py`: 6 comprehensive integration tests verifying registration, login, token refresh, API key creation, authorization verification, and revocation (72 passing tests).
+
+---
+
+## 11. Phase C: Asynchronous Background Worker & Real-Time Telemetry Streaming (Completed & Verified)
+
+Engineered an asynchronous background scheduling engine and real-time telemetry streaming layer (Server-Sent Events and WebSockets).
+
+### 11.1 Background Worker & Scheduler Service (`backend/app/domain/worker/scheduler.py`)
+- **Worker Service Architecture:** Non-blocking async worker daemon running isolated cron tasks with independent exception boundaries:
+  - **Provider Offer Synchronization (`sync_provider_offers`):** Pulls spot and on-demand GPU pricing across all active providers (RunPod, Lambda, AWS, GCP, etc.) and updates database records.
+  - **In-Flight Arbitrage & Spot Preemption Scanning (`scan_in_flight_arbitrage`):** Evaluates active runs against real-time market pricing with anti-oscillation guards and auto-generates migration opportunities.
+  - **Runtime Cost Accrual (`accrue_workload_costs`):** Scans active runs, calculates second-by-second accrued compute costs from active offer hourly rates, and persists observations.
+- **FastAPI Lifespan Integration (`backend/app/main.py`):** Smooth async lifecycle orchestration; worker starts non-blocking event loop on server startup and shuts down gracefully on SIGTERM/SIGINT.
+- **On-Demand Worker Trigger (`POST /v1/worker/trigger-job`):** Administrative and test hook to run any worker job (`sync_offers`, `scan_arbitrage`, `accrue_costs`, or `all`) synchronously on demand.
+
+### 11.2 Real-Time Telemetry Streaming Layer
+- **Server-Sent Events (SSE) Endpoint (`GET /v1/runs/{id}/stream`):**
+  - Broadcasts 1Hz live hardware telemetry (SM %, VRAM GB used/total, Power Watts, Temperature °C, NVLink bandwidth GB/s, and accrued cost).
+  - Multi-tenant security isolation (HTTP 403 on cross-tenant requests).
+  - Clean client disconnect handling with test-friendly `limit` and `interval_seconds` query parameters.
+- **WebSockets Layer (`backend/app/api/v1/realtime.py`):**
+  - `WebSocket /v1/ws/runs/{id}`: Bi-directional workload telemetry stream and ping/pong keepalive.
+  - `WebSocket /v1/ws/dashboard`: Global mission control mesh updates across all active runs.
+
+### 11.3 Mission Control UI Integration (`frontend/`)
+- **API Contracts & Client (`frontend/src/api/types.ts`, `frontend/src/api/client.ts`):** Added `TelemetryEvent` interface and `streamRunTelemetry(runId, onEvent, onError)` SSE client method.
+- **Live Hardware Telemetry Drawer (`frontend/src/pages/DashboardPage.tsx`):**
+  - Mobile and desktop run inspection drawers subscribe to live 1Hz SSE stream upon expanding a workload run.
+  - Live animated olive pulse indicator (`1Hz SSE TELEMETRY STREAM ACTIVE`).
+  - Dynamic display of real-time SM utilization %, VRAM allocated/total, power draw, temperature, NVLink fabric throughput, and accrued cost.
+
+### 11.4 Verification & Quality Gates
+- **Pytest Integration Tests (`backend/tests/integration/test_worker_and_streaming.py`):**
+  - `test_worker_trigger_endpoint`: PASSED
+  - `test_sse_run_telemetry_stream`: PASSED
+  - `test_sse_stream_unauthorized_tenant`: PASSED
+  - `test_websocket_dashboard_mesh_channel`: PASSED
+- **Total Backend Suite:** **76/76 tests passed (100%)** in 0.48s.
+- **Frontend Build:** `tsc -b && vite build` built cleanly in 484ms with 0 type errors.
 

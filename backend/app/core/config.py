@@ -50,6 +50,13 @@ class Settings(BaseSettings):
     ENABLE_BILLABLE_EXECUTION: bool = False
     DEFAULT_PROVIDER_MODE: Literal["simulated", "live"] = "simulated"
 
+    # Asynchronous Background Worker & Telemetry
+    WORKER_ENABLED: bool = True
+    WORKER_POLL_INTERVAL_SECONDS: int = 15
+    WORKER_OFFER_SYNC_INTERVAL_SECONDS: int = 300
+    WORKER_ARBITRAGE_SCAN_INTERVAL_SECONDS: int = 60
+    WORKER_COST_ACCRUAL_INTERVAL_SECONDS: int = 15
+
     # Multi-instance instance identifier
     INSTANCE_ID: str = Field(default="inst-default")
 

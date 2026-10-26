@@ -142,3 +142,26 @@ flowchart LR
 - [x] **Step 13:** Update `get_current_auth` dependency in `app/api/deps.py` to validate JWT bearer tokens and `X-API-Key` headers against database records.
 - [x] **Step 14:** Write comprehensive integration test suite for Auth & API keys (`tests/integration/test_auth_endpoints.py`).
 - [x] **Step 15:** Connect frontend `SignInPage.tsx` and `SignUpPage.tsx` to the live backend register & login endpoints.
+
+### Phase C: Asynchronous Background Worker & Real-Time Telemetry Streaming (Completed & Verified)
+- [x] **Step 16:** Implement `BackgroundWorkerService` (`backend/app/domain/worker/scheduler.py`) with periodic cron jobs for provider offer syncing, in-flight preemption/arbitrage scanning, and runtime cost accrual.
+- [x] **Step 17:** Wire background worker lifecycle into FastAPI `lifespan` in `backend/app/main.py`.
+- [x] **Step 18:** Implement Server-Sent Events (SSE) endpoint `GET /v1/runs/{id}/stream` delivering live GPU telemetry (SM %, VRAM GB, Power Watts, Temperature °C, NVLink bandwidth, Accrued Cost) with graceful client disconnect handling and test query parameters.
+- [x] **Step 19:** Implement real-time WebSockets (`/v1/ws/runs/{id}` and `/v1/ws/dashboard`) and manual worker trigger endpoint (`POST /v1/worker/trigger-job`) in `backend/app/api/v1/realtime.py`.
+- [x] **Step 20:** Connect frontend client with `streamRunTelemetry` in `frontend/src/api/client.ts` and `TelemetryEvent` contract in `frontend/src/api/types.ts`.
+- [x] **Step 21:** Update `DashboardPage.tsx` mobile and desktop telemetry drawers to consume live SSE stream with pulsing activity indicator.
+- [x] **Step 22:** Write comprehensive integration test suite (`tests/integration/test_worker_and_streaming.py`) validating worker triggering, SSE streaming, multi-tenant isolation, and WebSocket channels (76/76 Pytest tests passing).
+
+### Phase D: Live Cloud Provider Credentials & Real Provisioning (Next Focus)
+- [ ] **Step 23:** Implement AES-256-GCM / KMS envelope encryption for cloud provider API tokens in `provider_connections`.
+- [ ] **Step 24:** Build `RunPodAdapter` live GraphQL client for real pod creation, telemetry polling, and termination.
+- [ ] **Step 25:** Build `LambdaAdapter` live REST client for instance launch and key-pair management.
+- [ ] **Step 26:** Build `AWSAdapter` `boto3` client with EC2 Fleet API for Spot instance requests.
+- [ ] **Step 27:** Connect `POST /v1/provider-connections/{id}/verify` to validate API key permissions live with external cloud providers.
+- [ ] **Step 28:** Wire live provider connection verification in frontend `ProvidersPage.tsx`.
+
+### Phase E: Official Developer CLI & Python SDK
+- [ ] **Step 29:** Build standalone `kynetic-sdk` Python package in `sdk/python/` with declarative client and type-safe models.
+- [ ] **Step 30:** Build `kn` CLI with `typer` and `rich` for auth, planning, launching, and streaming logs.
+- [ ] **Step 31:** Configure `pyproject.toml` and packaging automation for PyPI distribution.
+

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { DashboardComputeTopology } from '../components/DashboardComputeTopology';
 import { SEO } from '../components/SEO';
 import { apiClient } from '../api/client';
-import type { Run, RunCostSummary } from '../api/types';
+import type { Run, RunCostSummary, TelemetryEvent } from '../api/types';
 
 interface DashboardPageProps {
   onOpenEarlyAccess?: () => void;
@@ -48,6 +48,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onOpenEarlyAccess 
   const [backendOnline, setBackendOnline] = useState<boolean>(false);
   const [serverInfo, setServerInfo] = useState<string>('Connecting...');
   const [arbitrageNotice, setArbitrageNotice] = useState<string | null>(null);
+  const [liveTelemetry, setLiveTelemetry] = useState<TelemetryEvent | null>(null);
+
+  // Hook up 1Hz SSE live hardware telemetry stream for expanded run
+  useEffect(() => {
+    if (!expandedWorkloadId) {
+      setLiveTelemetry(null);
+      return;
+    }
+    const unsubscribe = apiClient.streamRunTelemetry(
+      expandedWorkloadId,
+      (event) => {
+        setLiveTelemetry(event);
+      },
+      (err) => {
+        console.debug('Telemetry SSE state update:', err);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, [expandedWorkloadId]);
 
   const fetchDashboardData = useCallback(async () => {
     setIsRefreshing(true);
@@ -543,15 +564,35 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onOpenEarlyAccess 
                   {/* Expanded Telemetry Drawer for Mobile */}
                   {isExpanded && (
                     <div className="mt-2.5 p-3 bg-surface-elevated rounded border border-hairline-default text-xs font-label-mono space-y-2">
+                      <div className="flex items-center justify-between pb-1.5 border-b border-hairline-subtle">
+                        <span className="text-ink-subtle text-[10px] uppercase tracking-wider font-semibold">Live Telemetry</span>
+                        {liveTelemetry ? (
+                          <span className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded text-[10px] bg-accent-olive/15 text-accent-olive border border-accent-olive/30 font-medium">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent-olive animate-pulse" />
+                            1Hz SSE LIVE
+                          </span>
+                        ) : (
+                          <span className="text-ink-subtle text-[10px]">Connecting...</span>
+                        )}
+                      </div>
                       <div>
                         <span className="text-ink-subtle block text-[10px]">HARDWARE UTILIZATION</span>
-                        <div className="text-ink-primary font-medium">{job.telemetry.gpuUtil}</div>
-                        <div className="text-ink-muted text-[11px]">VRAM: {job.telemetry.vramAllocated}</div>
+                        <div className="text-ink-primary font-medium">
+                          {liveTelemetry ? `${liveTelemetry.sm_utilization_pct}% Live SM` : job.telemetry.gpuUtil}
+                        </div>
+                        <div className="text-ink-muted text-[11px]">
+                          VRAM: {liveTelemetry ? `${liveTelemetry.vram_used_gb} GB / ${liveTelemetry.vram_total_gb} GB` : job.telemetry.vramAllocated}
+                          {liveTelemetry && ` (${liveTelemetry.power_draw_watts}W, ${liveTelemetry.temperature_c}°C)`}
+                        </div>
                       </div>
                       <div className="pt-1.5 border-t border-hairline-subtle">
                         <span className="text-ink-subtle block text-[10px]">FABRIC THROUGHPUT</span>
-                        <div className="text-ink-primary font-medium">{job.telemetry.memoryBandwidth}</div>
-                        <div className="text-ink-muted text-[11px]">{job.fabric}</div>
+                        <div className="text-ink-primary font-medium">
+                          {liveTelemetry ? `${liveTelemetry.nvlink_bandwidth_gb_s} GB/s NVLink` : job.telemetry.memoryBandwidth}
+                        </div>
+                        <div className="text-ink-muted text-[11px]">
+                          {liveTelemetry ? `Live Accrued: $${parseFloat(liveTelemetry.accrued_cost_usd || '0').toFixed(4)}` : job.fabric}
+                        </div>
                       </div>
                       <div className="pt-1.5 border-t border-hairline-subtle">
                         <span className="text-ink-subtle block text-[10px]">CHECKPOINT STATE &amp; SLA</span>
@@ -716,23 +757,45 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onOpenEarlyAccess 
                       {isExpanded && (
                         <tr className="bg-canvas-alternate/50 border-b border-hairline-default">
                           <td colSpan={7} className="px-5 py-3">
-                            <div className="p-3 bg-surface-elevated rounded border border-hairline-default text-xs font-label-mono grid grid-cols-1 sm:grid-cols-3 gap-3">
-                              <div>
-                                <span className="text-ink-subtle block mb-1">HARDWARE UTILIZATION</span>
-                                <div className="text-ink-primary font-medium">{job.telemetry.gpuUtil}</div>
-                                <div className="text-ink-muted text-[11px] mt-0.5">
-                                  VRAM: {job.telemetry.vramAllocated}
+                            <div className="p-3 bg-surface-elevated rounded border border-hairline-default text-xs font-label-mono">
+                              <div className="flex items-center justify-between pb-2 mb-2 border-b border-hairline-subtle">
+                                <span className="text-ink-subtle text-[11px] font-semibold tracking-wider">
+                                  HARDWARE TELEMETRY STREAM &bull; RUN {job.id}
+                                </span>
+                                {liveTelemetry ? (
+                                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] bg-accent-olive/15 text-accent-olive border border-accent-olive/30 font-medium">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-accent-olive animate-pulse" />
+                                    1Hz SSE TELEMETRY STREAM ACTIVE
+                                  </span>
+                                ) : (
+                                  <span className="text-ink-subtle text-[11px]">Connecting to SSE stream...</span>
+                                )}
+                              </div>
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div>
+                                  <span className="text-ink-subtle block mb-1">HARDWARE UTILIZATION</span>
+                                  <div className="text-ink-primary font-medium">
+                                    {liveTelemetry ? `${liveTelemetry.sm_utilization_pct}% Live SM` : job.telemetry.gpuUtil}
+                                  </div>
+                                  <div className="text-ink-muted text-[11px] mt-0.5">
+                                    VRAM: {liveTelemetry ? `${liveTelemetry.vram_used_gb} GB / ${liveTelemetry.vram_total_gb} GB` : job.telemetry.vramAllocated}
+                                    {liveTelemetry && ` (${liveTelemetry.power_draw_watts}W, ${liveTelemetry.temperature_c}°C)`}
+                                  </div>
                                 </div>
-                              </div>
-                              <div>
-                                <span className="text-ink-subtle block mb-1">FABRIC THROUGHPUT</span>
-                                <div className="text-ink-primary font-medium">{job.telemetry.memoryBandwidth}</div>
-                                <div className="text-ink-muted text-[11px] mt-0.5">{job.fabric}</div>
-                              </div>
-                              <div>
-                                <span className="text-ink-subtle block mb-1">CHECKPOINT STATE &amp; SLA</span>
-                                <div className="text-accent-olive font-medium">{job.telemetry.checkpointState}</div>
-                                <div className="text-ink-muted text-[11px] mt-0.5">{job.telemetry.preemptionRisk}</div>
+                                <div>
+                                  <span className="text-ink-subtle block mb-1">FABRIC THROUGHPUT</span>
+                                  <div className="text-ink-primary font-medium">
+                                    {liveTelemetry ? `${liveTelemetry.nvlink_bandwidth_gb_s} GB/s NVLink` : job.telemetry.memoryBandwidth}
+                                  </div>
+                                  <div className="text-ink-muted text-[11px] mt-0.5">
+                                    {liveTelemetry ? `Live Accrued: $${parseFloat(liveTelemetry.accrued_cost_usd || '0').toFixed(4)}` : job.fabric}
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className="text-ink-subtle block mb-1">CHECKPOINT STATE &amp; SLA</span>
+                                  <div className="text-accent-olive font-medium">{job.telemetry.checkpointState}</div>
+                                  <div className="text-ink-muted text-[11px] mt-0.5">{job.telemetry.preemptionRisk}</div>
+                                </div>
                               </div>
                             </div>
                           </td>

@@ -14,6 +14,7 @@ from app.api.v1.benchmarks import router as benchmarks_router
 from app.api.v1.predictions import router as predictions_router
 from app.api.v1.checkpoints import router as checkpoints_router
 from app.api.v1.arbitrage import router as arbitrage_router
+from app.api.v1.realtime import router as realtime_router
 
 api_v1_router = APIRouter()
 
@@ -21,6 +22,7 @@ api_v1_router = APIRouter()
 api_v1_router.include_router(health_router)
 api_v1_router.include_router(auth_router)
 api_v1_router.include_router(api_keys_router)
+api_v1_router.include_router(realtime_router)
 api_v1_router.include_router(orgs_router)
 api_v1_router.include_router(projects_router)
 api_v1_router.include_router(providers_router)
