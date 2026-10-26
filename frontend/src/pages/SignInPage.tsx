@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SEO } from '../components/SEO';
+import { apiClient } from '../api/client';
 
 export const SignInPage: React.FC = () => {
   const navigate = useNavigate();
@@ -18,10 +19,12 @@ export const SignInPage: React.FC = () => {
       return;
     }
     setIsSubmitting(true);
+    apiClient.setAuthToken(`kyn_user_${Date.now()}`);
+    apiClient.setOrganizationId('default-org');
     setTimeout(() => {
       setIsSubmitting(false);
       navigate('/dashboard');
-    }, 600);
+    }, 400);
   };
 
   return (

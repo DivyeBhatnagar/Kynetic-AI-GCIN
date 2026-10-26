@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { SEO } from '../components/SEO';
+import { apiClient } from '../api/client';
+import type { PlanResponse } from '../api/types';
 
 interface RecommendationsPageProps {
   onOpenEarlyAccess?: () => void;
@@ -9,6 +11,33 @@ interface RecommendationsPageProps {
 export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpenEarlyAccess }) => {
   const [detailsOpen, setDetailsOpen] = useState(true);
   const [savedPlans, setSavedPlans] = useState<string[]>([]);
+  const [livePlan, setLivePlan] = useState<PlanResponse | null>(null);
+  const [isLaunching, setIsLaunching] = useState(false);
+  const [launchMessage, setLaunchMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    apiClient.getPlan('plan-llama3-70b')
+      .then((data) => {
+        if (data) setLivePlan(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLaunchCandidate = async (offerId: string) => {
+    if (!livePlan) return;
+    setIsLaunching(true);
+    try {
+      const res = await apiClient.launchRun(livePlan.id, offerId);
+      setLaunchMessage(`Cluster launched with Run ID ${res.run_id}! Redirecting to Mission Control...`);
+      setTimeout(() => navigate('/dashboard'), 2000);
+    } catch (err: any) {
+      setLaunchMessage(`Launch notice: ${err.message}`);
+      setTimeout(() => setLaunchMessage(null), 5000);
+    } finally {
+      setIsLaunching(false);
+    }
+  };
 
   const toggleSave = (planId: string) => {
     setSavedPlans((prev) =>
@@ -42,7 +71,19 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
                 <span className="font-label-tag text-label-tag text-accent-olive-deep bg-secondary-container px-2 py-0.5 rounded border border-secondary-fixed uppercase tracking-wider font-semibold">
                   SOLVER ENGINE V2.4 • OPTIMAL CANDIDATES
                 </span>
-                <span className="text-label-mono font-label-mono text-ink-subtle">Job ID: syn_8f99a0e1</span>
+                <span className="text-label-mono font-label-mono text-ink-subtle">
+                  Plan ID: {livePlan ? livePlan.id : 'plan-llama3-70b'} (v{livePlan ? livePlan.version : 1})
+                </span>
+                {livePlan && (
+                  <span className="font-label-mono text-[10px] text-accent-olive bg-secondary-container px-2 py-0.5 rounded border border-secondary-fixed font-semibold">
+                    Calculated Spend: ${parseFloat(livePlan.estimated_total_cost).toFixed(2)} USD
+                  </span>
+                )}
+                {launchMessage && (
+                  <span className="font-label-tag text-[10px] text-accent-olive bg-secondary-container px-2 py-0.5 rounded border border-secondary-fixed animate-pulse">
+                    {launchMessage}
+                  </span>
+                )}
               </div>
               <h1 className="text-headline-md font-headline-md text-ink-primary tracking-tight font-medium">
                 Evaluated Compute Allocations
@@ -187,11 +228,12 @@ export const RecommendationsPage: React.FC<RecommendationsPageProps> = ({ onOpen
               <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                   <button
-                    onClick={onOpenEarlyAccess}
-                    className="h-11 sm:h-10 px-5 rounded-full bg-ink-primary hover:bg-accent-olive-deep text-surface-elevated text-label-mono font-label-mono transition-all duration-150 flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] min-h-[44px]"
+                    onClick={() => handleLaunchCandidate('offer-runpod-runpod.8x.h100.sxm')}
+                    disabled={isLaunching}
+                    className="h-11 sm:h-10 px-5 rounded-full bg-ink-primary hover:bg-accent-olive-deep text-surface-elevated text-label-mono font-label-mono transition-all duration-150 flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] min-h-[44px] disabled:opacity-50"
                   >
-                    <span>Generate Execution Plan</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_outward</span>
+                    <span>{isLaunching ? 'Dispatching Run...' : 'Launch Verified Topology'}</span>
+                    <span className="material-symbols-outlined text-[16px]">rocket_launch</span>
                   </button>
                   <button
                     onClick={() => toggleSave('l40s')}

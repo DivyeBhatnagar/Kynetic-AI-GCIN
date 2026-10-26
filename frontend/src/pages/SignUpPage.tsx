@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 import { trackConversion } from '../utils/analytics';
+import { apiClient } from '../api/client';
 
 export const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,10 +24,12 @@ export const SignUpPage: React.FC = () => {
     }
     trackConversion('sign_up_completed', { role: workloadRole });
     setIsSubmitting(true);
+    apiClient.setAuthToken(`kyn_user_${Date.now()}`);
+    apiClient.setOrganizationId(organization ? organization.toLowerCase().replace(/[^a-z0-9]/g, '-') : 'default-org');
     setTimeout(() => {
       setIsSubmitting(false);
       navigate('/thank-you');
-    }, 600);
+    }, 400);
   };
 
   return (

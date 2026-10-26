@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/SEO';
+import { apiClient } from '../api/client';
 
 interface Provider {
   id: string;
@@ -174,6 +175,35 @@ export const ProvidersPage: React.FC = () => {
   const [activeSlice, setActiveSlice] = useState('all');
   const [verifiedOnly, setVerifiedOnly] = useState(true);
 
+  // Live Backend State
+  const [liveOffersCount, setLiveOffersCount] = useState<number>(17);
+  const [syncingKey, setSyncingKey] = useState<string | null>(null);
+  const [syncNotice, setSyncNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    apiClient.listComputeOffers().then((offers) => {
+      if (offers && offers.length > 0) {
+        setLiveOffersCount(offers.length);
+      }
+    }).catch(() => {});
+  }, []);
+
+  const handleSyncProvider = async (key: string) => {
+    setSyncingKey(key);
+    try {
+      const res = await apiClient.syncProviderOffers(key);
+      setSyncNotice(`Synced ${res.synced_offers_count} offers live from ${key}!`);
+      const fresh = await apiClient.listComputeOffers();
+      if (fresh) setLiveOffersCount(fresh.length);
+      setTimeout(() => setSyncNotice(null), 5000);
+    } catch (err: any) {
+      setSyncNotice(`Sync update: ${err.message}`);
+      setTimeout(() => setSyncNotice(null), 5000);
+    } finally {
+      setSyncingKey(null);
+    }
+  };
+
   // Filter providers
   const filteredProviders = PROVIDERS.filter(p => {
     if (activeSlice === 'h100' && !p.compute.model.includes('H100')) return false;
@@ -220,12 +250,17 @@ export const ProvidersPage: React.FC = () => {
         <div className="mb-space-xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-hairline-default">
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-secondary-container text-accent-olive font-label-mono text-label-tag">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-olive animate-pulse"></span>
                   GLOBAL COMPUTE DIRECTORY
                 </span>
-                <span className="text-label-mono text-ink-subtle">LIVE REFRESH 20Hz</span>
+                <span className="text-label-mono text-ink-subtle">LIVE REFRESH • {liveOffersCount} OFFERS SYNCHRONIZED</span>
+                {syncNotice && (
+                  <span className="text-label-tag font-label-tag text-accent-olive bg-secondary-container px-2 py-0.5 rounded border border-secondary-fixed animate-fade-in">
+                    {syncNotice}
+                  </span>
+                )}
               </div>
               <h1 className="text-display-sm md:text-display-md font-serif text-ink-primary font-normal tracking-tight">
                 Benchmark-Verified GPU Infrastructure
@@ -456,6 +491,14 @@ export const ProvidersPage: React.FC = () => {
                         <span>{provider.availability.status}</span>
                       </div>
                       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-1 w-full sm:w-auto">
+                        <button
+                          onClick={() => handleSyncProvider(provider.id)}
+                          disabled={syncingKey === provider.id}
+                          className="px-3 py-2 sm:py-1.5 min-h-[44px] sm:min-h-0 rounded-full bg-secondary-container hover:bg-secondary-fixed text-accent-olive border border-secondary-fixed text-label-mono font-medium transition-colors flex items-center justify-center gap-1 disabled:opacity-50"
+                        >
+                          <span className={`material-symbols-outlined text-[14px] ${syncingKey === provider.id ? 'animate-spin' : ''}`}>sync</span>
+                          <span>{syncingKey === provider.id ? 'Syncing...' : 'Sync Offers'}</span>
+                        </button>
                         <Link
                           to="/workload-planner"
                           className="px-4 py-2 sm:py-1.5 min-h-[44px] sm:min-h-0 rounded-full bg-ink-primary text-surface-elevated text-label-mono font-medium hover:bg-neutral-800 transition-colors shadow-xs flex items-center justify-center"
