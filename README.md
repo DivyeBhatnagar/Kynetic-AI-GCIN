@@ -10,8 +10,8 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![SQLAlchemy 2.0](https://img.shields.io/badge/SQLAlchemy-2.0-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org/)
 [![Alembic](https://img.shields.io/badge/Alembic-Migrations-orange?style=for-the-badge)](https://alembic.sqlalchemy.org/)
-[![Tests](https://img.shields.io/badge/Tests-13%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](https://docs.pytest.org/)
-[![Coverage](https://img.shields.io/badge/Coverage-76%25-brightgreen?style=for-the-badge)](https://pytest-cov.readthedocs.io/)
+[![Tests](https://img.shields.io/badge/Tests-66%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](https://docs.pytest.org/)
+[![Coverage](https://img.shields.io/badge/Coverage-74%25-brightgreen?style=for-the-badge)](https://pytest-cov.readthedocs.io/)
 
 </div>
 

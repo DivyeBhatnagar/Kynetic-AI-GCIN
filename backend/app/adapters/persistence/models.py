@@ -36,6 +36,7 @@ class OrganizationModel(Base):
 
     memberships = relationship("MembershipModel", back_populates="organization", cascade="all, delete-orphan")
     projects = relationship("ProjectModel", back_populates="organization", cascade="all, delete-orphan")
+    api_keys = relationship("ApiKeyModel", back_populates="organization", cascade="all, delete-orphan")
 
 
 class UserModel(Base):
@@ -43,12 +44,14 @@ class UserModel(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
+    password_hash: Mapped[str | None] = mapped_column(String(255), nullable=True)
     display_name: Mapped[str] = mapped_column(String(100), nullable=False)
     status: Mapped[str] = mapped_column(String(30), default="ACTIVE", nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False)
 
     memberships = relationship("MembershipModel", back_populates="user", cascade="all, delete-orphan")
+    api_keys = relationship("ApiKeyModel", back_populates="user", cascade="all, delete-orphan")
 
 
 class MembershipModel(Base):
@@ -539,6 +542,29 @@ class ArbitrageOpportunityModel(Base):
         Index("ix_arbitrage_run_status", "run_id", "status"),
         Index("ix_arbitrage_org_created", "organization_id", "created_at"),
         Index("ix_arbitrage_org_status_created", "organization_id", "status", "created_at"),
+    )
+
+
+class ApiKeyModel(Base):
+    __tablename__ = "api_keys"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=generate_uuid)
+    organization_id: Mapped[str] = mapped_column(String(36), ForeignKey("organizations.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    prefix: Mapped[str] = mapped_column(String(32), nullable=False, index=True)
+    hashed_key: Mapped[str] = mapped_column(String(128), unique=True, nullable=False, index=True)
+    scopes_json: Mapped[list[str]] = mapped_column(JSON, default=lambda: ["read", "write"], nullable=False)
+    status: Mapped[str] = mapped_column(String(30), default="ACTIVE", nullable=False)  # ACTIVE, REVOKED, EXPIRED
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_used_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+
+    organization = relationship("OrganizationModel", back_populates="api_keys")
+    user = relationship("UserModel", back_populates="api_keys")
+
+    __table_args__ = (
+        Index("ix_api_keys_org_status", "organization_id", "status"),
     )
 
 

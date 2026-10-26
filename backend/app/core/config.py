@@ -44,6 +44,7 @@ class Settings(BaseSettings):
     # Security & Tenancy
     AUTH_SECRET_KEY: str = Field(default="kynetic_dev_secret_change_in_production_32chars")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440  # 24 hours
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 30  # 30 days
 
     # Execution safeguards (default disabled for safety)
     ENABLE_BILLABLE_EXECUTION: bool = False

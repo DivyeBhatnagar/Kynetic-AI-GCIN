@@ -2,7 +2,7 @@
 
 **Document Type:** Engineering Master Implementation Plan v2.0  
 **Product:** Kynetic AI (Global Compute Intelligence Network)  
-**Status:** In Progress (Phase A Executing)  
+**Status:** Phase A & Phase B Completed & Verified; Phase C (Background Worker & Telemetry) Next  
 **Date:** 26 October 2026  
 **Repository:** `DivyeBhatnagar/Kynetic-AI-GCIN`  
 
@@ -14,8 +14,8 @@ This implementation plan governs the transition from the verified MVP prototype 
 
 ```mermaid
 flowchart LR
-    A["Phase A: UI-to-API Client Wiring"] --> B["Phase B: Production Auth & API Keys"]
-    B --> C["Phase C: Background Worker & Telemetry"]
+    A["Phase A: UI-to-API Client Wiring (DONE)"] --> B["Phase B: Production Auth & API Keys (DONE)"]
+    B --> C["Phase C: Background Worker & Telemetry (NEXT)"]
     C --> D["Phase D: Live Cloud Provider Credentials"]
     D --> E["Phase E: Official CLI & Python SDK"]
 ```
@@ -36,7 +36,7 @@ flowchart LR
 
 ## 2. Phase-by-Phase Implementation Roadmap
 
-### Phase A: Full-Stack UI-to-API Client Wiring (Executing Now)
+### Phase A: Full-Stack UI-to-API Client Wiring (Completed & Verified)
 - **A.1 API Client Foundation:** Build `frontend/src/api/client.ts` with typed methods for all backend endpoints, base URL configuration via `VITE_API_BASE_URL` (defaulting to `http://localhost:8000/v1`), automatic `X-Request-ID` generation, and standardized error normalization.
 - **A.2 API Type Definitions:** Define TypeScript interfaces in `frontend/src/api/types.ts` mirroring backend Pydantic v2 schemas:
   - `WorkloadManifest`, `ManifestValidationResponse`
@@ -65,16 +65,18 @@ flowchart LR
 
 ---
 
-### Phase B: Production Auth & Developer API Key System
-- **B.1 Backend JWT Token Management:**
-  - Add `app/core/security.py` with password hashing (`argon2-cffi` / `bcrypt`) and JWT token signing (`pyjwt`).
-  - Endpoints: `POST /v1/auth/register`, `POST /v1/auth/login`, `POST /v1/auth/refresh`.
+### Phase B: Production Auth & Developer API Key System (Completed & Verified)
+- **B.1 Cryptographic Password Hashing & RFC 7519 JWT Management:**
+  - Standard PBKDF2-HMAC-SHA256 password hashing with cryptographic random salt (`hashlib.pbkdf2_hmac`).
+  - Standard base64url HMAC-SHA256 JWT access tokens (24h) and refresh tokens (30d).
+  - Endpoints: `POST /v1/auth/register`, `POST /v1/auth/login`, `POST /v1/auth/refresh`, `GET /v1/auth/me`.
 - **B.2 Headless API Key Architecture:**
-  - Database schema: `api_keys` table with `hashed_key`, `prefix` (`kyn_live_...`), `scopes`, `expires_at`.
+  - Database schema: `api_keys` table with `hashed_key`, `prefix` (`kyn_live_...`), `scopes`, `name`, `expires_at`.
+  - Alembic migration and SQLAlchemy model for `api_keys`.
   - Endpoints: `POST /v1/api-keys`, `GET /v1/api-keys`, `DELETE /v1/api-keys/{id}`.
-  - Custom FastAPI security dependency validating both Bearer JWT and `X-API-Key` headers.
+  - Security dependency validating both Bearer JWT and `X-API-Key` headers.
 - **B.3 Tenant & Organization Onboarding:**
-  - Automated default organization and project creation on user signup.
+  - Automated default organization and project creation on user registration.
   - Member role assignments (`OWNER`, `ADMIN`, `DEVELOPER`, `VIEWER`).
 
 ---
@@ -120,13 +122,23 @@ flowchart LR
 
 ---
 
-## 3. Immediate Action Items (Phase A Execution)
+## 3. Progress Tracking & Action Items
 
-- [ ] **Step 1:** Create `frontend/src/api/types.ts` with complete backend contract types.
-- [ ] **Step 2:** Create `frontend/src/api/client.ts` with robust Fetch/JSON wrapper, authentication header handling, and request tracing.
-- [ ] **Step 3:** Create seed/default organization and project bootstrap helper in backend so fresh environments have live initial data.
-- [ ] **Step 4:** Refactor `WorkloadPlannerPage.tsx` to call live backend validation & dry-run planning endpoints.
-- [ ] **Step 5:** Refactor `DashboardPage.tsx` to fetch live runs, real cost metrics, and provider log streams from backend.
-- [ ] **Step 6:** Refactor `ProvidersPage.tsx` to fetch real compute offers and trigger sync via backend.
-- [ ] **Step 7:** Refactor `RecommendationsPage.tsx` to fetch live Digital Twin predictions and candidate evaluation.
-- [ ] **Step 8:** Verify end-to-end frontend type checks, Vite build, and live backend communication.
+### Phase A: Full-Stack UI-to-API Client Wiring (Completed & Verified)
+- [x] **Step 1:** Create `frontend/src/api/types.ts` with complete backend contract types.
+- [x] **Step 2:** Create `frontend/src/api/client.ts` with robust Fetch/JSON wrapper, authentication header handling, and request tracing.
+- [x] **Step 3:** Create seed/default organization and project bootstrap helper in backend so fresh environments have live initial data (`seed_dev_data.py`).
+- [x] **Step 4:** Refactor `WorkloadPlannerPage.tsx` to call live backend validation & dry-run planning endpoints.
+- [x] **Step 5:** Refactor `DashboardPage.tsx` to fetch live runs, real cost metrics, and provider log streams from backend.
+- [x] **Step 6:** Refactor `ProvidersPage.tsx` to fetch real compute offers and trigger sync via backend.
+- [x] **Step 7:** Refactor `RecommendationsPage.tsx` to fetch live Digital Twin predictions and candidate evaluation.
+- [x] **Step 8:** Verify end-to-end frontend type checks, Vite build, and live backend communication.
+
+### Phase B: Production Auth & Developer API Key System (Completed & Verified)
+- [x] **Step 9:** Implement cryptographic password hashing (PBKDF2-HMAC-SHA256) and JWT creation/verification in `backend/app/core/security.py`.
+- [x] **Step 10:** Create database model & migration for `ApiKeyModel` (`api_keys` table).
+- [x] **Step 11:** Implement auth endpoints (`POST /v1/auth/register`, `POST /v1/auth/login`, `POST /v1/auth/refresh`, `GET /v1/auth/me`).
+- [x] **Step 12:** Implement API key management endpoints (`POST /v1/api-keys`, `GET /v1/api-keys`, `DELETE /v1/api-keys/{id}`).
+- [x] **Step 13:** Update `get_current_auth` dependency in `app/api/deps.py` to validate JWT bearer tokens and `X-API-Key` headers against database records.
+- [x] **Step 14:** Write comprehensive integration test suite for Auth & API keys (`tests/integration/test_auth_endpoints.py`).
+- [x] **Step 15:** Connect frontend `SignInPage.tsx` and `SignUpPage.tsx` to the live backend register & login endpoints.

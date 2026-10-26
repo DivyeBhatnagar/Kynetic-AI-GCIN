@@ -10,21 +10,26 @@ export const SignInPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberDevice, setRememberDevice] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (honeypot.trim() !== '') {
       navigate('/dashboard');
       return;
     }
     setIsSubmitting(true);
-    apiClient.setAuthToken(`kyn_user_${Date.now()}`);
-    apiClient.setOrganizationId('default-org');
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setErrorMsg(null);
+    try {
+      await apiClient.login({ email, password });
       navigate('/dashboard');
-    }, 400);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Invalid credentials. Please verify your email and password.';
+      setErrorMsg(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -127,6 +132,12 @@ export const SignInPage: React.FC = () => {
 
             {/* Form Elements */}
             <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
+              {errorMsg && (
+                <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-lg text-xs font-label-mono text-red-400 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-sm">error</span>
+                  <span>{errorMsg}</span>
+                </div>
+              )}
               {/* Invisible Honeypot Spam Guard */}
               <div style={{ display: 'none' }} aria-hidden="true">
                 <input

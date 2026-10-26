@@ -261,3 +261,79 @@ export interface ArbitrageOpportunity {
   explanation: string;
   created_at: string;
 }
+
+export interface UserDTO {
+  id: string;
+  email: string;
+  display_name: string;
+  status: string;
+}
+
+export interface OrganizationDTO {
+  id: string;
+  name: string;
+  slug: string;
+  role: string;
+}
+
+export interface AuthResponse {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires_in: number;
+  user: UserDTO;
+  organization: OrganizationDTO;
+}
+
+export interface TokenRefreshResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+}
+
+export interface CurrentUserResponse {
+  user: UserDTO;
+  organizations: OrganizationDTO[];
+  current_organization_id: string;
+  current_role: string;
+}
+
+export interface ApiKeyItem {
+  id: string;
+  name: string;
+  prefix: string;
+  scopes: string[];
+  status: string;
+  created_at: string;
+  last_used_at?: string;
+  expires_at?: string;
+}
+
+export interface ApiKeyCreatedResponse {
+  id: string;
+  name: string;
+  prefix: string;
+  secret_key: string;
+  scopes: string[];
+  status: string;
+  created_at: string;
+  expires_at?: string;
+}
+
+export interface CreateApiKeyRequest {
+  name: string;
+  scopes?: string[];
+  expires_in_days?: number;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  display_name: string;
+  organization_name?: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}

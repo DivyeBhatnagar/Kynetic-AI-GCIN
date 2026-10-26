@@ -14,9 +14,10 @@ export const SignUpPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [consent, setConsent] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (honeypot.trim() !== '') {
       navigate('/thank-you');
@@ -24,12 +25,21 @@ export const SignUpPage: React.FC = () => {
     }
     trackConversion('sign_up_completed', { role: workloadRole });
     setIsSubmitting(true);
-    apiClient.setAuthToken(`kyn_user_${Date.now()}`);
-    apiClient.setOrganizationId(organization ? organization.toLowerCase().replace(/[^a-z0-9]/g, '-') : 'default-org');
-    setTimeout(() => {
+    setErrorMsg(null);
+    try {
+      await apiClient.register({
+        email: workEmail,
+        password: password || 'SecureSecret123!',
+        display_name: fullName.trim() || 'Kynetic Engineer',
+        organization_name: organization.trim() || undefined,
+      });
+      navigate('/dashboard');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Registration failed. Please check your information and try again.';
+      setErrorMsg(message);
+    } finally {
       setIsSubmitting(false);
-      navigate('/thank-you');
-    }, 400);
+    }
   };
 
   return (
@@ -113,6 +123,12 @@ export const SignUpPage: React.FC = () => {
 
             {/* Registration Form Inputs */}
             <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
+              {errorMsg && (
+                <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-lg text-xs font-label-mono text-red-400 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-sm">error</span>
+                  <span>{errorMsg}</span>
+                </div>
+              )}
               {/* Invisible Honeypot Spam Guard */}
               <div style={{ display: 'none' }} aria-hidden="true">
                 <input

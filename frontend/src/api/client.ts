@@ -15,7 +15,15 @@ import type {
   RunCostSummary,
   Checkpoint,
   DigitalTwinPrediction,
-  ArbitrageOpportunity
+  ArbitrageOpportunity,
+  AuthResponse,
+  TokenRefreshResponse,
+  CurrentUserResponse,
+  ApiKeyItem,
+  ApiKeyCreatedResponse,
+  CreateApiKeyRequest,
+  RegisterRequest,
+  LoginRequest
 } from './types';
 
 export class ApiError extends Error {
@@ -274,6 +282,58 @@ class KyneticApiClient {
 
   public async listArbitrageOpportunities(runId: string): Promise<ArbitrageOpportunity[]> {
     return this.request<ArbitrageOpportunity[]>(`/runs/${runId}/arbitrage/opportunities`);
+  }
+
+  // --- Auth & Tenant Sessions ---
+  public async register(data: RegisterRequest): Promise<AuthResponse> {
+    const res = await this.request<AuthResponse>('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    this.setAuthToken(res.access_token);
+    this.setOrganizationId(res.organization.id);
+    return res;
+  }
+
+  public async login(data: LoginRequest): Promise<AuthResponse> {
+    const res = await this.request<AuthResponse>('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    this.setAuthToken(res.access_token);
+    this.setOrganizationId(res.organization.id);
+    return res;
+  }
+
+  public async refreshToken(refreshToken: string): Promise<TokenRefreshResponse> {
+    const res = await this.request<TokenRefreshResponse>('/auth/refresh', {
+      method: 'POST',
+      body: JSON.stringify({ refresh_token: refreshToken })
+    });
+    this.setAuthToken(res.access_token);
+    return res;
+  }
+
+  public async getCurrentUser(): Promise<CurrentUserResponse> {
+    return this.request<CurrentUserResponse>('/auth/me');
+  }
+
+  // --- Headless Developer API Keys ---
+  public async listApiKeys(): Promise<ApiKeyItem[]> {
+    return this.request<ApiKeyItem[]>('/api-keys');
+  }
+
+  public async createApiKey(data: CreateApiKeyRequest): Promise<ApiKeyCreatedResponse> {
+    return this.request<ApiKeyCreatedResponse>('/api-keys', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
+  public async revokeApiKey(id: string): Promise<void> {
+    await this.request<void>(`/api-keys/${id}`, {
+      method: 'DELETE'
+    });
   }
 }
 
